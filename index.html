@@ -406,6 +406,46 @@
     border: 0;
     transform: translateX(-50%);
   }
+  .video-vertical{ cursor: pointer; }
+  .video-capa{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .video-play-botao{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.92);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .video-play-icone{
+    font-size: 1.2rem;
+    color: var(--tinta);
+    margin-left: 4px;
+  }
+  .video-assistir-label{
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    color: var(--branco);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0,0,0,.6);
+  }
   .portfolio-item .legenda{
     padding: 16px 18px;
     background: var(--branco);
@@ -913,11 +953,16 @@
     `).join("");
 
     grade.innerHTML = config.portfolio.map(item => {
-      // Itens com "video" (ID do YouTube) mostram o vídeo real embutido, no formato vertical (Shorts/Reels).
+      // Itens com "video" (ID do YouTube) mostram uma capa (thumbnail) preenchendo o quadro,
+      // com um botão de play por cima. O vídeo real só carrega quando a pessoa clica.
       // Para adicionar outro vídeo real: troque "gradiente" por video: "ID-DO-VIDEO-DO-YOUTUBE" (a parte final do link).
       const midia = item.video
-        ? `<div class="foto-espaco video-vertical">
-             <iframe src="https://www.youtube.com/embed/${item.video}?controls=0&modestbranding=1&rel=0&playsinline=1" title="${item.titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        ? `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
+             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/hqdefault.jpg" alt="${item.titulo}" loading="lazy">
+             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
+               <span class="video-play-icone">&#9654;</span>
+             </button>
+             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
            </div>`
         : `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
              <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
@@ -950,6 +995,18 @@
         });
 
         window.Tracking.buttonClick(`filtro_${filtro}`);
+      });
+    });
+
+    // Clique na capa do vídeo: troca a imagem + botão de play pelo player real do YouTube,
+    // já tocando e enquadrado sem barras pretas (mesma técnica de corte usada no CSS).
+    grade.querySelectorAll(".video-vertical").forEach(caixaVideo => {
+      caixaVideo.addEventListener("click", () => {
+        if (caixaVideo.classList.contains("video-ativo")) return;
+        const id = caixaVideo.dataset.video;
+        const titulo = caixaVideo.dataset.titulo;
+        caixaVideo.classList.add("video-ativo");
+        caixaVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&modestbranding=1&rel=0" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
       });
     });
   }
