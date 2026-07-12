@@ -958,7 +958,7 @@
       // Para adicionar outro vídeo real: troque "gradiente" por video: "ID-DO-VIDEO-DO-YOUTUBE" (a parte final do link).
       const midia = item.video
         ? `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
-             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/hqdefault.jpg" alt="${item.titulo}" loading="lazy">
+             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/oar2.jpg" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
