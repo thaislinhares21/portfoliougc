@@ -1101,7 +1101,7 @@
   function abrirModalVideoArquivo(arquivo, titulo){
     const modal = document.getElementById("modalVideo");
     const caixa = document.getElementById("modalVideoCaixa");
-    caixa.innerHTML = `<video src="${arquivo}" title="${titulo}" autoplay controls playsinline></video>`;
+    caixa.innerHTML = `<video src="${arquivo}" title="${titulo}" autoplay controls controlsList="nodownload" playsinline oncontextmenu="return false;"></video>`;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     document.getElementById("modalVideoFechar").focus();
