@@ -234,6 +234,7 @@
      Para usar uma foto de verdade, troque a div (classe foto-espaco + grad-X) por
      um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
   .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
+  .foto-espaco img{ width:100%; height:100%; object-fit:cover; object-position: center; }
   .grad-1{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
   .grad-2{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
   .grad-3{ background: linear-gradient(150deg, var(--creme), var(--rosa)); }
@@ -629,9 +630,9 @@
         <p class="hero-frase" id="heroFrase">Conteúdo autêntico que vira resultado de verdade para a sua marca.</p>
         <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
       </div>
-      <div class="foto-espaco hero-foto reveal" role="img" aria-label="Foto de Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
-        <!-- Para trocar por uma foto real: substitua esta div por <img src="sua-foto.jpg" alt="Thais Linhares"> mantendo a classe "hero-foto" -->
-        <span class="foto-iniciais">TL</span>
+      <div class="foto-espaco hero-foto reveal">
+        <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
+        <img src="fotocapa.jpeg" alt="Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
         <div class="adesivo adesivo-hero">100% autêntico</div>
       </div>
     </div>
