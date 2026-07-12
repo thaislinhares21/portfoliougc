@@ -731,6 +731,19 @@
     }
     .sobre-container{ flex-direction: column; }
     .contato-container{ flex-direction: column; }
+
+    /* Portfólio igual ao computador no celular também (mesma grade de colunas),
+       só reduzido proporcionalmente (efeito "zoom out") pra caber na largura da tela. */
+    #portfolio .container{
+      zoom: 0.32;
+      width: 1132px;
+      max-width: none;
+      padding: 0;
+      margin: 0 auto;
+    }
+    #portfolio .portfolio-grade{
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 </style>
 </head>
