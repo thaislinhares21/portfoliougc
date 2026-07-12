@@ -343,6 +343,28 @@
   .sobre-texto h2{ font-size: 2rem; margin-bottom: 20px; }
   .sobre-texto p{ font-size: 1.08rem; margin-bottom: 16px; }
 
+  .sobre-fatos{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 50px;
+  }
+  .fato-cartao{
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    border-radius: 16px;
+    padding: 14px 22px;
+    font-size: 1rem;
+    transition: transform .15s ease;
+  }
+  .fato-cartao:nth-child(odd){ transform: rotate(-2deg); background: var(--creme); }
+  .fato-cartao:nth-child(even){ transform: rotate(2deg); background: var(--rosa); }
+  .fato-cartao:hover{ transform: translateY(-4px) rotate(0deg); }
+
   /* ===================== PORTFÓLIO ===================== */
   .filtros{
     display:flex;
@@ -464,6 +486,35 @@
     font-weight: 600;
   }
   .portfolio-item.escondido{ display:none; }
+
+  /* ===================== FOTOS UGC ===================== */
+  .fotos-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  .foto-item{
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform .2s ease;
+  }
+  .foto-item:hover{ transform: translateY(-6px); }
+  .foto-item .foto-espaco{
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    aspect-ratio: 4/5;
+  }
+  .foto-item .legenda-foto{
+    padding: 12px 14px;
+    background: var(--branco);
+    border-top: var(--borda);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: .9rem;
+  }
 
   /* ===================== SERVIÇOS ===================== */
   .servicos-grade{
@@ -769,6 +820,7 @@
       <ul>
         <li><a href="#sobre">Sobre</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#fotos">Fotos</a></li>
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#resultados">Resultados</a></li>
         <li><a href="#depoimentos">Depoimentos</a></li>
@@ -814,6 +866,9 @@
         <p id="sobreTexto"></p>
       </div>
     </div>
+    <div class="container">
+      <div class="sobre-fatos" id="sobreFatos" aria-label="Fatos rápidos sobre a Thais"></div>
+    </div>
   </section>
 
   <!-- ===================== PORTFÓLIO ===================== -->
@@ -822,6 +877,14 @@
       <h2 class="titulo-secao reveal">Portfólio</h2>
       <div class="filtros" id="filtros" role="group" aria-label="Filtrar portfólio por nicho"></div>
       <div class="portfolio-grade" id="portfolioGrade"></div>
+    </div>
+  </section>
+
+  <!-- ===================== FOTOS UGC ===================== -->
+  <section class="fotos" id="fotos">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Fotos UGC</h2>
+      <div class="fotos-grade" id="fotosGrade"></div>
     </div>
   </section>
 
@@ -942,7 +1005,15 @@
     // EDITE AQUI: texto da seção Sobre
     sobre: {
       titulo: "Sobre mim",
-      texto: "Sou a Thais, tenho 28 anos, moro em Porto Velho (RO) e sou mãe de um casal, de idades diferentes. Formada em Design de Interiores, hoje dedico minha rotina à criação de conteúdo autêntico: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio aplicativo para organizar produções de UGC. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria."
+      texto: "Sou a Thais, tenho 28 anos, moro em Porto Velho (RO) e sou mãe de um casal, de idades diferentes. Formada em Design de Interiores, hoje dedico minha rotina à criação de conteúdo autêntico: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio aplicativo para organizar produções de UGC. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
+      // EDITE AQUI: fatos rápidos sobre você, aparecem como cartõezinhos abaixo do texto
+      fatos: [
+        "Mãe de um casal",
+        "Porto Velho, RO",
+        "Formada em Design de Interiores",
+        "Apaixonada por pets",
+        "Rotina fit: funcional, corrida e hidroginástica"
+      ]
     },
 
     // EDITE AQUI: categorias usadas no filtro do portfólio
@@ -984,6 +1055,16 @@
       { titulo: "Noite Estrelada da Beleza Néctar", categoria: "bodycare", videoArquivo: "video-noite-estrelada.mp4" }
     ],
 
+    // EDITE AQUI: fotos reais do seu trabalho como criadora UGC (fotos, não vídeos).
+    // Para uma foto real, adicione "arquivo": "nome-do-arquivo.jpg" (mesma pasta do index.html).
+    // Sem o "arquivo", o item mostra um bloco em gradiente no lugar (placeholder).
+    fotos: [
+      { titulo: "Foto de produto", gradiente: "grad-1" },
+      { titulo: "Foto de rotina", gradiente: "grad-2" },
+      { titulo: "Foto de unboxing", gradiente: "grad-3" },
+      { titulo: "Foto de resenha", gradiente: "grad-4" }
+    ],
+
     // EDITE AQUI: serviços oferecidos
     servicos: [
       { titulo: "Vídeo UGC", descricao: "Vídeos verticais autênticos, gravados como uma cliente real usando o produto, prontos para anúncios e redes sociais." },
@@ -1018,8 +1099,10 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     preencherTextosFixos();
+    montarSobreFatos();
     montarMarcas();
     montarFiltrosEPortfolio();
+    montarFotos();
     montarServicos();
     montarResultados();
     montarDepoimentos();
@@ -1041,6 +1124,11 @@
     document.getElementById("sobreTitulo").textContent = config.sobre.titulo;
     document.getElementById("sobreTexto").textContent = config.sobre.texto;
     document.title = config.nome + " | Criadora de Conteúdo UGC";
+  }
+
+  function montarSobreFatos(){
+    const container = document.getElementById("sobreFatos");
+    container.innerHTML = config.sobre.fatos.map(fato => `<span class="fato-cartao">${fato}</span>`).join("");
   }
 
   function montarMarcas(){
@@ -1181,6 +1269,21 @@
         fecharModalVideo();
       }
     });
+  }
+
+  function montarFotos(){
+    const grade = document.getElementById("fotosGrade");
+    grade.innerHTML = config.fotos.map(foto => {
+      const midia = foto.arquivo
+        ? `<div class="foto-espaco"><img src="${foto.arquivo}" alt="${foto.titulo}" loading="lazy"></div>`
+        : `<div class="foto-espaco ${foto.gradiente}" role="img" aria-label="Foto: ${foto.titulo}"></div>`;
+      return `
+      <article class="foto-item reveal">
+        ${midia}
+        <div class="legenda-foto">${foto.titulo}</div>
+      </article>
+    `;
+    }).join("");
   }
 
   function montarServicos(){
