@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom UGC 🌸</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bloom UGC">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#ff6f9c">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+  :root{
+    --bg1:#fff3f7; --bg2:#f4ecff; --bg3:#fff9f2;
+    --panel:#ffffff; --panel2:#fff6fa;
+    --border:#f6dbe7;
+    --text:#4a2f45; --muted:#a9899f;
+    --accent:#ff6f9c; --accent2:#c66fe0; --accent3:#ffb17a;
+    --green:#3fbf8f; --green-bg:#e3faf1;
+    --yellow:#e0a63c; --yellow-bg:#fff5e0;
+    --blue:#5c8fe0; --blue-bg:#e9f1ff;
+    --red:#ef5c7f; --red-bg:#ffe7ee;
+    --purple:#9c6fe0; --purple-bg:#f2eaff;
+    --radius:20px;
+    --shadow: 0 8px 30px rgba(214,110,160,.12);
+    --shadow-hover: 0 14px 40px rgba(214,110,160,.22);
+  }
+  *{box-sizing:border-box;}
+  html{overflow-x:hidden;}
+  body{
+    margin:0;
+    overflow-x:hidden;
+    font-family:'Quicksand',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    width:100%;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,177,122,.25), transparent 40%),
+      radial-gradient(circle at 92% 8%, rgba(198,111,224,.20), transparent 42%),
+      radial-gradient(circle at 85% 85%, rgba(255,111,156,.18), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(198,111,224,.15), transparent 38%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    background-attachment:fixed;
+    position:relative;
+  }
+  h1,h2,h3{font-family:'Playfair Display',serif;}
+  .app{max-width:1200px;margin:0 auto;padding:28px 20px 70px;position:relative;z-index:1;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:14px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand .logo{
+    width:46px;height:46px;border-radius:16px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:19px;color:#fff;font-family:'Playfair Display',serif;
+    box-shadow:0 8px 20px rgba(255,111,156,.4);
+    transform:rotate(-4deg);
+    transition:transform .3s ease;
+  }
+  .brand:hover .logo{transform:rotate(2deg) scale(1.06);}
+  .brand h1{font-size:23px;margin:0;font-weight:700;background:linear-gradient(90deg,#c66fe0,#ff6f9c);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .brand span{color:var(--muted);font-size:12.5px;font-weight:600;}
+
+  .top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  nav.tabs{display:flex;gap:4px;background:#fff;padding:6px;border-radius:16px;border:1px solid var(--border);flex-wrap:wrap;box-shadow:var(--shadow);}
+  nav.tabs button{background:transparent;border:none;color:var(--muted);padding:10px 16px;border-radius:12px;cursor:pointer;font-size:13.5px;font-weight:700;font-family:'Quicksand',sans-serif;transition:.25s;position:relative;}
+  nav.tabs button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 6px 16px rgba(255,111,156,.35);}
+  nav.tabs button:hover:not(.active){color:var(--accent);background:var(--panel2);}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;
+    box-shadow:var(--shadow);transition:transform .25s ease, box-shadow .25s ease;
+    position:relative;overflow:hidden;
+  }
+  .card::after{
+    content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,177,122,.22), transparent 70%);
+  }
+  .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);}
+  .card .label{color:var(--muted);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}
+  .card .value{font-size:27px;font-weight:700;font-family:'Playfair Display',serif;color:var(--text);}
+  .card .sub{color:var(--muted);font-size:12px;margin-top:5px;font-weight:600;}
+
+  .progress-wrap{background:var(--panel2);border-radius:20px;height:12px;overflow:hidden;margin-top:10px;}
+  .progress-bar{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 1s cubic-bezier(.22,1,.36,1);}
+
+  .section{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:22px;box-shadow:var(--shadow);}
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .section-head h2{margin:0;font-size:19px;color:var(--text);}
+  .section-head h2 .deco{color:var(--accent);}
+  .hint{color:var(--muted);font-size:12.5px;margin-top:-8px;margin-bottom:16px;}
+
+  .btn{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;
+    padding:11px 20px;border-radius:30px;cursor:pointer;font-weight:700;font-size:13.5px;
+    font-family:'Quicksand',sans-serif;box-shadow:0 8px 18px rgba(255,111,156,.35);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 24px rgba(255,111,156,.45);}
+  .btn:active{transform:translateY(0) scale(.98);}
+  .btn.secondary{background:var(--panel2);border:1px solid var(--border);color:var(--text);box-shadow:none;}
+  .btn.secondary:hover{background:#fff;box-shadow:var(--shadow);}
+  .btn.danger{background:var(--red-bg);color:var(--red);box-shadow:none;}
+  .btn.small{padding:7px 14px;font-size:12.5px;}
+
+  .search-input{
+    width:100%;max-width:280px;background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    padding:9px 14px;border-radius:20px;font-size:13.5px;font-family:'Quicksand',sans-serif;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .search-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,111,156,.15);}
+
+  #contentTableWrap, #brandTableWrap, #paymentTableWrap, #permutaTableWrap, #expenseTableWrap, #dashUpcoming, #dashPending{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    max-width:100%;
+  }
+  #contentTableWrap table, #brandTableWrap table, #paymentTableWrap table, #permutaTableWrap table, #expenseTableWrap table, #dashUpcoming table, #dashPending table{
+    min-width:600px;
+  }
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{text-align:left;color:var(--muted);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding:10px 12px;border-bottom:2px solid var(--border);}
+  tbody td{padding:13px 12px;border-bottom:1px solid var(--border);}
+  tbody tr{transition:background .18s ease;animation:rowIn .35s ease both;}
+  tbody tr:hover{background:var(--panel2);}
+  @keyframes rowIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .empty{color:var(--muted);text-align:center;padding:36px;font-size:14px;font-weight:600;}
+
+  .badge{padding:5px 12px;border-radius:20px;font-size:11.5px;font-weight:700;display:inline-block;white-space:nowrap;}
+  .badge.planejado{background:var(--purple-bg);color:var(--purple);}
+  .badge.gravado{background:var(--blue-bg);color:var(--blue);}
+  .badge.editado{background:var(--yellow-bg);color:var(--yellow);}
+  .badge.entregue{background:var(--green-bg);color:var(--green);}
+  .badge.prospeccao{background:var(--purple-bg);color:var(--purple);}
+  .badge.negociacao{background:var(--yellow-bg);color:var(--yellow);}
+  .badge.ativa{background:var(--blue-bg);color:var(--blue);}
+  .badge.concluida{background:var(--green-bg);color:var(--green);}
+  .badge.pendente{background:var(--red-bg);color:var(--red);}
+  .badge.pago{background:var(--green-bg);color:var(--green);}
+  .badge.plataforma{background:var(--blue-bg);color:var(--blue);}
+  .badge.agencia{background:var(--yellow-bg);color:var(--yellow);}
+  .badge.outro{background:var(--panel2);color:var(--muted);}
+
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .icon-btn{background:var(--panel2);border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:7px 9px;border-radius:10px;transition:.18s;}
+  .icon-btn:hover{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transform:scale(1.08);}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(74,47,69,.35);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:#fff;border:1px solid var(--border);border-radius:24px;width:100%;max-width:480px;
+    padding:26px;max-height:88vh;overflow:auto;box-shadow:0 25px 60px rgba(74,47,69,.25);
+    animation:modalIn .28s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .modal h3{margin-top:0;margin-bottom:18px;color:var(--text);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+  .field input,.field select,.field textarea{
+    width:100%;background:var(--panel2);border:1.5px solid var(--border);color:var(--text);
+    padding:10px 13px;border-radius:12px;font-size:14px;font-family:'Quicksand',sans-serif;transition:.2s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,111,156,.14);background:#fff;}
+  .field textarea{resize:vertical;min-height:60px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;}
+
+  footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:34px;font-weight:600;}
+
+  .reminder-banner{
+    background:var(--yellow-bg);border:1px solid #f3d98b;color:#8a6417;padding:14px 18px;border-radius:16px;
+    font-weight:700;font-size:13.5px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    margin-bottom:20px;animation:rowIn .3s ease;
+  }
+
+  .calc-breakdown{border:1.5px dashed var(--border);border-radius:16px;padding:16px 18px;margin-top:14px;background:var(--panel2);}
+  .calc-breakdown p{margin:0;color:var(--muted);font-size:13px;line-height:1.6;}
+
+  #toastWrap{position:fixed;top:20px;right:20px;z-index:100;display:flex;flex-direction:column;gap:10px;}
+  .toast{
+    background:#fff;border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:14px;
+    padding:13px 18px;box-shadow:0 12px 30px rgba(74,47,69,.18);font-size:13.5px;font-weight:600;
+    display:flex;align-items:center;gap:8px;min-width:220px;
+    animation:toastIn .3s ease, toastOut .3s ease 2.6s forwards;
+  }
+  @keyframes toastIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes toastOut{from{opacity:1;}to{opacity:0;transform:translateX(30px);}}
+
+  .confetti-piece{
+    position:fixed;top:50%;left:50%;font-size:22px;pointer-events:none;z-index:200;
+    animation:confettiFly 1.1s ease-out forwards;
+  }
+  @keyframes confettiFly{
+    0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1);}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.7);}
+  }
+
+  @media(max-width:640px){.field-row{grid-template-columns:1fr;} table{font-size:12px;} thead th, tbody td{padding:9px 6px;} .search-input{max-width:100%;}}
+
+  .auth-screen{
+    position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,177,122,.25), transparent 40%),
+      radial-gradient(circle at 92% 8%, rgba(198,111,224,.20), transparent 42%),
+      radial-gradient(circle at 85% 85%, rgba(255,111,156,.18), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(198,111,224,.15), transparent 38%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+  }
+  .auth-card{
+    background:#fff;border:1px solid var(--border);border-radius:28px;padding:40px 34px;max-width:380px;width:100%;
+    text-align:center;box-shadow:0 25px 60px rgba(74,47,69,.2);animation:modalIn .35s cubic-bezier(.22,1,.36,1);
+  }
+  .auth-card .logo-big{
+    width:70px;height:70px;border-radius:22px;margin:0 auto 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 10px 26px rgba(255,111,156,.4);
+    transform:rotate(-4deg);
+  }
+  .auth-card h1{font-size:24px;margin:0 0 8px;background:linear-gradient(90deg,#c66fe0,#ff6f9c);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .auth-card p{color:var(--muted);font-size:13.5px;line-height:1.5;margin:0 0 22px;font-weight:600;}
+  .google-btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff;
+    border:1.5px solid var(--border);color:var(--text);padding:12px 20px;border-radius:30px;cursor:pointer;
+    font-weight:700;font-size:14px;font-family:'Quicksand',sans-serif;transition:.2s;box-shadow:var(--shadow);
+  }
+  .google-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:var(--accent);}
+  .google-btn img{width:19px;height:19px;}
+  .auth-error{color:var(--red);font-size:12.5px;font-weight:700;margin-top:14px;display:none;}
+  .user-chip{display:flex;align-items:center;gap:7px;}
+  .tone-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<div id="toastWrap"></div>
+
+<div class="auth-screen" id="authLoading">
+  <div class="auth-card">
+    <div class="logo-big">🌸</div>
+    <h1>Bloom UGC</h1>
+    <p>Carregando sua conta...</p>
+  </div>
+</div>
+
+<div class="auth-screen" id="loginGate" style="display:none">
+  <div class="auth-card">
+    <div class="logo-big">🌸</div>
+    <h1>Bloom UGC</h1>
+    <p>Entre com sua conta Google pra acessar seus dados de qualquer computador ou celular.</p>
+    <button class="google-btn" id="googleLoginBtn" onclick="loginWithGoogle()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+      Entrar com Google
+    </button>
+    <p class="auth-error" id="loginError"></p>
+  </div>
+</div>
+
+<div class="auth-screen" id="notLicensedGate" style="display:none">
+  <div class="auth-card">
+    <div class="logo-big">🔒</div>
+    <h1>Acesso não liberado</h1>
+    <p>Não encontramos uma compra ativa do Bloom UGC pra <strong id="notLicensedEmail"></strong>. Se você já comprou, aguarde alguns minutinhos pra liberação ou entre em contato mostrando o comprovante da compra. Se ainda não comprou, adquira o Bloom UGC pra ter acesso.</p>
+    <button class="btn secondary" onclick="logout()">Tentar com outra conta</button>
+  </div>
+</div>
+
+<div class="app" id="appRoot" style="display:none">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">🌸</div>
+      <div>
+        <h1>Bloom UGC</h1>
+        <span>Sua central de criadora de conteúdo 💕</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <nav class="tabs" id="tabs">
+        <button data-tab="dashboard" class="active">🏠 Dashboard</button>
+        <button data-tab="calendario">🗓️ Calendário</button>
+        <button data-tab="marcas">💌 Marcas</button>
+        <button data-tab="permuta">🎁 Permuta</button>
+        <button data-tab="calculadora">🧮 Calculadora</button>
+        <button data-tab="financeiro">💰 Financeiro</button>
+        <button data-tab="gastos">💸 Gastos</button>
+      </nav>
+      <button class="btn secondary small" id="installBtn" onclick="openInstallModal()">📲 Adicionar à tela inicial</button>
+      <button class="btn secondary small" onclick="openSettingsModal()">⚙️ Meus dados</button>
+      <button class="btn secondary small user-chip" id="userChip" onclick="logout()" title="Clique para sair">👤 Sair</button>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard">
+    <div id="reminderBanner" style="display:none"></div>
+    <div class="cards" id="dashCards"></div>
+
+    <div class="section">
+      <div class="section-head"><h2><span class="deco">💗</span> Progresso de entregas</h2></div>
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="sub" id="progressLabel" style="color:var(--muted);font-size:12.5px;margin-top:8px;font-weight:600;"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2><span class="deco">🗓️</span> Próximas entregas</h2></div>
+      <div id="dashUpcoming"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2><span class="deco">💸</span> Pagamentos pendentes</h2></div>
+      <div id="dashPending"></div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section id="tab-calendario" style="display:none">
+    <div class="section">
+      <div class="section-head">
+        <h2>🗓️ Calendário de conteúdo &amp; entregas</h2>
+        <button class="btn" onclick="openContentModal()">+ Novo conteúdo</button>
+      </div>
+      <input type="text" class="search-input" id="contentSearch" placeholder="🔍 Buscar conteúdo ou marca..." oninput="onSearch('content', this.value)" style="margin-bottom:14px;">
+      <div id="contentTableWrap"></div>
+    </div>
+  </section>
+
+  <!-- MARCAS -->
+  <section id="tab-marcas" style="display:none">
+    <div class="section">
+      <div class="section-head">
+        <h2>💌 Parcerias &amp; marcas</h2>
+        <button class="btn" onclick="openBrandModal()">+ Nova marca</button>
+      </div>
+      <p class="hint">Use 📃 pra gerar um contrato simples em PDF e 🔗 pra gerar uma página de status pra enviar à marca.</p>
+      <input type="text" class="search-input" id="brandSearch" placeholder="🔍 Buscar marca..." oninput="onSearch('brand', this.value)" style="margin-bottom:14px;">
+      <div id="brandTableWrap"></div>
+    </div>
+  </section>
+
+  <!-- PERMUTA -->
+  <section id="tab-permuta" style="display:none">
+    <div class="section">
+      <div class="section-head">
+        <h2>🎁 Permutas (pagamento em produto)</h2>
+        <button class="btn" onclick="openPermutaModal()">+ Nova permuta</button>
+      </div>
+      <p class="hint">Registre produtos recebidos como pagamento de parcerias, com o valor estimado em reais.</p>
+      <input type="text" class="search-input" id="permutaSearch" placeholder="🔍 Buscar permuta ou marca..." oninput="onSearch('permuta', this.value)" style="margin-bottom:14px;">
+      <div id="permutaTableWrap"></div>
+    </div>
+  </section>
+
+  <!-- CALCULADORA -->
+  <section id="tab-calculadora" style="display:none">
+    <div class="section">
+      <div class="section-head"><h2>🧮 Calculadora de precificação</h2></div>
+      <p class="hint">Estimativa de referência pra te ajudar a negociar com marcas — ajuste conforme sua experiência e o mercado.</p>
+      <div class="field-row">
+        <div class="field"><label>Seu valor-base por entregável (R$)</label><input type="number" id="calcBase" value="150"></div>
+        <div class="field"><label>Quantidade de entregáveis</label><input type="number" id="calcQtd" value="1" min="1"></div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Direitos de uso</label>
+          <select id="calcUso">
+            <option value="1">Apenas orgânico (perfil da marca)</option>
+            <option value="1.4">Whitelisting / anúncios pagos até 30 dias</option>
+            <option value="1.7">Whitelisting / anúncios pagos até 90 dias</option>
+            <option value="2.2">Uso irrestrito e perpétuo (todos os canais)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Exclusividade de categoria</label>
+          <select id="calcExclusividade">
+            <option value="1">Nenhuma</option>
+            <option value="1.15">30 dias</option>
+            <option value="1.3">90 dias</option>
+            <option value="1.5">6 meses ou mais</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Urgência do prazo</label>
+          <select id="calcUrgencia">
+            <option value="1">Padrão</option>
+            <option value="1.25">Urgente (menos de 5 dias)</option>
+          </select>
+        </div>
+        <div class="field"><label>Revisões extras (além de 2 inclusas)</label><input type="number" id="calcRevisoes" value="0" min="0"></div>
+      </div>
+      <button class="btn" onclick="calcPricing()">Calcular valor sugerido ✨</button>
+      <div id="calcResult"></div>
+    </div>
+  </section>
+
+  <!-- FINANCEIRO -->
+  <section id="tab-financeiro" style="display:none">
+    <div class="cards" id="finCards"></div>
+    <div class="section">
+      <div class="section-head">
+        <h2>💰 Pagamentos</h2>
+        <button class="btn" onclick="openPaymentModal()">+ Novo pagamento</button>
+      </div>
+      <p class="hint">Use 📄 em qualquer pagamento pra gerar um recibo/invoice em PDF, e 💬 pra gerar uma mensagem de cobrança.</p>
+      <input type="text" class="search-input" id="paymentSearch" placeholder="🔍 Buscar pagamento..." oninput="onSearch('payment', this.value)" style="margin-bottom:14px;">
+      <div id="paymentTableWrap"></div>
+    </div>
+  </section>
+
+  <!-- GASTOS -->
+  <section id="tab-gastos" style="display:none">
+    <div class="cards" id="expenseCards"></div>
+    <div class="section">
+      <div class="section-head">
+        <h2>💸 Gastos</h2>
+        <button class="btn" onclick="openExpenseModal()">+ Novo gasto</button>
+      </div>
+      <p class="hint">Registre os gastos pra manter seu trabalho de UGC (equipamentos, apps, internet...) e veja seu lucro real no Dashboard.</p>
+      <input type="text" class="search-input" id="expenseSearch" placeholder="🔍 Buscar gasto..." oninput="onSearch('expense', this.value)" style="margin-bottom:14px;">
+      <div id="expenseTableWrap"></div>
+    </div>
+  </section>
+
+  <footer class="foot">💗 Dados sincronizados com sua conta Google · use "Exportar backup" de vez em quando por segurança</footer>
+  <div style="text-align:center;margin-top:12px">
+    <button class="btn secondary small" onclick="exportBackup()">⬇️ Exportar backup</button>
+    <button class="btn secondary small" onclick="document.getElementById('importFile').click()">⬆️ Importar backup</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(event)">
+  </div>
+</div>
+
+<!-- CONTENT MODAL -->
+<div class="modal-overlay" id="contentModal">
+  <div class="modal">
+    <h3 id="contentModalTitle">✨ Novo conteúdo</h3>
+    <input type="hidden" id="contentId">
+    <div class="field">
+      <label>Título / roteiro</label>
+      <input type="text" id="contentTitulo" placeholder="Ex: Unboxing produto X">
+    </div>
+    <div class="field">
+      <label>Marca</label>
+      <select id="contentMarca"></select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Tipo</label>
+        <select id="contentTipo">
+          <option>Vídeo</option>
+          <option>Foto</option>
+          <option>Reels/TikTok</option>
+          <option>Story</option>
+          <option>Review</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="contentStatus">
+          <option value="planejado">Planejado</option>
+          <option value="gravado">Gravado</option>
+          <option value="editado">Editado</option>
+          <option value="entregue">Entregue</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Data de gravação</label>
+        <input type="date" id="contentDataGravacao">
+      </div>
+      <div class="field">
+        <label>Prazo de entrega</label>
+        <input type="date" id="contentDataEntrega">
+      </div>
+    </div>
+    <div class="field">
+      <label>Observações</label>
+      <textarea id="contentNotas" placeholder="Briefing, requisitos, link do drive..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('contentModal')">Cancelar</button>
+      <button class="btn" onclick="saveContent()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- BRAND MODAL -->
+<div class="modal-overlay" id="brandModal">
+  <div class="modal">
+    <h3 id="brandModalTitle">💌 Nova marca</h3>
+    <input type="hidden" id="brandId">
+    <div class="field">
+      <label>Nome da marca</label>
+      <input type="text" id="brandNome" placeholder="Ex: Marca XYZ">
+    </div>
+    <div class="field">
+      <label>Contato</label>
+      <input type="text" id="brandContato" placeholder="Ex: Bruno - 48 99618-4707 ou bruno@marca.com">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Origem</label>
+        <select id="brandOrigem">
+          <option value="prospeccao">Prospecção</option>
+          <option value="plataforma">Aplicativo/Plataforma</option>
+          <option value="agencia">Agência</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="brandStatus">
+          <option value="prospeccao">Prospecção</option>
+          <option value="negociacao">Negociação</option>
+          <option value="ativa">Ativa</option>
+          <option value="concluida">Concluída</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Valor combinado (R$)</label>
+      <input type="number" id="brandValor" placeholder="0,00">
+    </div>
+    <div class="field">
+      <label>Entregáveis combinados</label>
+      <input type="text" id="brandEntregaveis" placeholder="Ex: 2 vídeos + 1 story">
+    </div>
+    <div class="field">
+      <label>Direitos de uso combinados</label>
+      <input type="text" id="brandDireitosUso" placeholder="Ex: Whitelisting 90 dias">
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea id="brandNotas" placeholder="Condições, prazos gerais, links..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('brandModal')">Cancelar</button>
+      <button class="btn" onclick="saveBrand()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <h3 id="paymentModalTitle">💰 Novo pagamento</h3>
+    <input type="hidden" id="paymentId">
+    <div class="field">
+      <label>Marca</label>
+      <select id="paymentMarca"></select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Valor (R$)</label>
+        <input type="number" id="paymentValor" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="paymentStatus">
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Data prevista</label>
+        <input type="date" id="paymentDataPrevista">
+      </div>
+      <div class="field">
+        <label>Data do pagamento</label>
+        <input type="date" id="paymentDataPago">
+      </div>
+    </div>
+    <div class="field">
+      <label>Descrição</label>
+      <input type="text" id="paymentDesc" placeholder="Ex: 2 vídeos + 1 story">
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('paymentModal')">Cancelar</button>
+      <button class="btn" onclick="savePayment()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- PERMUTA MODAL -->
+<div class="modal-overlay" id="permutaModal">
+  <div class="modal">
+    <h3 id="permutaModalTitle">🎁 Nova permuta</h3>
+    <input type="hidden" id="permutaId">
+    <div class="field">
+      <label>Marca</label>
+      <select id="permutaMarca"></select>
+    </div>
+    <div class="field">
+      <label>Produto recebido</label>
+      <input type="text" id="permutaProduto" placeholder="Ex: Kit de skincare">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Valor estimado (R$)</label>
+        <input type="number" id="permutaValor" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="permutaStatus">
+          <option value="a_receber">A receber</option>
+          <option value="recebido">Recebido</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="permutaData">
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea id="permutaNotas" placeholder="Detalhes do produto, condições combinadas..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('permutaModal')">Cancelar</button>
+      <button class="btn" onclick="savePermuta()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPENSE MODAL -->
+<div class="modal-overlay" id="expenseModal">
+  <div class="modal">
+    <h3 id="expenseModalTitle">💸 Novo gasto</h3>
+    <input type="hidden" id="expenseId">
+    <div class="field">
+      <label>Descrição</label>
+      <input type="text" id="expenseDesc" placeholder="Ex: Assinatura CapCut Pro">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Valor (R$)</label>
+        <input type="number" id="expenseValor" placeholder="0,00">
+      </div>
+      <div class="field">
+        <label>Categoria</label>
+        <select id="expenseCategoria">
+          <option value="equipamento">Equipamento</option>
+          <option value="app">App/Assinatura</option>
+          <option value="internet">Internet/Celular</option>
+          <option value="marketing">Marketing</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="expenseData">
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('expenseModal')">Cancelar</button>
+      <button class="btn" onclick="saveExpense()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTION MESSAGE MODAL -->
+<div class="modal-overlay" id="collectionModal">
+  <div class="modal">
+    <h3>💬 Gerar mensagem de cobrança</h3>
+    <input type="hidden" id="collectionPaymentId">
+    <p class="hint" style="margin-top:-4px;">Escolha o tom da mensagem:</p>
+    <div class="tone-buttons">
+      <button class="btn secondary small" onclick="generateCollectionMessage('educado')">😊 Educado</button>
+      <button class="btn secondary small" onclick="generateCollectionMessage('direto')">📌 Direto</button>
+      <button class="btn secondary small" onclick="generateCollectionMessage('urgente')">⏰ Urgente</button>
+    </div>
+    <div class="field" style="margin-top:16px;">
+      <label>Mensagem gerada (edite se quiser antes de copiar)</label>
+      <textarea id="collectionMsgText" rows="6" placeholder="Escolha um tom acima pra gerar a mensagem..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('collectionModal')">Fechar</button>
+      <button class="btn" onclick="copyCollectionMessage()">📋 Copiar mensagem</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h3>⚙️ Meus dados</h3>
+    <p class="hint" style="margin-top:-4px;">Usados para preencher automaticamente seus contratos e invoices em PDF.</p>
+    <div class="field">
+      <label>Seu nome / marca pessoal</label>
+      <input type="text" id="settingsNome" placeholder="Ex: Ana Criadora">
+    </div>
+    <div class="field">
+      <label>Contato (e-mail ou WhatsApp)</label>
+      <input type="text" id="settingsContato" placeholder="ana@email.com">
+    </div>
+    <div class="field">
+      <label>Chave Pix (opcional)</label>
+      <input type="text" id="settingsPix" placeholder="ana@email.com">
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('settingsModal')">Cancelar</button>
+      <button class="btn" onclick="saveSettings()">Salvar 💗</button>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALL / ADD TO HOME SCREEN MODAL -->
+<div class="modal-overlay" id="installModal">
+  <div class="modal">
+    <h3>📲 Adicionar à tela inicial</h3>
+    <p class="hint" style="margin-top:-4px;">Depois de adicionar, o Bloom UGC abre igual um aplicativo, com ícone próprio — sem precisar abrir o navegador toda vez.</p>
+
+    <div id="installIOS" style="display:none">
+      <div class="calc-breakdown">
+        <p>
+          <strong>1.</strong> Toque no ícone de <strong>Compartilhar</strong> 📤 (o quadrado com uma seta pra cima), na barra do Safari.<br><br>
+          <strong>2.</strong> Role pra baixo e toque em <strong>"Adicionar à Tela de Início"</strong>.<br><br>
+          <strong>3.</strong> Toque em <strong>"Adicionar"</strong> no canto superior direito.<br><br>
+          Pronto! O ícone do Bloom UGC vai aparecer na tela do seu celular. 🌸
+        </p>
+      </div>
+    </div>
+
+    <div id="installAndroid" style="display:none">
+      <div class="calc-breakdown">
+        <p>
+          <strong>1.</strong> Toque nos três pontinhos <strong>⋮</strong> no canto superior direito do navegador.<br><br>
+          <strong>2.</strong> Toque em <strong>"Adicionar à tela inicial"</strong> ou <strong>"Instalar app"</strong>.<br><br>
+          <strong>3.</strong> Confirme tocando em <strong>"Adicionar"</strong> ou <strong>"Instalar"</strong>.<br><br>
+          Pronto! O ícone do Bloom UGC vai aparecer na tela do seu celular. 🌸
+        </p>
+      </div>
+    </div>
+
+    <div id="installDesktop" style="display:none">
+      <div class="calc-breakdown">
+        <p>Esse recurso é pra quando você acessa pelo celular. Abra <strong>bloomugc.netlify.app</strong> no navegador do seu celular e toque nesse mesmo botão lá pra ver o passo a passo. No computador, salve o link nos favoritos do navegador pra acessar rápido.</p>
+      </div>
+    </div>
+
+    <div id="installAlready" style="display:none">
+      <div class="calc-breakdown">
+        <p>O app já está instalado na sua tela inicial! 🎉 É só abrir por lá.</p>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('installModal')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- Adicionar à tela inicial (PWA) ----
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  showToast('App instalado com sucesso! 🎉','📲');
+});
+function isStandaloneMode(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+function openInstallModal(){
+  document.getElementById('installIOS').style.display = 'none';
+  document.getElementById('installAndroid').style.display = 'none';
+  document.getElementById('installDesktop').style.display = 'none';
+  document.getElementById('installAlready').style.display = 'none';
+
+  if(isStandaloneMode()){
+    document.getElementById('installAlready').style.display = 'block';
+    openModal('installModal');
+    return;
+  }
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(()=>{ deferredInstallPrompt = null; });
+    return;
+  }
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  if(isIOS){
+    document.getElementById('installIOS').style.display = 'block';
+  } else if(isAndroid){
+    document.getElementById('installAndroid').style.display = 'block';
+  } else {
+    document.getElementById('installDesktop').style.display = 'block';
+  }
+  openModal('installModal');
+}
+</script>
+
+<script>
+const STORAGE_KEY = 'ugc_organizer_data_v1';
+const DEFAULT_SETTINGS = { creatorName:'', creatorContact:'', creatorPix:'', baseRate:150 };
+let data = { contents: [], brands: [], payments: [], permutas: [], expenses: [], settings: {...DEFAULT_SETTINGS} };
+let searchState = { content:'', brand:'', payment:'', permuta:'', expense:'' };
+let reminderIntervalId = null;
+
+// ---- Login com Google + sincronização na nuvem (Firebase) ----
+const firebaseConfig = {
+  apiKey: "AIzaSyC90uXBdO6qhYKpvvg8IGnC5S5HrnuHHW8",
+  authDomain: "bloom-ugc-92944.firebaseapp.com",
+  projectId: "bloom-ugc-92944",
+  storageBucket: "bloom-ugc-92944.firebasestorage.app",
+  messagingSenderId: "728654297315",
+  appId: "1:728654297315:web:11bace9a509c87c9336dd6"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+let currentUser = null;
+let saveTimer = null;
+
+function loginWithGoogle(){
+  const provider = new firebase.auth.GoogleAuthProvider();
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  auth.signInWithPopup(provider).catch(err=>{
+    errEl.textContent = 'Não foi possível entrar: ' + (err.message || err.code || 'erro desconhecido');
+    errEl.style.display = 'block';
+  });
+}
+function logout(){
+  if(!confirm('Sair da sua conta? Seus dados continuam salvos na nuvem.')) return;
+  auth.signOut();
+}
+
+async function checkLicense(user){
+  if(!user.email) return false;
+  try{
+    const emailKey = user.email.toLowerCase();
+    const snap = await db.collection('licenses').doc(emailKey).get();
+    return snap.exists && snap.data().active === true;
+  }catch(e){
+    console.error('Erro ao verificar licença', e);
+    return false;
+  }
+}
+
+auth.onAuthStateChanged(async user=>{
+  document.getElementById('authLoading').style.display = 'none';
+  if(user){
+    currentUser = user;
+    document.getElementById('loginGate').style.display = 'none';
+    document.getElementById('notLicensedGate').style.display = 'none';
+
+    const licensed = await checkLicense(user);
+    if(!licensed){
+      document.getElementById('appRoot').style.display = 'none';
+      document.getElementById('notLicensedEmail').textContent = user.email || '';
+      document.getElementById('notLicensedGate').style.display = 'flex';
+      return;
+    }
+
+    document.getElementById('appRoot').style.display = 'block';
+    const chip = document.getElementById('userChip');
+    if(chip) chip.innerHTML = '👤 ' + escapeHtml(user.displayName ? user.displayName.split(' ')[0] : (user.email||'Sair'));
+    await loadData();
+    renderAll();
+  } else {
+    currentUser = null;
+    document.getElementById('appRoot').style.display = 'none';
+    document.getElementById('notLicensedGate').style.display = 'none';
+    document.getElementById('loginGate').style.display = 'flex';
+  }
+});
+
+async function loadData(){
+  // 1) carrega o cache local primeiro, pra abrir instantâneo
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      data = {
+        contents: parsed.contents || [],
+        brands: parsed.brands || [],
+        payments: parsed.payments || [],
+        permutas: parsed.permutas || [],
+        expenses: parsed.expenses || [],
+        settings: { ...DEFAULT_SETTINGS, ...(parsed.settings||{}) }
+      };
+    }
+  }catch(e){ console.warn('Falha ao carregar cache local', e); }
+
+  if(!currentUser) return;
+
+  // 2) busca a versão da nuvem (fonte da verdade)
+  try{
+    const docRef = db.collection('users').doc(currentUser.uid);
+    const snap = await docRef.get();
+    if(snap.exists){
+      const remote = snap.data();
+      data = {
+        contents: remote.contents || [],
+        brands: remote.brands || [],
+        payments: remote.payments || [],
+        permutas: remote.permutas || [],
+        expenses: remote.expenses || [],
+        settings: { ...DEFAULT_SETTINGS, ...(remote.settings||{}) }
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } else if(data.contents.length || data.brands.length || data.payments.length){
+      // primeiro login nesta conta, mas já existia dado local (versão antiga sem login)
+      await docRef.set(data);
+      showToast('Seus dados salvos neste navegador foram importados pra sua conta! ☁️','✨');
+    } else {
+      await docRef.set(data);
+    }
+  }catch(e){
+    console.error('Erro ao carregar dados da nuvem', e);
+    showToast('Não foi possível sincronizar com a nuvem agora. Mostrando dados salvos neste navegador.','⚠️');
+  }
+}
+function saveData(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  if(!currentUser) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    db.collection('users').doc(currentUser.uid).set(data).catch(e=>{
+      console.error('Erro ao salvar na nuvem', e);
+      showToast('Erro ao sincronizar com a nuvem — verifique sua internet.','⚠️');
+    });
+  }, 500);
+}
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function fmtDate(d){
+  if(!d) return '—';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+function fmtMoney(v){
+  v = Number(v)||0;
+  return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+
+const CONTENT_STATUS_LABEL = {planejado:'Planejado', gravado:'Gravado', editado:'Editado', entregue:'Entregue'};
+const BRAND_STATUS_LABEL = {prospeccao:'Prospecção', negociacao:'Negociação', ativa:'Ativa', concluida:'Concluída'};
+const BRAND_ORIGEM_LABEL = {prospeccao:'Prospecção', plataforma:'Aplicativo/Plataforma', agencia:'Agência', outro:'Outro'};
+const PAYMENT_STATUS_LABEL = {pendente:'Pendente', pago:'Pago'};
+const PERMUTA_STATUS_LABEL = {a_receber:'A receber', recebido:'Recebido'};
+const EXPENSE_CATEGORY_LABEL = {equipamento:'Equipamento', app:'App/Assinatura', internet:'Internet/Celular', marketing:'Marketing', outro:'Outro'};
+
+function mergedContato(b){
+  let c = (b.contato || '').trim();
+  if(b.email && !c.includes(b.email)) c = c ? c + ' · ' + b.email : b.email;
+  return c;
+}
+
+function showToast(msg, emoji){
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>${emoji||'💗'}</span><span>${escapeHtml(msg)}</span>`;
+  wrap.appendChild(t);
+  setTimeout(()=>t.remove(), 3000);
+}
+
+function fireConfetti(){
+  const emojis = ['🎉','💖','✨','🌸','💫','🎀'];
+  for(let i=0;i<16;i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    const angle = Math.random()*Math.PI*2;
+    const dist = 120 + Math.random()*180;
+    piece.style.setProperty('--dx', Math.cos(angle)*dist+'px');
+    piece.style.setProperty('--dy', Math.sin(angle)*dist - 60 +'px');
+    piece.style.setProperty('--rot', (Math.random()*360-180)+'deg');
+    piece.style.left = (40+Math.random()*20)+'vw';
+    piece.style.top = (30+Math.random()*20)+'vh';
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(), 1200);
+  }
+}
+
+function onSearch(kind, val){
+  searchState[kind] = val.toLowerCase();
+  if(kind==='content') renderContentTable();
+  if(kind==='brand') renderBrandTable();
+  if(kind==='payment') renderFinanceiro();
+  if(kind==='permuta') renderPermutaTable();
+  if(kind==='expense') renderExpenseTable();
+}
+
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.app > section').forEach(s=>s.style.display='none');
+  document.getElementById('tab-'+btn.dataset.tab).style.display='block';
+  renderAll();
+});
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function fillBrandSelect(selectEl){
+  selectEl.innerHTML = '<option value="">Sem marca vinculada</option>' +
+    data.brands.map(b=>`<option value="${b.id}">${escapeHtml(b.nome)}</option>`).join('');
+}
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function openSettingsModal(){
+  document.getElementById('settingsNome').value = data.settings.creatorName || '';
+  document.getElementById('settingsContato').value = data.settings.creatorContact || '';
+  document.getElementById('settingsPix').value = data.settings.creatorPix || '';
+  openModal('settingsModal');
+}
+function saveSettings(){
+  data.settings.creatorName = document.getElementById('settingsNome').value.trim();
+  data.settings.creatorContact = document.getElementById('settingsContato').value.trim();
+  data.settings.creatorPix = document.getElementById('settingsPix').value.trim();
+  saveData();
+  closeModal('settingsModal');
+  showToast('Seus dados foram salvos!','⚙️');
+}
+
+function openContentModal(id){
+  fillBrandSelect(document.getElementById('contentMarca'));
+  document.getElementById('contentId').value = '';
+  document.getElementById('contentTitulo').value = '';
+  document.getElementById('contentMarca').value = '';
+  document.getElementById('contentTipo').value = 'Vídeo';
+  document.getElementById('contentStatus').value = 'planejado';
+  document.getElementById('contentDataGravacao').value = '';
+  document.getElementById('contentDataEntrega').value = '';
+  document.getElementById('contentNotas').value = '';
+  document.getElementById('contentModalTitle').textContent = '✨ Novo conteúdo';
+  if(id){
+    const c = data.contents.find(x=>x.id===id);
+    if(c){
+      document.getElementById('contentId').value = c.id;
+      document.getElementById('contentTitulo').value = c.titulo;
+      document.getElementById('contentMarca').value = c.marcaId||'';
+      document.getElementById('contentTipo').value = c.tipo;
+      document.getElementById('contentStatus').value = c.status;
+      document.getElementById('contentDataGravacao').value = c.dataGravacao||'';
+      document.getElementById('contentDataEntrega').value = c.dataEntrega||'';
+      document.getElementById('contentNotas').value = c.notas||'';
+      document.getElementById('contentModalTitle').textContent = '✏️ Editar conteúdo';
+    }
+  }
+  openModal('contentModal');
+}
+function saveContent(){
+  const id = document.getElementById('contentId').value;
+  const titulo = document.getElementById('contentTitulo').value.trim();
+  if(!titulo){ showToast('Informe um título para o conteúdo.','⚠️'); return; }
+  const prevStatus = id ? (data.contents.find(x=>x.id===id)||{}).status : null;
+  const obj = {
+    id: id || uid(),
+    titulo,
+    marcaId: document.getElementById('contentMarca').value,
+    tipo: document.getElementById('contentTipo').value,
+    status: document.getElementById('contentStatus').value,
+    dataGravacao: document.getElementById('contentDataGravacao').value,
+    dataEntrega: document.getElementById('contentDataEntrega').value,
+    notas: document.getElementById('contentNotas').value.trim(),
+  };
+  if(id){
+    const idx = data.contents.findIndex(x=>x.id===id);
+    data.contents[idx] = obj;
+  } else {
+    data.contents.push(obj);
+  }
+  saveData();
+  closeModal('contentModal');
+  renderAll();
+  if(obj.status==='entregue' && prevStatus!=='entregue'){
+    fireConfetti();
+    showToast('Conteúdo entregue! Arrasou 🎉', '🎉');
+  } else {
+    showToast('Conteúdo salvo com sucesso!');
+  }
+}
+function deleteContent(id){
+  if(!confirm('Excluir este conteúdo?')) return;
+  data.contents = data.contents.filter(x=>x.id!==id);
+  saveData();
+  renderAll();
+  showToast('Conteúdo removido.','🗑️');
+}
+
+function openBrandModal(id){
+  document.getElementById('brandId').value = '';
+  document.getElementById('brandNome').value = '';
+  document.getElementById('brandContato').value = '';
+  document.getElementById('brandOrigem').value = 'prospeccao';
+  document.getElementById('brandStatus').value = 'prospeccao';
+  document.getElementById('brandValor').value = '';
+  document.getElementById('brandEntregaveis').value = '';
+  document.getElementById('brandDireitosUso').value = '';
+  document.getElementById('brandNotas').value = '';
+  document.getElementById('brandModalTitle').textContent = '💌 Nova marca';
+  if(id){
+    const b = data.brands.find(x=>x.id===id);
+    if(b){
+      document.getElementById('brandId').value = b.id;
+      document.getElementById('brandNome').value = b.nome;
+      document.getElementById('brandContato').value = mergedContato(b);
+      document.getElementById('brandOrigem').value = b.origem||'prospeccao';
+      document.getElementById('brandStatus').value = b.status;
+      document.getElementById('brandValor').value = b.valor||'';
+      document.getElementById('brandEntregaveis').value = b.entregaveis||'';
+      document.getElementById('brandDireitosUso').value = b.direitosUso||'';
+      document.getElementById('brandNotas').value = b.notas||'';
+      document.getElementById('brandModalTitle').textContent = '✏️ Editar marca';
+    }
+  }
+  openModal('brandModal');
+}
+function saveBrand(){
+  const id = document.getElementById('brandId').value;
+  const nome = document.getElementById('brandNome').value.trim();
+  if(!nome){ showToast('Informe o nome da marca.','⚠️'); return; }
+  const obj = {
+    id: id || uid(),
+    nome,
+    contato: document.getElementById('brandContato').value.trim(),
+    origem: document.getElementById('brandOrigem').value,
+    status: document.getElementById('brandStatus').value,
+    valor: document.getElementById('brandValor').value,
+    entregaveis: document.getElementById('brandEntregaveis').value.trim(),
+    direitosUso: document.getElementById('brandDireitosUso').value.trim(),
+    notas: document.getElementById('brandNotas').value.trim(),
+  };
+  if(id){
+    const idx = data.brands.findIndex(x=>x.id===id);
+    data.brands[idx] = obj;
+  } else {
+    data.brands.push(obj);
+  }
+  saveData();
+  closeModal('brandModal');
+  renderAll();
+  showToast('Marca salva com sucesso!','💌');
+}
+function deleteBrand(id){
+  if(!confirm('Excluir esta marca? Conteúdos e pagamentos vinculados ficarão sem marca.')) return;
+  data.brands = data.brands.filter(x=>x.id!==id);
+  data.contents.forEach(c=>{ if(c.marcaId===id) c.marcaId=''; });
+  data.payments.forEach(p=>{ if(p.marcaId===id) p.marcaId=''; });
+  data.permutas.forEach(p=>{ if(p.marcaId===id) p.marcaId=''; });
+  saveData();
+  renderAll();
+  showToast('Marca removida.','🗑️');
+}
+
+function openPaymentModal(id){
+  fillBrandSelect(document.getElementById('paymentMarca'));
+  document.getElementById('paymentId').value = '';
+  document.getElementById('paymentMarca').value = '';
+  document.getElementById('paymentValor').value = '';
+  document.getElementById('paymentStatus').value = 'pendente';
+  document.getElementById('paymentDataPrevista').value = '';
+  document.getElementById('paymentDataPago').value = '';
+  document.getElementById('paymentDesc').value = '';
+  document.getElementById('paymentModalTitle').textContent = '💰 Novo pagamento';
+  if(id){
+    const p = data.payments.find(x=>x.id===id);
+    if(p){
+      document.getElementById('paymentId').value = p.id;
+      document.getElementById('paymentMarca').value = p.marcaId||'';
+      document.getElementById('paymentValor').value = p.valor||'';
+      document.getElementById('paymentStatus').value = p.status;
+      document.getElementById('paymentDataPrevista').value = p.dataPrevista||'';
+      document.getElementById('paymentDataPago').value = p.dataPago||'';
+      document.getElementById('paymentDesc').value = p.descricao||'';
+      document.getElementById('paymentModalTitle').textContent = '✏️ Editar pagamento';
+    }
+  }
+  openModal('paymentModal');
+}
+function savePayment(){
+  const id = document.getElementById('paymentId').value;
+  const valor = document.getElementById('paymentValor').value;
+  if(!valor){ showToast('Informe o valor do pagamento.','⚠️'); return; }
+  const prevStatus = id ? (data.payments.find(x=>x.id===id)||{}).status : null;
+  const obj = {
+    id: id || uid(),
+    marcaId: document.getElementById('paymentMarca').value,
+    valor,
+    status: document.getElementById('paymentStatus').value,
+    dataPrevista: document.getElementById('paymentDataPrevista').value,
+    dataPago: document.getElementById('paymentDataPago').value,
+    descricao: document.getElementById('paymentDesc').value.trim(),
+  };
+  if(id){
+    const idx = data.payments.findIndex(x=>x.id===id);
+    data.payments[idx] = obj;
+  } else {
+    data.payments.push(obj);
+  }
+  saveData();
+  closeModal('paymentModal');
+  renderAll();
+  if(obj.status==='pago' && prevStatus!=='pago'){
+    fireConfetti();
+    showToast('Pagamento recebido! 💸', '🎉');
+  } else {
+    showToast('Pagamento salvo com sucesso!');
+  }
+}
+function deletePayment(id){
+  if(!confirm('Excluir este pagamento?')) return;
+  data.payments = data.payments.filter(x=>x.id!==id);
+  saveData();
+  renderAll();
+  showToast('Pagamento removido.','🗑️');
+}
+
+function openPermutaModal(id){
+  fillBrandSelect(document.getElementById('permutaMarca'));
+  document.getElementById('permutaId').value = '';
+  document.getElementById('permutaMarca').value = '';
+  document.getElementById('permutaProduto').value = '';
+  document.getElementById('permutaValor').value = '';
+  document.getElementById('permutaStatus').value = 'a_receber';
+  document.getElementById('permutaData').value = '';
+  document.getElementById('permutaNotas').value = '';
+  document.getElementById('permutaModalTitle').textContent = '🎁 Nova permuta';
+  if(id){
+    const p = data.permutas.find(x=>x.id===id);
+    if(p){
+      document.getElementById('permutaId').value = p.id;
+      document.getElementById('permutaMarca').value = p.marcaId||'';
+      document.getElementById('permutaProduto').value = p.produto;
+      document.getElementById('permutaValor').value = p.valorEstimado||'';
+      document.getElementById('permutaStatus').value = p.status;
+      document.getElementById('permutaData').value = p.data||'';
+      document.getElementById('permutaNotas').value = p.notas||'';
+      document.getElementById('permutaModalTitle').textContent = '✏️ Editar permuta';
+    }
+  }
+  openModal('permutaModal');
+}
+function savePermuta(){
+  const id = document.getElementById('permutaId').value;
+  const produto = document.getElementById('permutaProduto').value.trim();
+  if(!produto){ showToast('Informe o produto recebido.','⚠️'); return; }
+  const obj = {
+    id: id || uid(),
+    marcaId: document.getElementById('permutaMarca').value,
+    produto,
+    valorEstimado: document.getElementById('permutaValor').value,
+    status: document.getElementById('permutaStatus').value,
+    data: document.getElementById('permutaData').value,
+    notas: document.getElementById('permutaNotas').value.trim(),
+  };
+  if(id){
+    const idx = data.permutas.findIndex(x=>x.id===id);
+    data.permutas[idx] = obj;
+  } else {
+    data.permutas.push(obj);
+  }
+  saveData();
+  closeModal('permutaModal');
+  renderAll();
+  showToast('Permuta salva com sucesso!','🎁');
+}
+function deletePermuta(id){
+  if(!confirm('Excluir esta permuta?')) return;
+  data.permutas = data.permutas.filter(x=>x.id!==id);
+  saveData();
+  renderAll();
+  showToast('Permuta removida.','🗑️');
+}
+
+function openExpenseModal(id){
+  document.getElementById('expenseId').value = '';
+  document.getElementById('expenseDesc').value = '';
+  document.getElementById('expenseValor').value = '';
+  document.getElementById('expenseCategoria').value = 'equipamento';
+  document.getElementById('expenseData').value = '';
+  document.getElementById('expenseModalTitle').textContent = '💸 Novo gasto';
+  if(id){
+    const e = data.expenses.find(x=>x.id===id);
+    if(e){
+      document.getElementById('expenseId').value = e.id;
+      document.getElementById('expenseDesc').value = e.descricao;
+      document.getElementById('expenseValor').value = e.valor||'';
+      document.getElementById('expenseCategoria').value = e.categoria||'outro';
+      document.getElementById('expenseData').value = e.data||'';
+      document.getElementById('expenseModalTitle').textContent = '✏️ Editar gasto';
+    }
+  }
+  openModal('expenseModal');
+}
+function saveExpense(){
+  const id = document.getElementById('expenseId').value;
+  const descricao = document.getElementById('expenseDesc').value.trim();
+  const valor = document.getElementById('expenseValor').value;
+  if(!descricao || !valor){ showToast('Informe a descrição e o valor do gasto.','⚠️'); return; }
+  const obj = {
+    id: id || uid(),
+    descricao,
+    valor,
+    categoria: document.getElementById('expenseCategoria').value,
+    data: document.getElementById('expenseData').value,
+  };
+  if(id){
+    const idx = data.expenses.findIndex(x=>x.id===id);
+    data.expenses[idx] = obj;
+  } else {
+    data.expenses.push(obj);
+  }
+  saveData();
+  closeModal('expenseModal');
+  renderAll();
+  showToast('Gasto salvo com sucesso!','💸');
+}
+function deleteExpense(id){
+  if(!confirm('Excluir este gasto?')) return;
+  data.expenses = data.expenses.filter(x=>x.id!==id);
+  saveData();
+  renderAll();
+  showToast('Gasto removido.','🗑️');
+}
+
+function calcPricing(){
+  const base = Number(document.getElementById('calcBase').value) || 0;
+  const qtd = Math.max(1, Number(document.getElementById('calcQtd').value) || 1);
+  const usoMult = Number(document.getElementById('calcUso').value);
+  const excMult = Number(document.getElementById('calcExclusividade').value);
+  const urgMult = Number(document.getElementById('calcUrgencia').value);
+  const revisoesExtras = Math.max(0, Number(document.getElementById('calcRevisoes').value) || 0);
+
+  const subtotal = base * qtd * usoMult * excMult * urgMult;
+  const revisaoValor = revisoesExtras * 30;
+  const total = subtotal + revisaoValor;
+  const min = total * 0.9;
+  const max = total * 1.15;
+
+  data.settings.baseRate = base;
+  saveData();
+
+  document.getElementById('calcResult').innerHTML = `
+    <div class="cards" style="margin-top:18px;">
+      <div class="card"><div class="label">Valor sugerido</div><div class="value">${fmtMoney(total)}</div></div>
+      <div class="card"><div class="label">Faixa de negociação</div><div class="value" style="font-size:17px;">${fmtMoney(min)} – ${fmtMoney(max)}</div></div>
+    </div>
+    <div class="calc-breakdown">
+      <strong>Como chegamos nesse valor:</strong>
+      <p>Base ${fmtMoney(base)} × ${qtd} entregável(is) × direitos de uso (${usoMult}x) × exclusividade (${excMult}x) × urgência (${urgMult}x)${revisoesExtras ? ` + ${revisoesExtras} revisão(ões) extra(s) (${fmtMoney(revisaoValor)})` : ''} = <strong>${fmtMoney(total)}</strong></p>
+    </div>
+  `;
+}
+
+function generateInvoicePDF(paymentId){
+  const p = data.payments.find(x=>x.id===paymentId);
+  if(!p) return;
+  if(!window.jspdf){ showToast('Não foi possível carregar o gerador de PDF (verifique sua conexão).','⚠️'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const s = data.settings;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(18);
+  doc.setTextColor(200,80,130);
+  doc.text('Recibo / Invoice', 20, 25);
+  doc.setTextColor(40,40,40);
+
+  doc.setFontSize(11); doc.setFont('helvetica','normal');
+  doc.text(`Emitido por: ${s.creatorName || '[preencha em Meus Dados]'}`, 20, 38);
+  if(s.creatorContact) doc.text(`Contato: ${s.creatorContact}`, 20, 45);
+  if(s.creatorPix) doc.text(`Chave Pix: ${s.creatorPix}`, 20, 52);
+  doc.text(`Data de emissão: ${fmtDate(new Date().toISOString().slice(0,10))}`, 20, 59);
+
+  doc.setDrawColor(230,150,180);
+  doc.line(20, 65, 190, 65);
+
+  let y = 78;
+  const row = (label, value)=>{
+    doc.setFont('helvetica','bold'); doc.text(label, 20, y);
+    doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(String(value ?? '—'), 115);
+    doc.text(lines, 60, y);
+    y += Math.max(8, lines.length*6.5);
+  };
+  row('Cliente:', brandName(p.marcaId));
+  row('Descrição:', p.descricao || 'Serviços de criação de conteúdo (UGC)');
+  row('Valor:', fmtMoney(p.valor));
+  row('Status:', PAYMENT_STATUS_LABEL[p.status]);
+  if(p.dataPrevista) row('Previsto para:', fmtDate(p.dataPrevista));
+  if(p.dataPago) row('Pago em:', fmtDate(p.dataPago));
+
+  doc.setFontSize(8.5); doc.setTextColor(160);
+  doc.text('Documento gerado automaticamente pelo Bloom UGC.', 20, 280);
+
+  doc.save(`invoice-${brandName(p.marcaId)}-${p.id}.pdf`);
+  showToast('Invoice gerada!','📄');
+}
+
+function generateContractPDF(brandId){
+  const b = data.brands.find(x=>x.id===brandId);
+  if(!b) return;
+  if(!window.jspdf){ showToast('Não foi possível carregar o gerador de PDF (verifique sua conexão).','⚠️'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const s = data.settings;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.setTextColor(200,80,130);
+  doc.text('Acordo de Parceria de Conteúdo (UGC)', 20, 22);
+  doc.setTextColor(40,40,40);
+
+  doc.setFontSize(10.5);
+  let y = 36;
+  const row = (label, value)=>{
+    doc.setFont('helvetica','bold'); doc.text(label, 20, y);
+    doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(String(value || '—'), 115);
+    doc.text(lines, 65, y);
+    y += Math.max(7.5, lines.length*6);
+  };
+  row('Criadora:', s.creatorName || '[preencher em Meus Dados]');
+  row('Contato da criadora:', s.creatorContact);
+  y += 3;
+  row('Marca:', b.nome);
+  row('Contato da marca:', mergedContato(b));
+  y += 5;
+  doc.setDrawColor(230,150,180); doc.line(20, y, 190, y); y += 10;
+
+  row('Entregáveis:', b.entregaveis || 'A combinar');
+  row('Direitos de uso:', b.direitosUso || 'Uso orgânico nas redes da marca, salvo acordo em contrário');
+  row('Valor combinado:', b.valor ? fmtMoney(b.valor) : 'A combinar');
+  if(b.notas) row('Observações:', b.notas);
+
+  y += 8;
+  doc.setFontSize(8.5); doc.setTextColor(150);
+  const disclaimer = doc.splitTextToSize('Este documento é um modelo simplificado gerado automaticamente e não substitui orientação jurídica profissional. Recomenda-se revisão por um(a) advogado(a) antes da assinatura.', 170);
+  doc.text(disclaimer, 20, 275);
+
+  doc.save(`contrato-${b.nome.replace(/\s+/g,'-')}.pdf`);
+  showToast('Contrato gerado!','📃');
+}
+
+function generateStatusPage(brandId){
+  const b = data.brands.find(x=>x.id===brandId);
+  if(!b) return;
+  const items = [...data.contents].filter(c=>c.marcaId===brandId)
+    .sort((a,b2)=>(a.dataEntrega||'9999').localeCompare(b2.dataEntrega||'9999'));
+  const rows = items.map(c=>`
+    <tr><td>${escapeHtml(c.titulo)}</td><td>${escapeHtml(c.tipo)}</td><td>${fmtDate(c.dataEntrega)}</td><td><span class="badge ${c.status}">${CONTENT_STATUS_LABEL[c.status]}</span></td></tr>
+  `).join('');
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Status - ${escapeHtml(b.nome)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Quicksand',sans-serif;background:linear-gradient(160deg,#fff3f7,#f4ecff);color:#4a2f45;margin:0;padding:40px 20px;}
+  .wrap{max-width:680px;margin:0 auto;background:#fff;border-radius:20px;padding:32px;box-shadow:0 20px 50px rgba(214,110,160,.18);}
+  h1{font-family:'Playfair Display',serif;font-size:24px;margin-top:0;background:linear-gradient(90deg,#c66fe0,#ff6f9c);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13.5px;}
+  th{text-align:left;color:#a9899f;font-size:11px;text-transform:uppercase;padding:8px;border-bottom:2px solid #f6dbe7;}
+  td{padding:10px 8px;border-bottom:1px solid #f6dbe7;}
+  .badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .planejado{background:#f2eaff;color:#9c6fe0;} .gravado{background:#e9f1ff;color:#5c8fe0;}
+  .editado{background:#fff5e0;color:#e0a63c;} .entregue{background:#e3faf1;color:#3fbf8f;}
+  .foot{margin-top:22px;color:#a9899f;font-size:11.5px;}
+</style></head><body><div class="wrap">
+<h1>Status de conteúdo — ${escapeHtml(b.nome)}</h1>
+<p>Acompanhamento gerado em ${fmtDate(new Date().toISOString().slice(0,10))} por ${escapeHtml(data.settings.creatorName || 'sua criadora de conteúdo')}.</p>
+<table><thead><tr><th>Conteúdo</th><th>Tipo</th><th>Entrega</th><th>Status</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Nenhum conteúdo cadastrado para esta marca ainda.</td></tr>'}</tbody></table>
+<p class="foot">Página estática gerada pelo Bloom UGC — envie este arquivo por e-mail ou WhatsApp para a marca acompanhar o progresso.</p>
+</div></body></html>`;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `status-${b.nome.replace(/\s+/g,'-')}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Página de status gerada! Envie o arquivo pra marca.','🔗');
+}
+
+function computeReminders(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const overdue = [], dueToday = [], dueSoon = [];
+  data.contents.forEach(c=>{
+    if(c.status==='entregue' || !c.dataEntrega) return;
+    const d = new Date(c.dataEntrega+'T00:00:00');
+    const diffDays = Math.round((d-today)/86400000);
+    if(diffDays<0) overdue.push(c);
+    else if(diffDays===0) dueToday.push(c);
+    else if(diffDays<=3) dueSoon.push(c);
+  });
+  return { overdue, dueToday, dueSoon };
+}
+function renderReminderBanner(){
+  const wrap = document.getElementById('reminderBanner');
+  const { overdue, dueToday, dueSoon } = computeReminders();
+  if(!overdue.length && !dueToday.length && !dueSoon.length){
+    wrap.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+  const parts = [];
+  if(overdue.length) parts.push(`⚠️ ${overdue.length} entrega(s) atrasada(s)`);
+  if(dueToday.length) parts.push(`⏰ ${dueToday.length} vence(m) hoje`);
+  if(dueSoon.length) parts.push(`🔔 ${dueSoon.length} nos próximos 3 dias`);
+  wrap.style.display = 'block';
+  const notifBtn = ('Notification' in window && Notification.permission !== 'granted')
+    ? `<button class="btn small secondary" onclick="enableNotifications()">🔔 Ativar lembretes no navegador</button>` : '';
+  wrap.innerHTML = `<div class="reminder-banner"><span>${parts.join(' · ')}</span>${notifBtn}</div>`;
+}
+function enableNotifications(){
+  if(!('Notification' in window)){ showToast('Seu navegador não suporta notificações.','⚠️'); return; }
+  Notification.requestPermission().then(perm=>{
+    if(perm==='granted'){
+      showToast('Lembretes ativados neste navegador! (funcionam enquanto a aba estiver aberta)','🔔');
+      fireReminderNotifications();
+      if(!reminderIntervalId){
+        reminderIntervalId = setInterval(fireReminderNotifications, 60*60*1000);
+      }
+      renderReminderBanner();
+    } else {
+      showToast('Permissão de notificação negada.','⚠️');
+    }
+  });
+}
+function fireReminderNotifications(){
+  if(Notification.permission !== 'granted') return;
+  const { overdue, dueToday } = computeReminders();
+  if(overdue.length) new Notification('Bloom UGC 💗', { body: `Você tem ${overdue.length} entrega(s) atrasada(s)!` });
+  if(dueToday.length) new Notification('Bloom UGC 💗', { body: `${dueToday.length} entrega(s) vence(m) hoje!` });
+}
+
+function openCollectionModal(id){
+  document.getElementById('collectionPaymentId').value = id;
+  document.getElementById('collectionMsgText').value = '';
+  openModal('collectionModal');
+}
+function daysOverdue(dateStr){
+  if(!dateStr) return 0;
+  const d = new Date(dateStr+'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.max(0, Math.round((today-d)/86400000));
+}
+function generateCollectionMessage(tone){
+  const id = document.getElementById('collectionPaymentId').value;
+  const p = data.payments.find(x=>x.id===id);
+  if(!p) return;
+  const marca = brandName(p.marcaId);
+  const valor = fmtMoney(p.valor);
+  const desc = p.descricao || 'os serviços prestados';
+  const dataPrev = p.dataPrevista ? fmtDate(p.dataPrevista) : null;
+  const atraso = daysOverdue(p.dataPrevista);
+  const nome = (data.settings.creatorName || '').trim();
+  const assinatura = nome ? `\n\n${nome}` : '';
+  let msg = '';
+  if(tone === 'educado'){
+    msg = `Oi, tudo bem? 💗 Passando aqui só pra lembrar sobre o pagamento de ${valor} referente a ${desc}${dataPrev ? `, combinado pra ${dataPrev}` : ''}. Pode me confirmar quando fica bom pra você? Fico no aguardo!${assinatura}`;
+  } else if(tone === 'direto'){
+    msg = `Oi! O pagamento de ${valor} referente a ${desc}${dataPrev ? ` estava previsto pra ${dataPrev}` : ''} e ainda não consta aqui do meu lado. Pode verificar e me dar um retorno, por favor?${assinatura}`;
+  } else if(tone === 'urgente'){
+    msg = `Oi. O pagamento de ${valor} (${desc})${atraso ? ` está em atraso há ${atraso} dia(s)` : ' ainda não foi confirmado'}${dataPrev ? ` (previsto pra ${dataPrev})` : ''}. Preciso que seja regularizado o quanto antes. Qualquer dúvida, estou à disposição.${assinatura}`;
+  }
+  document.getElementById('collectionMsgText').value = msg;
+}
+function copyCollectionMessage(){
+  const text = document.getElementById('collectionMsgText').value;
+  if(!text){ showToast('Escolha um tom pra gerar a mensagem primeiro.','⚠️'); return; }
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('Mensagem copiada! Cola no WhatsApp da marca.','📋');
+  }).catch(()=>{
+    showToast('Não foi possível copiar automaticamente — selecione e copie manualmente.','⚠️');
+  });
+}
+
+function brandName(id){
+  const b = data.brands.find(x=>x.id===id);
+  return b ? b.nome : '—';
+}
+
+function animateValue(el, endValue, isMoney){
+  const duration = 800;
+  const start = performance.now();
+  function step(now){
+    const progress = Math.min((now-start)/duration, 1);
+    const eased = 1 - Math.pow(1-progress, 3);
+    const current = endValue * eased;
+    el.textContent = isMoney ? fmtMoney(current) : Math.round(current);
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function renderDashboard(){
+  renderReminderBanner();
+
+  const totalMarcasAtivas = data.brands.filter(b=>b.status==='ativa').length;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const in7 = new Date(today); in7.setDate(in7.getDate()+7);
+  const entregasSemana = data.contents.filter(c=>{
+    if(!c.dataEntrega) return false;
+    const d = new Date(c.dataEntrega+'T00:00:00');
+    return d>=today && d<=in7 && c.status!=='entregue';
+  }).length;
+  const now = new Date();
+  const receitaMes = data.payments.filter(p=>{
+    if(p.status!=='pago' || !p.dataPago) return false;
+    const d = new Date(p.dataPago+'T00:00:00');
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  }).reduce((s,p)=>s+Number(p.valor||0),0);
+  const pendente = data.payments.filter(p=>p.status==='pendente').reduce((s,p)=>s+Number(p.valor||0),0);
+  const gastosMes = data.expenses.filter(e=>{
+    if(!e.data) return false;
+    const d = new Date(e.data+'T00:00:00');
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  }).reduce((s,e)=>s+Number(e.valor||0),0);
+  const lucroMes = receitaMes - gastosMes;
+
+  document.getElementById('dashCards').innerHTML = `
+    <div class="card"><div class="label">💌 Marcas ativas</div><div class="value" id="cardMarcas">0</div><div class="sub">${data.brands.length} no total</div></div>
+    <div class="card"><div class="label">🗓️ Entregas próx. 7 dias</div><div class="value" id="cardEntregas">0</div><div class="sub">ainda não entregues</div></div>
+    <div class="card"><div class="label">💰 Recebido este mês</div><div class="value" id="cardReceita">R$ 0</div></div>
+    <div class="card"><div class="label">⏳ A receber</div><div class="value" id="cardPendente">R$ 0</div><div class="sub">pagamentos pendentes</div></div>
+    <div class="card"><div class="label">📈 Lucro este mês</div><div class="value" id="cardLucro">R$ 0</div><div class="sub">recebido menos gastos</div></div>
+  `;
+  animateValue(document.getElementById('cardMarcas'), totalMarcasAtivas, false);
+  animateValue(document.getElementById('cardEntregas'), entregasSemana, false);
+  animateValue(document.getElementById('cardReceita'), receitaMes, true);
+  animateValue(document.getElementById('cardPendente'), pendente, true);
+  animateValue(document.getElementById('cardLucro'), lucroMes, true);
+
+  const totalConteudos = data.contents.length;
+  const entreguesCount = data.contents.filter(c=>c.status==='entregue').length;
+  const pct = totalConteudos ? Math.round((entreguesCount/totalConteudos)*100) : 0;
+  setTimeout(()=>{ document.getElementById('progressBar').style.width = pct+'%'; }, 80);
+  document.getElementById('progressLabel').textContent = totalConteudos
+    ? `${entreguesCount} de ${totalConteudos} conteúdos entregues (${pct}%)`
+    : 'Adicione conteúdos no calendário para acompanhar seu progresso ✨';
+
+  const upcoming = [...data.contents]
+    .filter(c=>c.status!=='entregue')
+    .sort((a,b)=>(a.dataEntrega||'9999').localeCompare(b.dataEntrega||'9999'))
+    .slice(0,6);
+  document.getElementById('dashUpcoming').innerHTML = upcoming.length ? `
+    <table><thead><tr><th>Conteúdo</th><th>Marca</th><th>Entrega</th><th>Status</th></tr></thead>
+    <tbody>${upcoming.map(c=>`
+      <tr><td>${escapeHtml(c.titulo)}</td><td>${escapeHtml(brandName(c.marcaId))}</td><td>${fmtDate(c.dataEntrega)}</td>
+      <td><span class="badge ${c.status}">${CONTENT_STATUS_LABEL[c.status]}</span></td></tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">Nenhuma entrega pendente. Você está em dia! 🎉</div>`;
+
+  const pend = [...data.payments].filter(p=>p.status==='pendente')
+    .sort((a,b)=>(a.dataPrevista||'9999').localeCompare(b.dataPrevista||'9999')).slice(0,6);
+  document.getElementById('dashPending').innerHTML = pend.length ? `
+    <table><thead><tr><th>Marca</th><th>Descrição</th><th>Valor</th><th>Previsto</th></tr></thead>
+    <tbody>${pend.map(p=>`
+      <tr><td>${escapeHtml(brandName(p.marcaId))}</td><td>${escapeHtml(p.descricao||'—')}</td><td>${fmtMoney(p.valor)}</td><td>${fmtDate(p.dataPrevista)}</td></tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">Nenhum pagamento pendente. Tudo em dia! 💗</div>`;
+}
+
+function renderContentTable(){
+  let list = [...data.contents].sort((a,b)=>(a.dataEntrega||'9999').localeCompare(b.dataEntrega||'9999'));
+  const q = searchState.content;
+  if(q) list = list.filter(c => c.titulo.toLowerCase().includes(q) || brandName(c.marcaId).toLowerCase().includes(q));
+  document.getElementById('contentTableWrap').innerHTML = list.length ? `
+    <table><thead><tr><th>Título</th><th>Marca</th><th>Tipo</th><th>Gravação</th><th>Entrega</th><th>Status</th><th></th></tr></thead>
+    <tbody>${list.map(c=>`
+      <tr>
+        <td>${escapeHtml(c.titulo)}</td>
+        <td>${escapeHtml(brandName(c.marcaId))}</td>
+        <td>${escapeHtml(c.tipo)}</td>
+        <td>${fmtDate(c.dataGravacao)}</td>
+        <td>${fmtDate(c.dataEntrega)}</td>
+        <td><span class="badge ${c.status}">${CONTENT_STATUS_LABEL[c.status]}</span></td>
+        <td class="row-actions">
+          <button class="icon-btn" onclick="openContentModal('${c.id}')" title="Editar">✏️</button>
+          <button class="icon-btn" onclick="deleteContent('${c.id}')" title="Excluir">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">${q? 'Nenhum resultado encontrado.' : 'Nenhum conteúdo cadastrado ainda. Clique em "+ Novo conteúdo". ✨'}</div>`;
+}
+
+function renderBrandTable(){
+  let list = [...data.brands].sort((a,b)=>a.nome.localeCompare(b.nome));
+  const q = searchState.brand;
+  if(q) list = list.filter(b => b.nome.toLowerCase().includes(q));
+  document.getElementById('brandTableWrap').innerHTML = list.length ? `
+    <table><thead><tr><th>Marca</th><th>Contato</th><th>Origem</th><th>Status</th><th>Valor</th><th></th></tr></thead>
+    <tbody>${list.map(b=>`
+      <tr>
+        <td>${escapeHtml(b.nome)}</td>
+        <td>${escapeHtml(mergedContato(b)||'—')}</td>
+        <td>${b.origem ? `<span class="badge ${b.origem}">${BRAND_ORIGEM_LABEL[b.origem]||b.origem}</span>` : '—'}</td>
+        <td><span class="badge ${b.status}">${BRAND_STATUS_LABEL[b.status]}</span></td>
+        <td>${b.valor? fmtMoney(b.valor):'—'}</td>
+        <td class="row-actions">
+          <button class="icon-btn" onclick="openBrandModal('${b.id}')" title="Editar">✏️</button>
+          <button class="icon-btn" onclick="generateContractPDF('${b.id}')" title="Gerar contrato PDF">📃</button>
+          <button class="icon-btn" onclick="generateStatusPage('${b.id}')" title="Gerar página de status">🔗</button>
+          <button class="icon-btn" onclick="deleteBrand('${b.id}')" title="Excluir">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">${q? 'Nenhum resultado encontrado.' : 'Nenhuma marca cadastrada ainda. Clique em "+ Nova marca". 💌'}</div>`;
+}
+
+function renderPermutaTable(){
+  let list = [...data.permutas].sort((a,b)=>(b.data||'').localeCompare(a.data||''));
+  const q = searchState.permuta;
+  if(q) list = list.filter(p => (p.produto||'').toLowerCase().includes(q) || brandName(p.marcaId).toLowerCase().includes(q));
+  document.getElementById('permutaTableWrap').innerHTML = list.length ? `
+    <table><thead><tr><th>Produto</th><th>Marca</th><th>Valor estimado</th><th>Data</th><th>Status</th><th></th></tr></thead>
+    <tbody>${list.map(p=>`
+      <tr>
+        <td>${escapeHtml(p.produto)}</td>
+        <td>${escapeHtml(brandName(p.marcaId))}</td>
+        <td>${fmtMoney(p.valorEstimado)}</td>
+        <td>${fmtDate(p.data)}</td>
+        <td><span class="badge ${p.status==='recebido'?'pago':'pendente'}">${PERMUTA_STATUS_LABEL[p.status]}</span></td>
+        <td class="row-actions">
+          <button class="icon-btn" onclick="openPermutaModal('${p.id}')" title="Editar">✏️</button>
+          <button class="icon-btn" onclick="deletePermuta('${p.id}')" title="Excluir">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">${q? 'Nenhum resultado encontrado.' : 'Nenhuma permuta cadastrada ainda. 🎁'}</div>`;
+}
+
+function renderExpenseTable(){
+  const totalGastos = data.expenses.reduce((s,e)=>s+Number(e.valor||0),0);
+  const now = new Date();
+  const gastosMes = data.expenses.filter(e=>{
+    if(!e.data) return false;
+    const d = new Date(e.data+'T00:00:00');
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  }).reduce((s,e)=>s+Number(e.valor||0),0);
+
+  document.getElementById('expenseCards').innerHTML = `
+    <div class="card"><div class="label">💸 Total de gastos</div><div class="value">${fmtMoney(totalGastos)}</div></div>
+    <div class="card"><div class="label">📅 Gastos este mês</div><div class="value">${fmtMoney(gastosMes)}</div></div>
+  `;
+
+  let list = [...data.expenses].sort((a,b)=>(b.data||'').localeCompare(a.data||''));
+  const q = searchState.expense;
+  if(q) list = list.filter(e => (e.descricao||'').toLowerCase().includes(q));
+  document.getElementById('expenseTableWrap').innerHTML = list.length ? `
+    <table><thead><tr><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Data</th><th></th></tr></thead>
+    <tbody>${list.map(e=>`
+      <tr>
+        <td>${escapeHtml(e.descricao)}</td>
+        <td>${EXPENSE_CATEGORY_LABEL[e.categoria]||'—'}</td>
+        <td>${fmtMoney(e.valor)}</td>
+        <td>${fmtDate(e.data)}</td>
+        <td class="row-actions">
+          <button class="icon-btn" onclick="openExpenseModal('${e.id}')" title="Editar">✏️</button>
+          <button class="icon-btn" onclick="deleteExpense('${e.id}')" title="Excluir">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">${q? 'Nenhum resultado encontrado.' : 'Nenhum gasto cadastrado ainda.'}</div>`;
+}
+
+function renderFinanceiro(){
+  const totalPago = data.payments.filter(p=>p.status==='pago').reduce((s,p)=>s+Number(p.valor||0),0);
+  const totalPendente = data.payments.filter(p=>p.status==='pendente').reduce((s,p)=>s+Number(p.valor||0),0);
+  const totalGeral = totalPago+totalPendente;
+  document.getElementById('finCards').innerHTML = `
+    <div class="card"><div class="label">✅ Total recebido</div><div class="value" id="cardTotalPago">R$ 0</div></div>
+    <div class="card"><div class="label">⏳ Total pendente</div><div class="value" id="cardTotalPendente">R$ 0</div></div>
+    <div class="card"><div class="label">📊 Faturamento total</div><div class="value" id="cardTotalGeral">R$ 0</div></div>
+  `;
+  animateValue(document.getElementById('cardTotalPago'), totalPago, true);
+  animateValue(document.getElementById('cardTotalPendente'), totalPendente, true);
+  animateValue(document.getElementById('cardTotalGeral'), totalGeral, true);
+
+  let list = [...data.payments].sort((a,b)=>(b.dataPrevista||'').localeCompare(a.dataPrevista||''));
+  const q = searchState.payment;
+  if(q) list = list.filter(p => brandName(p.marcaId).toLowerCase().includes(q) || (p.descricao||'').toLowerCase().includes(q));
+  document.getElementById('paymentTableWrap').innerHTML = list.length ? `
+    <table><thead><tr><th>Marca</th><th>Descrição</th><th>Valor</th><th>Previsto</th><th>Pago em</th><th>Status</th><th></th></tr></thead>
+    <tbody>${list.map(p=>`
+      <tr>
+        <td>${escapeHtml(brandName(p.marcaId))}</td>
+        <td>${escapeHtml(p.descricao||'—')}</td>
+        <td>${fmtMoney(p.valor)}</td>
+        <td>${fmtDate(p.dataPrevista)}</td>
+        <td>${fmtDate(p.dataPago)}</td>
+        <td><span class="badge ${p.status}">${PAYMENT_STATUS_LABEL[p.status]}</span></td>
+        <td class="row-actions">
+          <button class="icon-btn" onclick="openPaymentModal('${p.id}')" title="Editar">✏️</button>
+          <button class="icon-btn" onclick="generateInvoicePDF('${p.id}')" title="Gerar invoice PDF">📄</button>
+          ${p.status==='pendente' ? `<button class="icon-btn" onclick="openCollectionModal('${p.id}')" title="Gerar mensagem de cobrança">💬</button>` : ''}
+          <button class="icon-btn" onclick="deletePayment('${p.id}')" title="Excluir">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>
+  ` : `<div class="empty">${q? 'Nenhum resultado encontrado.' : 'Nenhum pagamento cadastrado ainda. 💰'}</div>`;
+}
+
+function renderAll(){
+  renderDashboard();
+  renderContentTable();
+  renderBrandTable();
+  renderFinanceiro();
+  renderPermutaTable();
+  renderExpenseTable();
+}
+
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bloom-ugc-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup exportado!','⬇️');
+}
+function importBackup(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev=>{
+    try{
+      const imported = JSON.parse(ev.target.result);
+      if(imported.contents && imported.brands && imported.payments){
+        data = {
+          contents: imported.contents || [],
+          brands: imported.brands || [],
+          payments: imported.payments || [],
+          permutas: imported.permutas || [],
+          expenses: imported.expenses || [],
+          settings: { ...DEFAULT_SETTINGS, ...(imported.settings||{}) }
+        };
+        saveData();
+        renderAll();
+        showToast('Backup importado com sucesso!','✨');
+      } else {
+        showToast('Arquivo inválido.','⚠️');
+      }
+    }catch(err){
+      showToast('Erro ao importar arquivo.','⚠️');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(ov=>{
+  ov.addEventListener('click', e=>{ if(e.target===ov) ov.classList.remove('open'); });
+});
+</script>
+</body>
+</html>
