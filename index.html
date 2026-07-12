@@ -719,10 +719,17 @@
   @media (max-width: 640px){
     section{ padding: 60px 0; }
     .hero{ padding-top: calc(var(--altura-cabecalho) + 40px); }
-    .hero-container{ flex-direction: column-reverse; }
+    /* Foto e texto lado a lado também no celular (igual ao computador), só que menores */
+    .hero-container{ flex-wrap: nowrap; align-items: center; gap: 16px; }
+    .hero-texto{ flex: 1 1 56%; min-width: 0; }
+    .hero-texto h1{ font-size: clamp(1.5rem, 7vw, 2.1rem); margin-bottom: 12px; }
+    .hero-frase{ font-size: .9rem; margin-bottom: 18px; }
+    .etiqueta-marcador{ font-size: .7rem; padding: 4px 12px; margin-bottom: 12px; }
+    .hero-texto .botao{ padding: 10px 18px; font-size: .85rem; }
+    .hero-foto{ flex: 0 0 38%; max-width: 150px; margin: 0; }
     .sobre-container{ flex-direction: column; }
     .contato-container{ flex-direction: column; }
-    .adesivo-hero{ width: 86px; height:86px; font-size:.7rem; }
+    .adesivo-hero{ width: 52px; height:52px; font-size:.5rem; top:-8px; right:-8px; padding: 6px; }
   }
 </style>
 </head>
@@ -938,17 +945,22 @@
       { titulo: "Testando o Exolift da Beyoung", categoria: "beleza", videoArquivo: "video-exolift-beyoung.mp4" },
       { titulo: "Testando o queridinho da Hellen Parfum", categoria: "beleza", videoArquivo: "video-perfume-hellen-parfum.mov" },
       { titulo: "Proteção solar que vira hábito", categoria: "beleza", videoArquivo: "video-protetor-solar.mov" },
+      { titulo: "Testando um perfume árabe", categoria: "beleza", videoArquivo: "video-perfume-arabe.mp4" },
       { titulo: "Creatina Nutri Power no meu dia a dia", categoria: "bem-estar", videoArquivo: "video-creatina-nutri-power.mp4" },
       { titulo: "Colágeno que entrou pra rotina", categoria: "bem-estar", videoArquivo: "video-colageno-natural.mov" },
+      { titulo: "Laranja Moro pra desinchar e controlar o apetite", categoria: "bem-estar", videoArquivo: "video-laranja-moro.mp4" },
       { titulo: "Dia a dia com a gata e o cachorro", categoria: "pet", gradiente: "grad-5" },
-      { titulo: "Resenha de petisco natural", categoria: "pet", gradiente: "grad-1" },
+      { titulo: "Resenha do Pipi Maniero", categoria: "pet", videoArquivo: "video-pipi-maniero.mp4" },
       { titulo: "Meu app de organização para UGC", categoria: "apps-sites", gradiente: "grad-2" },
       { titulo: "Minha dieta em dia com o app do Esquadrão Fit", categoria: "apps-sites", videoArquivo: "video-esquadrao-fit-app.mov" },
+      { titulo: "Organizando parcerias com o app da CreHub", categoria: "apps-sites", videoArquivo: "video-crehub-app.mp4" },
       { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mov" },
       { titulo: "Diário com as Cartas Adelaine", categoria: "maternidade", videoArquivo: "video-diario-adelaine.mp4" },
       { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", videoArquivo: "video-cartas-adelaine.mp4" },
-      { titulo: "Hidratação corporal", categoria: "bodycare", gradiente: "grad-1" },
-      { titulo: "Resenha de óleo corporal", categoria: "bodycare", gradiente: "grad-3" }
+      { titulo: "Especial Dia das Mães para uma loja de perfumes", categoria: "maternidade", videoArquivo: "video-dia-das-maes-perfumaria.mp4" },
+      { titulo: "Biscoito infantil Naturallife", categoria: "maternidade", videoArquivo: "video-biscoito-naturallife.mp4" },
+      { titulo: "Banho relaxante com Dove", categoria: "bodycare", videoArquivo: "video-banho-dove.mp4" },
+      { titulo: "Noite Estrelada da Beleza Néctar", categoria: "bodycare", videoArquivo: "video-noite-estrelada.mp4" }
     ],
 
     // EDITE AQUI: serviços oferecidos
