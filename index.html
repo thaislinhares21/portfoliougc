@@ -1,1 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thais Linhares | Criadora de Conteúdo UGC</title>
+<meta name="description" content="Thais Linhares, criadora de conteúdo UGC. Vídeos, reels e fotos autênticas que geram resultado de verdade para marcas e empresas.">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Jost:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+<style>
+  /* ===================== VARIÁVEIS DE COR E BASE ===================== */
+  :root{
+    --creme: #ece3c8;
+    --rosa: #f48aab;
+    --vermelho: #ec4128;
+    --tinta: #2a2622;
+    --branco: #fffaf0;
+    --sombra-dura: 6px 6px 0px var(--tinta);
+    --sombra-dura-pequena: 4px 4px 0px var(--tinta);
+    --borda: 3px solid var(--tinta);
+    --altura-cabecalho: 84px;
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--creme);
+    color: var(--tinta);
+    font-family: 'Jost', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,.logo,.numero-resultado{
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  p{ line-height: 1.6; }
+  ul{ list-style: none; margin:0; padding:0; }
+  a{ color: inherit; text-decoration: none; }
+  img{ max-width: 100%; display:block; }
+
+  section{ scroll-margin-top: var(--altura-cabecalho); }
+
+  /* Marcador de destaque, usado em etiquetas e rabiscos */
+  .fonte-marcador{ font-family: 'Permanent Marker', cursive; }
+
+  /* Foco visível para navegação por teclado */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline: 3px solid var(--vermelho);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Link para pular direto ao conteúdo (acessibilidade via teclado) */
+  .pular-link{
+    position:absolute;
+    left: -999px;
+    top: 0;
+    background: var(--vermelho);
+    color: var(--branco);
+    padding: 12px 20px;
+    z-index: 999;
+    border-radius: 0 0 8px 0;
+    font-weight: 600;
+  }
+  .pular-link:focus{ left: 0; }
+
+  .container{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===================== BOTÕES ===================== */
+  .botao{
+    display:inline-block;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 14px 30px;
+    border-radius: 50px;
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    text-align:center;
+  }
+  .botao:hover, .botao:focus-visible{
+    transform: translate(-2px,-2px);
+    box-shadow: 7px 7px 0px var(--tinta);
+  }
+  .botao:active{
+    transform: translate(1px,1px);
+    box-shadow: 2px 2px 0px var(--tinta);
+  }
+  .botao-primario{ background: var(--vermelho); color: var(--branco); }
+  .botao-secundario{ background: var(--creme); color: var(--tinta); }
+  .botao-whatsapp{ background:#3fae56; color:var(--branco); }
+  .botao-email{ background: var(--rosa); color: var(--tinta); }
+  .botao-instagram{ background: var(--tinta); color: var(--branco); }
+
+  /* ===================== CABEÇALHO / MENU ===================== */
+  .cabecalho{
+    position: fixed;
+    top:0; left:0; right:0;
+    height: var(--altura-cabecalho);
+    background: var(--creme);
+    border-bottom: var(--borda);
+    z-index: 100;
+    display:flex;
+    align-items:center;
+  }
+  .cabecalho-container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-size: 1.5rem;
+    color: var(--tinta);
+  }
+  .logo span{ color: var(--vermelho); }
+
+  .menu-hamburguer{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    width:44px;
+    height:44px;
+    background: var(--creme);
+    border: var(--borda);
+    border-radius: 10px;
+    box-shadow: var(--sombra-dura-pequena);
+    cursor:pointer;
+  }
+  .menu-hamburguer span{
+    display:block;
+    width:22px;
+    height:3px;
+    background: var(--tinta);
+    border-radius: 2px;
+    transition: transform .25s ease, opacity .25s ease;
+  }
+  .menu-hamburguer.aberto span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+  .menu-hamburguer.aberto span:nth-child(2){ opacity:0; }
+  .menu-hamburguer.aberto span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+  .nav ul{
+    display:flex;
+    align-items:center;
+    gap: 28px;
+  }
+  .nav a{
+    font-weight: 500;
+    padding: 6px 2px;
+    border-bottom: 3px solid transparent;
+  }
+  .nav a:hover, .nav a:focus-visible{ border-bottom-color: var(--vermelho); }
+  .nav-cta{
+    background: var(--vermelho) !important;
+    color: var(--branco) !important;
+    padding: 10px 22px !important;
+    border-radius: 50px;
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+  }
+
+  /* ===================== HERO ===================== */
+  .hero{
+    padding: calc(var(--altura-cabecalho) + 60px) 0 80px;
+    position: relative;
+  }
+  .hero-container{
+    display:flex;
+    align-items:center;
+    gap: 50px;
+    flex-wrap: wrap;
+  }
+  .hero-texto{ flex: 1 1 420px; }
+  .etiqueta-marcador{
+    display:inline-block;
+    font-family:'Permanent Marker', cursive;
+    color: var(--vermelho);
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    padding: 6px 18px;
+    border-radius: 50px;
+    transform: rotate(-4deg);
+    margin-bottom: 22px;
+    font-size: .95rem;
+  }
+  .hero-texto h1{
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  .hero-frase{
+    font-size: 1.2rem;
+    max-width: 520px;
+    margin-bottom: 32px;
+  }
+  .foto-espaco{
+    position: relative;
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    border-radius: 24px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .foto-iniciais{
+    font-family:'Permanent Marker', cursive;
+    color: rgba(255,255,255,.55);
+    font-size: 5rem;
+  }
+
+  /* Gradientes que simulam fotos/vídeos reais nos blocos de portfólio e retratos.
+     Para usar uma foto de verdade, troque a div (classe foto-espaco + grad-X) por
+     um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
+  .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
+  .grad-1{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
+  .grad-2{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
+  .grad-3{ background: linear-gradient(150deg, var(--creme), var(--rosa)); }
+  .grad-4{ background: linear-gradient(160deg, var(--tinta), var(--rosa)); }
+  .grad-5{ background: linear-gradient(200deg, var(--rosa), var(--creme)); }
+  .hero-foto{
+    flex: 1 1 320px;
+    aspect-ratio: 4/5;
+    max-width: 420px;
+    margin: 0 auto;
+    transform: rotate(2deg);
+  }
+
+  /* Adesivos decorativos */
+  .adesivo{
+    position:absolute;
+    font-family:'Permanent Marker', cursive;
+    background: var(--rosa);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color: var(--tinta);
+    padding: 14px;
+  }
+  .adesivo-hero{
+    top: 8px;
+    right: 0;
+    width: 110px;
+    height:110px;
+    font-size: .85rem;
+    transform: rotate(10deg);
+  }
+
+  /* ===================== FAIXA DE MARCAS ===================== */
+  .marcas-faixa{
+    background: var(--tinta);
+    border-top: var(--borda);
+    border-bottom: var(--borda);
+    padding: 22px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marcas-track{
+    display:inline-flex;
+    gap: 60px;
+    animation: rolarMarcas 22s linear infinite;
+  }
+  .marcas-track span{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size: 1.3rem;
+    color: var(--creme);
+    opacity: .85;
+    white-space: nowrap;
+  }
+  @keyframes rolarMarcas{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+
+  /* ===================== TÍTULOS DE SEÇÃO ===================== */
+  .titulo-secao{
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    text-align:center;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  .titulo-secao::after{
+    content:"";
+    display:block;
+    width: 70px;
+    height: 6px;
+    background: var(--vermelho);
+    margin: 14px auto 0;
+    border-radius: 10px;
+  }
+
+  section{ padding: 90px 0; }
+
+  /* ===================== SOBRE ===================== */
+  .sobre-container{
+    display:flex;
+    align-items:center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  .sobre-foto{
+    flex: 1 1 320px;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    margin: 0 auto;
+    transform: rotate(-2deg);
+  }
+  .sobre-texto{ flex: 1 1 420px; }
+  .sobre-texto h2{ font-size: 2rem; margin-bottom: 20px; }
+  .sobre-texto p{ font-size: 1.08rem; margin-bottom: 16px; }
+
+  /* ===================== PORTFÓLIO ===================== */
+  .filtros{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 14px;
+    margin-bottom: 46px;
+  }
+  .filtro-botao{
+    font-family:'Fredoka', sans-serif;
+    font-weight: 500;
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    padding: 10px 22px;
+    border-radius: 50px;
+    cursor:pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .filtro-botao:hover{ transform: translate(-2px,-2px); }
+  .filtro-botao.ativo{
+    background: var(--vermelho);
+    color: var(--branco);
+  }
+
+  .portfolio-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+  }
+  .portfolio-item{
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    border-radius: 20px;
+    overflow:hidden;
+    transition: transform .2s ease;
+  }
+  .portfolio-item:hover{ transform: translateY(-6px); }
+  .portfolio-item .foto-espaco{
+    border:none;
+    box-shadow:none;
+    border-radius:0;
+    aspect-ratio: 4/5;
+  }
+  .portfolio-item .legenda{
+    padding: 16px 18px;
+    background: var(--branco);
+    border-top: var(--borda);
+  }
+  .portfolio-item .legenda strong{
+    display:block;
+    font-family:'Fredoka', sans-serif;
+    margin-bottom: 4px;
+  }
+  .portfolio-item .legenda span{
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--vermelho);
+    font-weight: 600;
+  }
+  .portfolio-item.escondido{ display:none; }
+
+  /* ===================== SERVIÇOS ===================== */
+  .servicos-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+  .cartao-servico{
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    border-radius: 20px;
+    padding: 30px 26px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cartao-servico:hover{
+    transform: translate(-3px,-3px);
+    box-shadow: 8px 8px 0px var(--tinta);
+  }
+  .cartao-servico h3{
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    color: var(--vermelho);
+  }
+
+  /* ===================== RESULTADOS ===================== */
+  .resultados{ background: var(--tinta); color: var(--creme); }
+  .resultados .titulo-secao{ color: var(--creme); }
+  .resultados .titulo-secao::after{ background: var(--rosa); }
+  .resultados-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align:center;
+  }
+  .cartao-resultado{
+    background: rgba(236,227,200,0.06);
+    border: 3px solid var(--rosa);
+    border-radius: 20px;
+    padding: 34px 18px;
+  }
+  .numero-resultado{
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    color: var(--rosa);
+    margin-bottom: 8px;
+  }
+  .rotulo-resultado{ font-size: .95rem; opacity: .9; }
+
+  /* ===================== DEPOIMENTOS ===================== */
+  .depoimentos-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+  .cartao-depoimento{
+    background: var(--rosa);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    border-radius: 20px;
+    padding: 28px 24px;
+  }
+  .cartao-depoimento p{ font-style: normal; margin-bottom: 18px; }
+  .cartao-depoimento strong{ display:block; font-family:'Fredoka', sans-serif; }
+  .cartao-depoimento .empresa-depoimento{ font-size: .85rem; opacity: .8; }
+
+  /* ===================== CONTATO ===================== */
+  .contato-container{
+    display:flex;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  .contato-info{ flex: 1 1 380px; }
+  .contato-info h2{ font-size: 2rem; margin-bottom: 18px; }
+  .contato-botoes{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+  }
+  .contato-form{
+    flex: 1 1 380px;
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    border-radius: 20px;
+    padding: 30px;
+    display:flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .campo{ display:flex; flex-direction:column; gap:6px; }
+  .campo label{ font-weight: 600; font-size: .95rem; }
+  .campo input, .campo textarea{
+    font-family:'Jost', sans-serif;
+    font-size: 1rem;
+    padding: 12px 14px;
+    border: var(--borda);
+    border-radius: 12px;
+    background: var(--creme);
+    color: var(--tinta);
+    resize: vertical;
+  }
+  .mensagem-confirmacao{
+    background: #dff2e1;
+    border: 3px solid #3fae56;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 600;
+    text-align:center;
+  }
+  .mensagem-confirmacao[hidden]{ display:none; }
+
+  /* ===================== RODAPÉ ===================== */
+  .rodape{
+    background: var(--tinta);
+    color: var(--creme);
+    text-align:center;
+    padding: 46px 24px 30px;
+    border-top: var(--borda);
+  }
+  .rodape-nome{
+    font-family:'Fredoka', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+  .rodape-redes{
+    display:flex;
+    justify-content:center;
+    gap: 22px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .rodape-redes a{
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+  }
+  .rodape-redes a:hover, .rodape-redes a:focus-visible{ border-bottom-color: var(--rosa); }
+  .rodape-copy{ font-size: .85rem; opacity: .75; }
+
+  /* ===================== ANIMAÇÃO DE ENTRADA (SCROLL) ===================== */
+  .reveal{
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visivel{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .marcas-track{ animation: none; }
+    html{ scroll-behavior: auto; }
+  }
+
+  /* ===================== RESPONSIVO ===================== */
+  @media (max-width: 900px){
+    .menu-hamburguer{ display:flex; }
+    .nav{
+      position: fixed;
+      top: var(--altura-cabecalho);
+      left:0; right:0;
+      background: var(--creme);
+      border-bottom: var(--borda);
+      max-height: 0;
+      overflow:hidden;
+      transition: max-height .3s ease;
+    }
+    .nav.aberto{ max-height: 420px; }
+    .nav ul{
+      flex-direction: column;
+      align-items: stretch;
+      padding: 10px 24px 26px;
+      gap: 4px;
+    }
+    .nav a{
+      display:block;
+      padding: 12px 4px;
+      border-bottom: 1px solid rgba(42,38,34,0.1);
+    }
+    .nav-cta{
+      margin-top: 10px;
+      text-align:center;
+    }
+  }
+
+  @media (max-width: 640px){
+    section{ padding: 60px 0; }
+    .hero{ padding-top: calc(var(--altura-cabecalho) + 40px); }
+    .hero-container{ flex-direction: column-reverse; }
+    .sobre-container{ flex-direction: column; }
+    .contato-container{ flex-direction: column; }
+    .adesivo-hero{ width: 86px; height:86px; font-size:.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#conteudo-principal" class="pular-link">Pular para o conteúdo</a>
+
+<!-- ===================== CABEÇALHO / MENU ===================== -->
+<header class="cabecalho" id="topo">
+  <div class="cabecalho-container">
+    <a href="#topo" class="logo">Thais<span>UGC</span></a>
+    <button class="menu-hamburguer" id="botaoMenu" aria-expanded="false" aria-controls="menuNav" aria-label="Abrir menu de navegação">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" id="menuNav" aria-label="Navegação principal">
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+        <li><a href="#contato" class="nav-cta">Fale comigo</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo-principal">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <div class="container hero-container">
+      <div class="hero-texto reveal">
+        <p class="etiqueta-marcador" id="heroEtiqueta">Criadora UGC</p>
+        <h1 id="heroNome">Thais Linhares</h1>
+        <p class="hero-frase" id="heroFrase">Conteúdo autêntico que vira resultado de verdade para a sua marca.</p>
+        <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
+      </div>
+      <div class="foto-espaco hero-foto reveal" role="img" aria-label="Foto de Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
+        <!-- Para trocar por uma foto real: substitua esta div por <img src="sua-foto.jpg" alt="Thais Linhares"> mantendo a classe "hero-foto" -->
+        <span class="foto-iniciais">TL</span>
+        <div class="adesivo adesivo-hero">100% autêntico</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAIXA DE MARCAS ===================== -->
+  <section class="marcas-faixa" aria-label="Marcas que já confiaram no trabalho de Thais Linhares">
+    <div class="marcas-track" id="marcasTrack"></div>
+  </section>
+
+  <!-- ===================== SOBRE ===================== -->
+  <section class="sobre" id="sobre">
+    <div class="container sobre-container">
+      <div class="foto-espaco sobre-foto reveal" role="img" aria-label="Foto de Thais Linhares em seu dia a dia criando conteúdo">
+        <!-- Para trocar por uma foto real: substitua esta div por <img src="sua-foto-sobre.jpg" alt="Thais Linhares criando conteúdo"> mantendo a classe "sobre-foto" -->
+        <span class="foto-iniciais">TL</span>
+      </div>
+      <div class="sobre-texto reveal">
+        <h2 id="sobreTitulo">Sobre mim</h2>
+        <p id="sobreTexto"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PORTFÓLIO ===================== -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Portfólio</h2>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar portfólio por nicho"></div>
+      <div class="portfolio-grade" id="portfolioGrade"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVIÇOS ===================== -->
+  <section class="servicos" id="servicos">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Serviços</h2>
+      <div class="servicos-grade" id="servicosGrade"></div>
+    </div>
+  </section>
+
+  <!-- ===================== RESULTADOS ===================== -->
+  <section class="resultados" id="resultados">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Resultados</h2>
+      <div class="resultados-grade" id="resultadosGrade"></div>
+    </div>
+  </section>
+
+  <!-- ===================== DEPOIMENTOS ===================== -->
+  <section class="depoimentos" id="depoimentos">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Depoimentos</h2>
+      <div class="depoimentos-grade" id="depoimentosGrade"></div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTATO ===================== -->
+  <section class="contato" id="contato">
+    <div class="container contato-container">
+      <div class="contato-info reveal">
+        <h2>Vamos trabalhar juntas?</h2>
+        <p>Preencha o formulário ao lado ou chame direto em um dos canais abaixo. Respondo rápido e adoro entender o que a sua marca precisa.</p>
+        <div class="contato-botoes">
+          <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="botao botao-email" id="botaoEmail">E-mail</a>
+          <a class="botao botao-instagram" id="botaoInstagram" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <form class="contato-form reveal" id="formContato" novalidate>
+        <div class="campo">
+          <label for="campoNome">Nome</label>
+          <input type="text" id="campoNome" name="nome" required>
+        </div>
+        <div class="campo">
+          <label for="campoEmail">E-mail</label>
+          <input type="email" id="campoEmail" name="email" required>
+        </div>
+        <div class="campo">
+          <label for="campoMensagem">Mensagem</label>
+          <textarea id="campoMensagem" name="mensagem" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="botao botao-primario">Enviar mensagem</button>
+        <p class="mensagem-confirmacao" id="mensagemConfirmacao" role="status" hidden>Obrigada pelo contato! Vamos abrir seu aplicativo de e-mail para finalizar o envio.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <p class="rodape-nome" id="rodapeNome">Thais Linhares</p>
+  <div class="rodape-redes" id="rodapeRedes"></div>
+  <p class="rodape-copy" id="rodapeCopy"></p>
+</footer>
+
+<script>
+  // ======================================================================
+  // CONFIGURAÇÃO GERAL DO SITE
+  // Todo o conteúdo do site está aqui. Edite os textos abaixo à vontade,
+  // sem precisar mexer no restante do código.
+  // ======================================================================
+  const config = {
+
+    // EDITE AQUI: nome e identificação principal
+    nome: "Thais Linhares",
+
+    // EDITE AQUI: dados de contato
+    contato: {
+      email: "thaisoliveira.linhares@hotmail.com",
+      whatsappNumero: "5569992833724",
+      whatsappExibicao: "+55 69 99283-3724",
+      instagramUsuario: "@thaisugcbr",
+      instagramUrl: "https://www.instagram.com/thaisugcbr"
+    },
+
+    // EDITE AQUI: textos da seção Hero (primeira dobra da página)
+    hero: {
+      etiqueta: "Criadora UGC",
+      frase: "Conteúdo autêntico que vira resultado de verdade para a sua marca.",
+      botao: "Fale comigo"
+    },
+
+    // EDITE AQUI: nomes das marcas com quem Thais já trabalhou (troque pelos nomes reais)
+    marcas: [
+      "Marca de Beleza",
+      "Marca Fitness",
+      "Marca Gourmet",
+      "Marca de Moda",
+      "Marca de Viagem",
+      "Marca Pet",
+      "Marca de Casa e Decoração"
+    ],
+
+    // EDITE AQUI: texto da seção Sobre
+    sobre: {
+      titulo: "Sobre mim",
+      texto: "Sou a Thais, criadora de conteúdo UGC apaixonada por contar histórias reais sobre produtos e marcas. Gravo do jeito que uma cliente de verdade gravaria, com autenticidade, boa energia e atenção aos detalhes que fazem a diferença no resultado final. Já ajudei marcas de diversos nichos a se conectarem com o público de forma genuína, gerando confiança, engajamento e vendas. Cada entrega é pensada para funcionar tanto nas redes sociais da marca quanto em campanhas de anúncios pagos."
+    },
+
+    // EDITE AQUI: categorias usadas no filtro do portfólio
+    categorias: [
+      { chave: "todos", rotulo: "Todos" },
+      { chave: "beleza", rotulo: "Beleza" },
+      { chave: "moda", rotulo: "Moda" },
+      { chave: "comida", rotulo: "Comida" },
+      { chave: "fitness", rotulo: "Fitness" },
+      { chave: "viagem", rotulo: "Viagem" }
+    ],
+
+    // EDITE AQUI: trabalhos do portfólio (cada bloco em gradiente simula uma foto ou vídeo)
+    portfolio: [
+      { titulo: "Rotina de skincare", categoria: "beleza", gradiente: "grad-1" },
+      { titulo: "Resenha de batom em gel", categoria: "beleza", gradiente: "grad-3" },
+      { titulo: "Look de festa", categoria: "moda", gradiente: "grad-2" },
+      { titulo: "Try on de verão", categoria: "moda", gradiente: "grad-4" },
+      { titulo: "Receita fit em 5 minutos", categoria: "comida", gradiente: "grad-5" },
+      { titulo: "Unboxing de kit gourmet", categoria: "comida", gradiente: "grad-1" },
+      { titulo: "Treino em casa", categoria: "fitness", gradiente: "grad-2" },
+      { titulo: "Review de suplemento", categoria: "fitness", gradiente: "grad-3" },
+      { titulo: "Diário de viagem", categoria: "viagem", gradiente: "grad-4" },
+      { titulo: "Dicas de bagagem de mão", categoria: "viagem", gradiente: "grad-5" }
+    ],
+
+    // EDITE AQUI: serviços oferecidos
+    servicos: [
+      { titulo: "Vídeo UGC", descricao: "Vídeos verticais autênticos, gravados como uma cliente real usando o produto, prontos para anúncios e redes sociais." },
+      { titulo: "Reels para Redes Sociais", descricao: "Roteiro, gravação e edição de reels pensados para prender atenção nos primeiros segundos e gerar engajamento." },
+      { titulo: "Fotos de Produto", descricao: "Fotos com boa luz e composição para catálogo, site e redes sociais da marca." },
+      { titulo: "Unboxing e Review", descricao: "Abertura de produto com reação genuína e opinião sincera, gerando confiança em quem assiste." },
+      { titulo: "Depoimento em Vídeo", descricao: "Vídeo estruturado para reforçar a credibilidade da marca com prova social real." },
+      { titulo: "Conteúdo para Anúncios", descricao: "Vídeos pensados para performance em campanhas pagas, com ganchos testados nas redes sociais." }
+    ],
+
+    // EDITE AQUI: números de resultado (os contadores animam sozinhos ao aparecer na tela)
+    resultados: [
+      { numero: 45, sufixo: "mil+", rotulo: "Comunidade engajada" },
+      { numero: 8, sufixo: "mi+", rotulo: "Visualizações geradas em campanhas" },
+      { numero: 60, sufixo: "+", rotulo: "Marcas atendidas" },
+      { numero: 12, sufixo: "%", rotulo: "Taxa média de engajamento" }
+    ],
+
+    // EDITE AQUI: depoimentos de clientes e marcas (troque pelos depoimentos reais)
+    depoimentos: [
+      { texto: "O conteúdo entregue teve um desempenho muito acima da nossa média em anúncios. Profissionalismo do início ao fim.", nome: "Responsável de Marketing", empresa: "Marca de Beleza" },
+      { texto: "Comunicação fácil, entrega no prazo e um vídeo que realmente parecia depoimento de cliente de verdade.", nome: "Gerente de Conteúdo", empresa: "Marca Fitness" },
+      { texto: "Contratamos para um lançamento e o resultado em engajamento superou as expectativas do time.", nome: "Coordenadora de Redes Sociais", empresa: "Marca de Moda" },
+      { texto: "Já fizemos várias campanhas juntas e o padrão de qualidade se mantém sempre alto.", nome: "Diretor de Marca", empresa: "Marca Gourmet" }
+    ]
+  };
+
+  // ======================================================================
+  // A partir daqui é só a lógica que monta o site com os dados acima.
+  // Não precisa editar nada abaixo desta linha.
+  // ======================================================================
+
+  document.addEventListener("DOMContentLoaded", () => {
+    preencherTextosFixos();
+    montarMarcas();
+    montarFiltrosEPortfolio();
+    montarServicos();
+    montarResultados();
+    montarDepoimentos();
+    montarContatoERodape();
+    configurarMenuMobile();
+    configurarRolagemSuave();
+    configurarAnimacoesDeEntrada();
+    configurarContadores();
+    configurarFormulario();
+  });
+
+  function preencherTextosFixos(){
+    document.getElementById("heroEtiqueta").textContent = config.hero.etiqueta;
+    document.getElementById("heroNome").textContent = config.nome;
+    document.getElementById("heroFrase").textContent = config.hero.frase;
+    document.getElementById("heroBotao").textContent = config.hero.botao;
+    document.getElementById("sobreTitulo").textContent = config.sobre.titulo;
+    document.getElementById("sobreTexto").textContent = config.sobre.texto;
+    document.title = config.nome + " | Criadora de Conteúdo UGC";
+  }
+
+  function montarMarcas(){
+    const track = document.getElementById("marcasTrack");
+    // duplica a lista para o efeito de rolagem contínua ficar sem emenda visível
+    const listaDupla = [...config.marcas, ...config.marcas];
+    track.innerHTML = listaDupla.map(marca => `<span>${marca}</span>`).join("");
+  }
+
+  function montarFiltrosEPortfolio(){
+    const filtrosEl = document.getElementById("filtros");
+    const grade = document.getElementById("portfolioGrade");
+
+    filtrosEl.innerHTML = config.categorias.map((cat, indice) => `
+      <button class="filtro-botao ${indice === 0 ? "ativo" : ""}" data-filtro="${cat.chave}" aria-pressed="${indice === 0}">
+        ${cat.rotulo}
+      </button>
+    `).join("");
+
+    grade.innerHTML = config.portfolio.map(item => `
+      <article class="portfolio-item reveal" data-categoria="${item.categoria}">
+        <div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
+          <!-- Para trocar por uma foto ou vídeo real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
+        </div>
+        <div class="legenda">
+          <strong>${item.titulo}</strong>
+          <span>${item.categoria}</span>
+        </div>
+      </article>
+    `).join("");
+
+    filtrosEl.querySelectorAll(".filtro-botao").forEach(botao => {
+      botao.addEventListener("click", () => {
+        filtrosEl.querySelectorAll(".filtro-botao").forEach(b => {
+          b.classList.remove("ativo");
+          b.setAttribute("aria-pressed", "false");
+        });
+        botao.classList.add("ativo");
+        botao.setAttribute("aria-pressed", "true");
+
+        const filtro = botao.dataset.filtro;
+        grade.querySelectorAll(".portfolio-item").forEach(item => {
+          const mostrar = filtro === "todos" || item.dataset.categoria === filtro;
+          item.classList.toggle("escondido", !mostrar);
+        });
+      });
+    });
+  }
+
+  function montarServicos(){
+    const grade = document.getElementById("servicosGrade");
+    grade.innerHTML = config.servicos.map(servico => `
+      <div class="cartao-servico reveal">
+        <h3>${servico.titulo}</h3>
+        <p>${servico.descricao}</p>
+      </div>
+    `).join("");
+  }
+
+  function montarResultados(){
+    const grade = document.getElementById("resultadosGrade");
+    grade.innerHTML = config.resultados.map(resultado => `
+      <div class="cartao-resultado reveal">
+        <p class="numero-resultado" data-numero-final="${resultado.numero}" data-sufixo="${resultado.sufixo}">0${resultado.sufixo}</p>
+        <p class="rotulo-resultado">${resultado.rotulo}</p>
+      </div>
+    `).join("");
+  }
+
+  function montarDepoimentos(){
+    const grade = document.getElementById("depoimentosGrade");
+    grade.innerHTML = config.depoimentos.map(depoimento => `
+      <div class="cartao-depoimento reveal">
+        <p>"${depoimento.texto}"</p>
+        <strong>${depoimento.nome}</strong>
+        <span class="empresa-depoimento">${depoimento.empresa}</span>
+      </div>
+    `).join("");
+  }
+
+  function montarContatoERodape(){
+    const whatsappLink = `https://wa.me/${config.contato.whatsappNumero}?text=${encodeURIComponent("Olá, Thais! Vi seu portfólio e quero conversar sobre uma parceria.")}`;
+    const emailLink = `mailto:${config.contato.email}`;
+
+    document.getElementById("botaoWhatsapp").href = whatsappLink;
+    document.getElementById("botaoWhatsapp").textContent = "WhatsApp";
+    document.getElementById("botaoEmail").href = emailLink;
+    document.getElementById("botaoEmail").textContent = "E-mail";
+    document.getElementById("botaoInstagram").href = config.contato.instagramUrl;
+    document.getElementById("botaoInstagram").textContent = "Instagram";
+
+    document.getElementById("rodapeNome").textContent = config.nome;
+    document.getElementById("rodapeRedes").innerHTML = `
+      <a href="${config.contato.instagramUrl}" target="_blank" rel="noopener">${config.contato.instagramUsuario}</a>
+      <a href="${whatsappLink}" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="${emailLink}">${config.contato.email}</a>
+    `;
+    document.getElementById("rodapeCopy").textContent = `© ${new Date().getFullYear()} ${config.nome}. Todos os direitos reservados.`;
+  }
+
+  function configurarMenuMobile(){
+    const botaoMenu = document.getElementById("botaoMenu");
+    const menuNav = document.getElementById("menuNav");
+
+    botaoMenu.addEventListener("click", () => {
+      const abrindo = !menuNav.classList.contains("aberto");
+      menuNav.classList.toggle("aberto", abrindo);
+      botaoMenu.classList.toggle("aberto", abrindo);
+      botaoMenu.setAttribute("aria-expanded", String(abrindo));
+    });
+
+    menuNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        menuNav.classList.remove("aberto");
+        botaoMenu.classList.remove("aberto");
+        botaoMenu.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  function configurarRolagemSuave(){
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener("click", (evento) => {
+        const destino = document.querySelector(link.getAttribute("href"));
+        if (destino){
+          evento.preventDefault();
+          destino.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  }
+
+  function configurarAnimacoesDeEntrada(){
+    const elementos = document.querySelectorAll(".reveal");
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach(entrada => {
+        if (entrada.isIntersecting){
+          entrada.target.classList.add("visivel");
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    elementos.forEach(el => observador.observe(el));
+  }
+
+  function configurarContadores(){
+    const numeros = document.querySelectorAll(".numero-resultado");
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach(entrada => {
+        if (entrada.isIntersecting){
+          animarContador(entrada.target);
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    numeros.forEach(numero => observador.observe(numero));
+  }
+
+  function animarContador(elemento){
+    const alvo = parseInt(elemento.dataset.numeroFinal, 10);
+    const sufixo = elemento.dataset.sufixo || "";
+    const duracao = 1500;
+    const inicio = performance.now();
+
+    function passo(agora){
+      const progresso = Math.min((agora - inicio) / duracao, 1);
+      const valorAtual = Math.floor(progresso * alvo);
+      elemento.textContent = valorAtual + sufixo;
+      if (progresso < 1){
+        requestAnimationFrame(passo);
+      } else {
+        elemento.textContent = alvo + sufixo;
+      }
+    }
+    requestAnimationFrame(passo);
+  }
+
+  function configurarFormulario(){
+    const form = document.getElementById("formContato");
+    const mensagemConfirmacao = document.getElementById("mensagemConfirmacao");
+
+    form.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+
+      const nome = document.getElementById("campoNome").value.trim();
+      const email = document.getElementById("campoEmail").value.trim();
+      const mensagem = document.getElementById("campoMensagem").value.trim();
+
+      const assunto = encodeURIComponent(`Contato via site - ${nome}`);
+      const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`);
+      const linkMailto = `mailto:${config.contato.email}?subject=${assunto}&body=${corpo}`;
+
+      window.location.href = linkMailto;
+
+      mensagemConfirmacao.hidden = false;
+      form.reset();
+    });
+  }
+</script>
+</body>
+</html>
