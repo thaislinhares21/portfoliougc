@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Painel | meu.painel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Supabase via CDN, depois a lógica de autenticação compartilhada -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/js/auth.js"></script>
+</head>
+<!-- O body começa invisível: só é revelado depois que a guarda de sessão confirmar o login -->
+<body style="visibility: hidden;">
+
+  <div class="fundo-escurecido" id="fundo-escurecido"></div>
+
+  <div class="painel">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">meu<span class="ponto">.</span>painel</div>
+
+      <button class="nav-item ativo" data-tab="principal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+        Menu Principal
+      </button>
+
+      <button class="nav-item" data-tab="portfolio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15v3"/><path d="M12 10v8"/><path d="M17 6v12"/></svg>
+        Portfólio
+      </button>
+
+      <div class="sidebar-rodape">
+        <div class="usuario-email" id="usuario-email">carregando...</div>
+        <button id="botao-sair" class="botao botao-secundario botao-largo">Sair</button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="conteudo">
+      <div class="topo-conteudo">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <button class="botao-menu-mobile" id="botao-menu-mobile" aria-label="Abrir menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </button>
+          <h1 id="titulo-pagina">Menu Principal</h1>
+        </div>
+
+        <div class="filtro-periodo" id="filtro-periodo">
+          <button data-periodo="tudo" class="ativo">Tudo</button>
+          <button data-periodo="7d">7d</button>
+          <button data-periodo="30d">30d</button>
+          <button data-periodo="90d">90d</button>
+        </div>
+      </div>
+
+      <!-- Aba: Menu Principal -->
+      <section id="tab-principal">
+        <p class="saudacao">Olá! Aqui estão os números do seu <strong>portfólio</strong>.</p>
+
+        <div class="grade-numeros">
+          <div class="cartao cartao-numero destaque">
+            <div class="rotulo">Visitas</div>
+            <div class="valor" id="num-visitas">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Visitantes únicos</div>
+            <div class="valor" id="num-visitantes">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Cliques em botões</div>
+            <div class="valor" id="num-cliques">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Vídeos vistos</div>
+            <div class="valor" id="num-videos">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Mensagens</div>
+            <div class="valor" id="num-mensagens">0</div>
+          </div>
+        </div>
+
+        <div class="cartao cartao-contato">
+          <div class="texto">
+            <strong>Clicaram para entrar em contato</strong>
+            <small>Conta quem clicou em WhatsApp, e-mail, Instagram ou no botão de enviar o formulário.</small>
+          </div>
+          <div class="valor" id="num-contato">0</div>
+        </div>
+
+        <div class="cartao grafico-barras">
+          <h3>Visitas nos últimos 14 dias</h3>
+          <div class="grafico-linha" id="grafico-14-dias"></div>
+        </div>
+      </section>
+
+      <!-- Aba: Portfólio -->
+      <section id="tab-portfolio" class="oculto">
+        <div class="cartao bloco">
+          <h3>Vídeos mais vistos</h3>
+          <div id="lista-videos"></div>
+        </div>
+
+        <div class="cartao bloco">
+          <h3>Botões mais clicados</h3>
+          <div id="lista-botoes"></div>
+        </div>
+
+        <div class="cartao bloco">
+          <h3>Cliques para contato</h3>
+          <div id="lista-contato-canais"></div>
+        </div>
+
+        <div class="cartao bloco">
+          <h3>Mensagens recebidas</h3>
+          <div id="lista-mensagens"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/painel.js"></script>
+</body>
+</html>

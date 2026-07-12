@@ -1,0 +1,803 @@
+/* ========================================================================
+   Design system do painel administrativo
+   Cores, tipografia e componentes compartilhados entre login/index.html e painel.html
+   ======================================================================== */
+
+:root {
+  /* Cores da marca */
+  --coral: #D4572A;
+  --coral-escuro: #B8461F;
+  --creme: #F5F3EF;
+  --branco: #FFFFFF;
+  --grafite: #1A1816;
+  --texto-suave: #6B645C;
+  --borda: #DDD8D0;
+  --sucesso: #2D7A4F;
+  --erro: #C4453C;
+
+  /* Escala de cantos arredondados */
+  --raio-sm: 12px;
+  --raio-md: 16px;
+  --raio-lg: 24px;
+
+  /* Sombras */
+  --sombra-suave: 0 4px 20px rgba(26, 24, 22, 0.06);
+  --sombra-media: 0 8px 30px rgba(26, 24, 22, 0.10);
+
+  /* Tipografia */
+  --fonte-titulo: "Fraunces", serif;
+  --fonte-texto: "Outfit", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--creme);
+  color: var(--grafite);
+  font-family: var(--fonte-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fonte-titulo);
+  margin: 0;
+  color: var(--grafite);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--coral);
+}
+
+button {
+  font-family: var(--fonte-texto);
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------------
+   Componentes reutilizáveis
+   ------------------------------------------------------------------------ */
+
+.cartao {
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-lg);
+  box-shadow: var(--sombra-suave);
+}
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--raio-sm);
+  border: none;
+  font-family: var(--fonte-texto);
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.botao:active {
+  transform: translateY(1px);
+}
+
+.botao-primario {
+  background: var(--coral);
+  color: var(--branco);
+}
+
+.botao-primario:hover {
+  background: var(--coral-escuro);
+}
+
+.botao-primario:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.botao-secundario {
+  background: transparent;
+  color: var(--grafite);
+  border: 1px solid var(--borda);
+}
+
+.botao-secundario:hover {
+  background: var(--creme);
+}
+
+.faixa {
+  border-radius: var(--raio-sm);
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.faixa-erro {
+  background: rgba(196, 69, 60, 0.08);
+  color: var(--erro);
+  border: 1px solid rgba(196, 69, 60, 0.25);
+}
+
+.faixa-sucesso {
+  background: rgba(45, 122, 79, 0.08);
+  color: var(--sucesso);
+  border: 1px solid rgba(45, 122, 79, 0.25);
+}
+
+.oculto {
+  display: none !important;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--borda);
+  background: var(--creme);
+  font-family: var(--fonte-texto);
+  font-size: 15px;
+  color: var(--grafite);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(212, 87, 42, 0.12);
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-suave);
+  margin-bottom: 6px;
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+/* ========================================================================
+   Página de login
+   ======================================================================== */
+
+.tela-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.cartao-login {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 36px;
+}
+
+.logo {
+  font-family: var(--fonte-titulo);
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 28px;
+  color: var(--grafite);
+}
+
+.logo .ponto {
+  color: var(--coral);
+}
+
+.cartao-login h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subtitulo {
+  color: var(--texto-suave);
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.link-esqueci {
+  display: block;
+  text-align: right;
+  font-size: 14px;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+.link-esqueci:hover {
+  text-decoration: underline;
+}
+
+.link-voltar {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 18px;
+  text-decoration: none;
+  color: var(--texto-suave);
+}
+
+.link-voltar:hover {
+  color: var(--coral);
+}
+
+.botao-largo {
+  width: 100%;
+}
+
+/* ========================================================================
+   Painel administrativo
+   ======================================================================== */
+
+.painel {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--branco);
+  border-right: 1px solid var(--borda);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transition: transform 0.25s ease;
+}
+
+.sidebar .logo {
+  margin-bottom: 36px;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 14px;
+  border: none;
+  background: transparent;
+  border-radius: var(--raio-sm);
+  color: var(--texto-suave);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
+  background: var(--creme);
+  color: var(--grafite);
+}
+
+.nav-item.ativo {
+  background: rgba(212, 87, 42, 0.10);
+  color: var(--coral);
+}
+
+.sidebar-rodape {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--borda);
+}
+
+.usuario-email {
+  font-size: 13px;
+  color: var(--texto-suave);
+  margin-bottom: 12px;
+  padding-left: 8px;
+  word-break: break-all;
+}
+
+.conteudo {
+  flex: 1;
+  margin-left: 260px;
+  padding: 32px 40px 60px;
+  max-width: 1200px;
+}
+
+.topo-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.topo-conteudo h1 {
+  font-size: 28px;
+}
+
+.botao-menu-mobile {
+  display: none;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  padding: 10px 12px;
+}
+
+.filtro-periodo {
+  display: flex;
+  gap: 8px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-sm);
+  padding: 4px;
+}
+
+.filtro-periodo button {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.filtro-periodo button.ativo {
+  background: var(--coral);
+  color: var(--branco);
+}
+
+.saudacao {
+  font-size: 20px;
+  margin-bottom: 24px;
+  color: var(--texto-suave);
+}
+
+.saudacao strong {
+  color: var(--grafite);
+}
+
+/* Grade de cartões numéricos */
+.grade-numeros {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cartao-numero {
+  padding: 22px 20px;
+}
+
+.cartao-numero .rotulo {
+  font-size: 13px;
+  color: var(--texto-suave);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.cartao-numero .valor {
+  font-family: var(--fonte-titulo);
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.cartao-numero.destaque {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+
+.cartao-numero.destaque .rotulo,
+.cartao-numero.destaque .valor {
+  color: var(--branco);
+}
+
+.cartao-contato {
+  padding: 26px 28px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cartao-contato .valor {
+  font-family: var(--fonte-titulo);
+  font-size: 40px;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+.cartao-contato .texto strong {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.cartao-contato .texto small {
+  color: var(--texto-suave);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Gráfico de barras (CSS puro) */
+.grafico-barras {
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.grafico-barras h3 {
+  font-size: 17px;
+  margin-bottom: 20px;
+}
+
+.grafico-linha {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 160px;
+}
+
+.grafico-barra-coluna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+}
+
+.grafico-barra {
+  width: 100%;
+  max-width: 32px;
+  background: var(--coral);
+  border-radius: 6px 6px 0 0;
+  min-height: 3px;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.grafico-barra:hover {
+  background: var(--coral-escuro);
+}
+
+.grafico-barra-coluna .rotulo-dia {
+  font-size: 11px;
+  color: var(--texto-suave);
+  margin-top: 8px;
+  white-space: nowrap;
+}
+
+.tooltip-barra {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--grafite);
+  color: var(--branco);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-bottom: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.grafico-barra-coluna:hover .tooltip-barra {
+  opacity: 1;
+}
+
+/* Cartões de bloco (aba Portfólio) */
+.bloco {
+  padding: 26px 28px;
+  margin-bottom: 24px;
+}
+
+.bloco h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.lista-vazia {
+  color: var(--texto-suave);
+  font-size: 14px;
+  padding: 16px 0;
+  text-align: center;
+}
+
+/* Lista de vídeos */
+.item-video {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--borda);
+}
+
+.item-video:last-child {
+  border-bottom: none;
+}
+
+.item-video img {
+  width: 100px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--raio-sm);
+  flex-shrink: 0;
+}
+
+.item-video-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-video-info .titulo-video {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  text-decoration: none;
+  color: var(--grafite);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-video-info .titulo-video:hover {
+  color: var(--coral);
+}
+
+.barra-proporcional {
+  height: 8px;
+  background: var(--creme);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra-proporcional .preenchimento {
+  height: 100%;
+  background: var(--coral);
+  border-radius: 4px;
+}
+
+.item-video-contagem {
+  font-size: 13px;
+  color: var(--texto-suave);
+  flex-shrink: 0;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Lista de barras horizontais (botões) */
+.item-barra-h {
+  margin-bottom: 14px;
+}
+
+.item-barra-h:last-child {
+  margin-bottom: 0;
+}
+
+.item-barra-h .cabecalho-barra-h {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.item-barra-h .cabecalho-barra-h .contagem {
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+/* Cliques de contato */
+.lista-contato {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-contato {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--creme);
+  border-radius: var(--raio-sm);
+}
+
+.item-contato .nome-canal {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.item-contato .contagem-canal {
+  font-family: var(--fonte-titulo);
+  font-size: 20px;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* Cartões de mensagens (leads) */
+.lista-mensagens {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cartao-mensagem {
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-md);
+  padding: 16px 18px;
+}
+
+.cartao-mensagem-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.cartao-mensagem-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.selo {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.selo-contact {
+  background: rgba(212, 87, 42, 0.12);
+  color: var(--coral-escuro);
+}
+
+.selo-popup {
+  background: rgba(45, 122, 79, 0.12);
+  color: var(--sucesso);
+}
+
+.cartao-mensagem-nome {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.cartao-mensagem-data {
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.cartao-mensagem-detalhes {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--borda);
+  display: none;
+}
+
+.cartao-mensagem.expandido .cartao-mensagem-detalhes {
+  display: block;
+}
+
+.linha-detalhe {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--texto-suave);
+}
+
+.linha-detalhe strong {
+  color: var(--grafite);
+}
+
+.acoes-mensagem {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.acoes-mensagem a {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* ------------------------------------------------------------------------
+   Responsivo
+   ------------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .grade-numeros {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: var(--sombra-media);
+  }
+
+  .sidebar.aberta {
+    transform: translateX(0);
+  }
+
+  .conteudo {
+    margin-left: 0;
+    padding: 24px 20px 60px;
+  }
+
+  .botao-menu-mobile {
+    display: inline-flex;
+  }
+
+  .fundo-escurecido {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 24, 22, 0.4);
+    z-index: 90;
+  }
+
+  .fundo-escurecido.ativo {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .grade-numeros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cartao-numero .valor {
+    font-size: 26px;
+  }
+
+  .topo-conteudo h1 {
+    font-size: 22px;
+  }
+
+  .item-video img {
+    width: 80px;
+    height: 45px;
+  }
+}
