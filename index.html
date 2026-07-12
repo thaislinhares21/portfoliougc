@@ -716,33 +716,40 @@
     }
   }
 
-  @media (max-width: 640px){
-    section{ padding: 60px 0; }
-    .hero{ padding-top: calc(var(--altura-cabecalho) + 40px); }
-    /* Hero igual ao computador no celular também (mesmas proporções), só reduzido
-       proporcionalmente (efeito "zoom out") pra caber na largura da tela. */
-    .hero .container.hero-container{
-      zoom: 0.42;
-      flex-wrap: nowrap;
-      width: max-content;
-      max-width: none;
-      padding: 0;
-      margin: 0 auto;
-    }
-    .sobre-container{ flex-direction: column; }
-    .contato-container{ flex-direction: column; }
-
-    /* Portfólio igual ao computador no celular também (mesma grade de colunas),
-       só reduzido proporcionalmente (efeito "zoom out") pra caber na largura da tela. */
-    #portfolio .container{
+  /* ===================== PÁGINA INTEIRA IGUAL AO COMPUTADOR NO CELULAR =====================
+     Em vez de reorganizar cada seção pro celular, a página inteira é renderizada com a
+     largura de computador e depois reduzida proporcionalmente (efeito "zoom out") pra
+     caber na tela. Isso mantém a aparência idêntica ao computador do topo ao rodapé. */
+  @media (max-width: 900px){
+    html{ overflow-x: hidden; }
+    body{
       zoom: 0.32;
-      width: 1132px;
-      max-width: none;
-      padding: 0;
+      width: 1280px;
       margin: 0 auto;
     }
-    #portfolio .portfolio-grade{
-      grid-template-columns: repeat(4, 1fr);
+    /* Some o menu-hambúrguer e mostra o menu completo do computador, já reduzido junto com o resto */
+    .menu-hamburguer{ display: none; }
+    .nav{
+      position: static;
+      max-height: none;
+      overflow: visible;
+      background: none;
+      border-bottom: none;
+    }
+    .nav ul{
+      flex-direction: row;
+      align-items: center;
+      padding: 0;
+      gap: 28px;
+    }
+    .nav a{
+      display: inline;
+      padding: 6px 2px;
+      border-bottom: 3px solid transparent;
+    }
+    .nav-cta{
+      margin-top: 0;
+      text-align: center;
     }
   }
 </style>
