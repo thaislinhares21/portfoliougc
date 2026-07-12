@@ -620,6 +620,57 @@
     html{ scroll-behavior: auto; }
   }
 
+  /* ===================== JANELA (MODAL) DE VÍDEO AMPLIADO ===================== */
+  .modal-video{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.88);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+  }
+  .modal-video[hidden]{ display: none; }
+  .modal-video-fechar{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    border: 2px solid var(--creme);
+    color: var(--creme);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-video-fechar:hover{ background: rgba(255,255,255,.22); }
+  .modal-video-caixa{
+    position: relative;
+    width: min(92vw, calc(88vh * 9 / 16));
+    aspect-ratio: 9/16;
+    max-height: 88vh;
+    border-radius: 22px;
+    overflow: hidden;
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    background: var(--tinta);
+  }
+  .modal-video-caixa iframe{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 177.78%;
+    height: 100%;
+    border: 0;
+    transform: translateX(-50%);
+  }
+
   /* ===================== RESPONSIVO ===================== */
   @media (max-width: 900px){
     .menu-hamburguer{ display:flex; }
@@ -796,6 +847,12 @@
   <p class="rodape-copy" id="rodapeCopy"></p>
 </footer>
 
+<!-- ===================== JANELA (MODAL) DE VÍDEO AMPLIADO ===================== -->
+<div class="modal-video" id="modalVideo" hidden>
+  <button type="button" class="modal-video-fechar" id="modalVideoFechar" aria-label="Fechar vídeo">&times;</button>
+  <div class="modal-video-caixa" id="modalVideoCaixa"></div>
+</div>
+
 <script>
   // ======================================================================
   // CONFIGURAÇÃO GERAL DO SITE
@@ -919,6 +976,7 @@
     configurarAnimacoesDeEntrada();
     configurarContadores();
     configurarFormulario();
+    configurarModalVideo();
   });
 
   function preencherTextosFixos(){
@@ -998,16 +1056,49 @@
       });
     });
 
-    // Clique na capa do vídeo: troca a imagem + botão de play pelo player real do YouTube,
-    // já tocando e enquadrado sem barras pretas (mesma técnica de corte usada no CSS).
+    // Clique na capa do vídeo: abre o vídeo ampliado numa janela por cima do site (modal).
     grade.querySelectorAll(".video-vertical").forEach(caixaVideo => {
       caixaVideo.addEventListener("click", () => {
-        if (caixaVideo.classList.contains("video-ativo")) return;
-        const id = caixaVideo.dataset.video;
-        const titulo = caixaVideo.dataset.titulo;
-        caixaVideo.classList.add("video-ativo");
-        caixaVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&modestbranding=1&rel=0" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        abrirModalVideo(caixaVideo.dataset.video, caixaVideo.dataset.titulo);
       });
+    });
+  }
+
+  // Abre a janela de vídeo ampliado, já tocando e enquadrado sem barras pretas
+  // (mesma técnica de corte usada no CSS dos cards do portfólio).
+  function abrirModalVideo(id, titulo){
+    const modal = document.getElementById("modalVideo");
+    const caixa = document.getElementById("modalVideoCaixa");
+    caixa.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&modestbranding=1&rel=0" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalVideoFechar").focus();
+  }
+
+  // Fecha a janela de vídeo ampliado e para a reprodução (removendo o iframe)
+  function fecharModalVideo(){
+    const modal = document.getElementById("modalVideo");
+    document.getElementById("modalVideoCaixa").innerHTML = "";
+    modal.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function configurarModalVideo(){
+    const modal = document.getElementById("modalVideo");
+    document.getElementById("modalVideoFechar").addEventListener("click", fecharModalVideo);
+
+    // Clicar fora da caixa do vídeo (no fundo escurecido) também fecha
+    modal.addEventListener("click", (evento) => {
+      if (evento.target === modal){
+        fecharModalVideo();
+      }
+    });
+
+    // Tecla Esc fecha a janela, para quem navega pelo teclado
+    document.addEventListener("keydown", (evento) => {
+      if (evento.key === "Escape" && !modal.hidden){
+        fecharModalVideo();
+      }
     });
   }
 
