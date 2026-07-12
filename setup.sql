@@ -7,7 +7,7 @@
 -- Tabela de eventos do site (visitas, cliques, visualizações de vídeo)
 create table if not exists portfolio_events (
   id uuid primary key default gen_random_uuid(),
-  event_type text not null,       -- 'page_view' | 'button_click' | 'video_view'
+  event_type text not null check (event_type in ('page_view', 'button_click', 'video_view')),
   event_name text,                -- nome do evento (ex.: id do vídeo, nome do botão)
   session_id text,                -- identifica um visitante dentro de uma sessão
   page_path text,                 -- caminho da página onde o evento ocorreu
@@ -23,8 +23,8 @@ create table if not exists portfolio_leads (
   phone text,
   brand text,
   budget text,
-  message text,
-  source text,                    -- 'contact' | 'popup'
+  message text check (message is null or char_length(message) <= 4000),
+  source text check (source in ('contact', 'popup')),
   created_at timestamptz not null default now()
 );
 
@@ -38,7 +38,7 @@ create index if not exists idx_portfolio_leads_created_at on portfolio_leads (cr
 alter table portfolio_events enable row level security;
 alter table portfolio_leads enable row level security;
 
--- Permite que qualquer usuário autenticado (quem faz login no painel) leia os dados
+-- Leitura: só quem faz login no painel administrativo (usuários autenticados) pode ler
 create policy "Painel: leitura de eventos para autenticados"
   on portfolio_events
   for select
@@ -52,14 +52,26 @@ create policy "Painel: leitura de leads para autenticados"
   using (true);
 
 -- ----------------------------------------------------------------------------
--- IMPORTANTE sobre escrita (INSERT):
--- Nenhuma policy de INSERT foi criada aqui de propósito. O site público do
--- portfólio (que roda no navegador de qualquer visitante) NÃO deve gravar
--- eventos ou leads usando a chave anon diretamente do front-end, porque
--- qualquer pessoa poderia inspecionar o código e inserir dados falsos.
---
--- A gravação de portfolio_events e portfolio_leads deve ser feita por um
--- servidor (ex.: uma função serverless/Edge Function) usando a chave de
--- serviço (service_role), que ignora RLS e nunca deve ser exposta no
--- navegador. O painel administrativo aqui criado só LÊ os dados.
+-- Escrita (INSERT): o site do portfólio é 100% estático (GitHub Pages/Vercel,
+-- sem servidor próprio), então o navegador de cada visitante grava os eventos
+-- diretamente, usando a chave anon. Isso é aceitável aqui porque:
+--   1. Os dados gravados (visitas, cliques, mensagens) não são sensíveis;
+--   2. A chave anon só pode INSERIR, nunca LER (não há policy de SELECT
+--      para o papel anon), então ninguém consegue ver os dados de outra
+--      pessoa nem os números do painel usando essa chave;
+--   3. Os "check constraints" acima limitam o formato aceito nas colunas
+--      mais importantes (event_type e tamanho da mensagem).
+-- Se no futuro o site ganhar um servidor próprio, prefira mover essa escrita
+-- para lá (com a chave de serviço) e remover as policies de insert abaixo.
 -- ----------------------------------------------------------------------------
+create policy "Site publico: inserir eventos"
+  on portfolio_events
+  for insert
+  to anon
+  with check (true);
+
+create policy "Site publico: inserir mensagens de contato"
+  on portfolio_leads
+  for insert
+  to anon
+  with check (true);

@@ -1,15 +1,8 @@
 // ============================================================================
 // js/auth.js
 // Lógica de autenticação compartilhada entre login/index.html e painel.html.
-// Cria o cliente Supabase uma única vez e expõe window.Auth para as páginas.
+// Depende de js/supabase-config.js já ter sido carregado (define "sb").
 // ============================================================================
-
-// Dados do projeto Supabase (chave pública/anon, segura para expor no front-end)
-const SUPABASE_URL = "https://yyxwcbioceutosumfdbc.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5eHdjYmlvY2V1dG9zdW1mZGJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4Mjk5NzcsImV4cCI6MjA5OTQwNTk3N30.PhD4cSa-WeKPFLSFJoEjLuBaScZ7nw5CiTTqSb-LvZU";
-
-// Cliente Supabase único, compartilhado por toda a aplicação
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 window.Auth = {
   // Faz login com e-mail e senha. Lança um erro com mensagem amigável em caso de falha.

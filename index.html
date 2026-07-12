@@ -10,6 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Jost:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
 
+<!-- Supabase via CDN, depois a configuração compartilhada e o rastreamento de uso do site -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/supabase-config.js"></script>
+<script src="/js/tracking.js"></script>
+
 <style>
   /* ===================== VARIÁVEIS DE COR E BASE ===================== */
   :root{
@@ -283,8 +288,9 @@
   }
   .marcas-track{
     display:inline-flex;
-    gap: 60px;
-    animation: rolarMarcas 22s linear infinite;
+    align-items:center;
+    gap: 24px;
+    animation: rolarMarcas 28s linear infinite;
   }
   .marcas-track span{
     font-family:'Fredoka', sans-serif;
@@ -639,16 +645,16 @@
   </section>
 
   <!-- ===================== FAIXA DE MARCAS ===================== -->
-  <section class="marcas-faixa" aria-label="Marcas que já confiaram no trabalho de Thais Linhares">
+  <section class="marcas-faixa" aria-label="Nichos de conteúdo em que Thais Linhares atua">
     <div class="marcas-track" id="marcasTrack"></div>
   </section>
 
   <!-- ===================== SOBRE ===================== -->
   <section class="sobre" id="sobre">
     <div class="container sobre-container">
-      <div class="foto-espaco sobre-foto reveal" role="img" aria-label="Foto de Thais Linhares em seu dia a dia criando conteúdo">
-        <!-- Para trocar por uma foto real: substitua esta div por <img src="sua-foto-sobre.jpg" alt="Thais Linhares criando conteúdo"> mantendo a classe "sobre-foto" -->
-        <span class="foto-iniciais">TL</span>
+      <div class="foto-espaco sobre-foto reveal">
+        <!-- EDITE AQUI: para trocar a foto do Sobre, substitua o arquivo "foto-sobre.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
+        <img src="foto-sobre.jpeg" alt="Thais Linhares em seu dia a dia criando conteúdo">
       </div>
       <div class="sobre-texto reveal">
         <h2 id="sobreTitulo">Sobre mim</h2>
@@ -757,19 +763,21 @@
       botao: "Fale comigo"
     },
 
-    // EDITE AQUI: nomes das marcas com quem Thais já trabalhou
+    // EDITE AQUI: marcas com quem Thais já trabalhou.
+    // Se tiver o arquivo da logo, preencha "logo" com o nome do arquivo (deixe na mesma pasta do index.html).
+    // Se não tiver a logo ainda, deixe "logo" como null que o nome aparece em texto.
     marcas: [
-      "Nanovit",
-      "Authentic Nutri",
-      "CreHub",
-      "Hellen Parfum",
-      "Esquadrão Fit",
-      "Beleza Néctar",
-      "Dove",
-      "O Boticário",
-      "Beyoung",
-      "Rosa Selvagem",
-      "Sace Lady"
+      { nome: "Nanovit", logo: "logo-nanovit.jpg" },
+      { nome: "Authentic Nutri", logo: "logo-authentic-nutri.png" },
+      { nome: "CreHub", logo: "logo-crehub.png" },
+      { nome: "Hellen Parfum", logo: "logo-hellen-parfum.png" },
+      { nome: "Esquadrão Fit", logo: "logo-esquadrao-fit.png" },
+      { nome: "Beleza Néctar", logo: null },
+      { nome: "Dove", logo: "logo-dove.jpg" },
+      { nome: "O Boticário", logo: "logo-o-boticario.jpg" },
+      { nome: "Beyoung", logo: "logo-beyoung.png" },
+      { nome: "Rosa Selvagem", logo: "logo-rosa-selvagem.jpg" },
+      { nome: "Sace Lady", logo: "logo-sace-lady.png" }
     ],
 
     // EDITE AQUI: texto da seção Sobre
@@ -847,6 +855,7 @@
     montarContatoERodape();
     configurarMenuMobile();
     configurarRolagemSuave();
+    configurarRastreioDeCliques();
     configurarAnimacoesDeEntrada();
     configurarContadores();
     configurarFormulario();
@@ -864,9 +873,11 @@
 
   function montarMarcas(){
     const track = document.getElementById("marcasTrack");
+    // essa faixa exibe os nichos de conteúdo de Thais (usa a lista "categorias" lá em cima, sem o item "Todos")
+    const nichos = config.categorias.filter(cat => cat.chave !== "todos");
     // duplica a lista para o efeito de rolagem contínua ficar sem emenda visível
-    const listaDupla = [...config.marcas, ...config.marcas];
-    track.innerHTML = listaDupla.map(marca => `<span>${marca}</span>`).join("");
+    const listaDupla = [...nichos, ...nichos];
+    track.innerHTML = listaDupla.map(nicho => `<span>${nicho.rotulo}</span>`).join("");
   }
 
   function montarFiltrosEPortfolio(){
@@ -905,6 +916,8 @@
           const mostrar = filtro === "todos" || item.dataset.categoria === filtro;
           item.classList.toggle("escondido", !mostrar);
         });
+
+        window.Tracking.buttonClick(`filtro_${filtro}`);
       });
     });
   }
@@ -958,6 +971,17 @@
       <a href="${emailLink}">${config.contato.email}</a>
     `;
     document.getElementById("rodapeCopy").textContent = `© ${new Date().getFullYear()} ${config.nome}. Todos os direitos reservados.`;
+
+    // Registra cliques nos canais de contato (botões da seção Contato e links do rodapé)
+    document.querySelectorAll('#botaoWhatsapp, .rodape-redes a[href^="https://wa.me"]').forEach(el => {
+      el.addEventListener("click", () => window.Tracking.buttonClick("contact_whatsapp"));
+    });
+    document.querySelectorAll('#botaoEmail, .rodape-redes a[href^="mailto:"]').forEach(el => {
+      el.addEventListener("click", () => window.Tracking.buttonClick("contact_email"));
+    });
+    document.querySelectorAll('#botaoInstagram, .rodape-redes a[href*="instagram.com"]').forEach(el => {
+      el.addEventListener("click", () => window.Tracking.buttonClick("contact_instagram"));
+    });
   }
 
   function configurarMenuMobile(){
@@ -989,6 +1013,14 @@
           destino.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       });
+    });
+  }
+
+  function configurarRastreioDeCliques(){
+    // Botões "Fale comigo" (hero e menu) só navegam até a seção de contato,
+    // mas ainda vale registrar o clique como intenção de contato
+    document.querySelectorAll('#heroBotao, .nav-cta').forEach(botao => {
+      botao.addEventListener("click", () => window.Tracking.buttonClick("cta_fale_comigo"));
     });
   }
 
@@ -1053,6 +1085,10 @@
       const assunto = encodeURIComponent(`Contato via site - ${nome}`);
       const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`);
       const linkMailto = `mailto:${config.contato.email}?subject=${assunto}&body=${corpo}`;
+
+      // Registra a mensagem e o clique de envio no painel administrativo
+      window.Tracking.lead({ name: nome, email: email, message: mensagem, source: "contact" });
+      window.Tracking.buttonClick("contact_form_submit");
 
       window.location.href = linkMailto;
 
