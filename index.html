@@ -387,6 +387,16 @@
     border-radius:0;
     aspect-ratio: 4/5;
   }
+  .video-vertical{
+    aspect-ratio: 9/16;
+    background: var(--tinta);
+  }
+  .video-vertical iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
   .portfolio-item .legenda{
     padding: 16px 18px;
     background: var(--branco);
@@ -809,7 +819,7 @@
       { titulo: "Meu app de organização para UGC", categoria: "apps-sites", gradiente: "grad-2" },
       { titulo: "Review de site de compras", categoria: "apps-sites", gradiente: "grad-3" },
       { titulo: "Rotina com meu casal de filhos", categoria: "maternidade", gradiente: "grad-4" },
-      { titulo: "Resenha de produto infantil", categoria: "maternidade", gradiente: "grad-5" },
+      { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", video: "28h-1Xeuc7I" },
       { titulo: "Hidratação corporal", categoria: "bodycare", gradiente: "grad-1" },
       { titulo: "Resenha de óleo corporal", categoria: "bodycare", gradiente: "grad-3" }
     ],
@@ -893,17 +903,27 @@
       </button>
     `).join("");
 
-    grade.innerHTML = config.portfolio.map(item => `
+    grade.innerHTML = config.portfolio.map(item => {
+      // Itens com "video" (ID do YouTube) mostram o vídeo real embutido, no formato vertical (Shorts/Reels).
+      // Para adicionar outro vídeo real: troque "gradiente" por video: "ID-DO-VIDEO-DO-YOUTUBE" (a parte final do link).
+      const midia = item.video
+        ? `<div class="foto-espaco video-vertical">
+             <iframe src="https://www.youtube.com/embed/${item.video}" title="${item.titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+           </div>`
+        : `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
+             <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
+           </div>`;
+
+      return `
       <article class="portfolio-item reveal" data-categoria="${item.categoria}">
-        <div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
-          <!-- Para trocar por uma foto ou vídeo real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
-        </div>
+        ${midia}
         <div class="legenda">
           <strong>${item.titulo}</strong>
           <span>${item.categoria}</span>
         </div>
       </article>
-    `).join("");
+    `;
+    }).join("");
 
     filtrosEl.querySelectorAll(".filtro-botao").forEach(botao => {
       botao.addEventListener("click", () => {
