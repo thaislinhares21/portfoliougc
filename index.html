@@ -388,14 +388,23 @@
     aspect-ratio: 4/5;
   }
   .video-vertical{
+    position: relative;
+    overflow: hidden;
     aspect-ratio: 9/16;
     background: var(--tinta);
   }
+  /* O player padrão do YouTube incorpora vídeo vertical (9:16) dentro de um quadro
+     16:9, sobrando barra preta nas laterais. Aqui o iframe é ampliado (16/9 = 177.78%
+     de largura, mesma altura do quadro) e centralizado, com o excedente cortado pelo
+     "overflow:hidden" do container acima, fazendo o vídeo preencher o quadro por inteiro. */
   .video-vertical iframe{
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 177.78%;
     height: 100%;
     border: 0;
-    display: block;
+    transform: translateX(-50%);
   }
   .portfolio-item .legenda{
     padding: 16px 18px;
@@ -908,7 +917,7 @@
       // Para adicionar outro vídeo real: troque "gradiente" por video: "ID-DO-VIDEO-DO-YOUTUBE" (a parte final do link).
       const midia = item.video
         ? `<div class="foto-espaco video-vertical">
-             <iframe src="https://www.youtube.com/embed/${item.video}" title="${item.titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+             <iframe src="https://www.youtube.com/embed/${item.video}?controls=0&modestbranding=1&rel=0&playsinline=1" title="${item.titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
            </div>`
         : `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
              <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
