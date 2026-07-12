@@ -240,6 +240,7 @@
      um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
   .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
   .foto-espaco img{ width:100%; height:100%; object-fit:cover; object-position: center; }
+  .sobre-foto img{ object-position: center top; }
   .grad-1{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
   .grad-2{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
   .grad-3{ background: linear-gradient(150deg, var(--creme), var(--rosa)); }
@@ -290,7 +291,7 @@
     display:inline-flex;
     align-items:center;
     gap: 24px;
-    animation: rolarMarcas 28s linear infinite;
+    animation: rolarMarcas 24s linear infinite;
   }
   .marcas-track span{
     font-family:'Fredoka', sans-serif;
@@ -302,7 +303,7 @@
   }
   @keyframes rolarMarcas{
     from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
+    to{ transform: translateX(-12.5%); }
   }
 
   /* ===================== TÍTULOS DE SEÇÃO ===================== */
@@ -875,9 +876,11 @@
     const track = document.getElementById("marcasTrack");
     // essa faixa exibe os nichos de conteúdo de Thais (usa a lista "categorias" lá em cima, sem o item "Todos")
     const nichos = config.categorias.filter(cat => cat.chave !== "todos");
-    // duplica a lista para o efeito de rolagem contínua ficar sem emenda visível
-    const listaDupla = [...nichos, ...nichos];
-    track.innerHTML = listaDupla.map(nicho => `<span>${nicho.rotulo}</span>`).join("");
+    // repete a lista 8x (e a animação anda 1/8 da largura) para a rolagem nunca mostrar espaço em branco,
+    // mesmo em telas bem largas ou com poucos nichos cadastrados
+    const repeticoes = 8;
+    const listaRepetida = Array.from({ length: repeticoes }, () => nichos).flat();
+    track.innerHTML = listaRepetida.map(nicho => `<span>${nicho.rotulo}</span>`).join("");
   }
 
   function montarFiltrosEPortfolio(){
