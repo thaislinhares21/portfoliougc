@@ -676,6 +676,14 @@
     height: 100%;
     border: 0;
   }
+  /* Vídeo em arquivo próprio: preenche o quadro perfeitamente (sem barra, sem corte de
+     informação), já que não depende do enquadramento fixo do player do YouTube. */
+  .modal-video-caixa video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   /* ===================== RESPONSIVO ===================== */
   @media (max-width: 900px){
@@ -920,7 +928,10 @@
       { chave: "bodycare", rotulo: "Bodycare" }
     ],
 
-    // EDITE AQUI: trabalhos do portfólio (cada bloco em gradiente simula uma foto ou vídeo)
+    // EDITE AQUI: trabalhos do portfólio (cada bloco em gradiente simula uma foto ou vídeo).
+    // Para um vídeo real, use "videoArquivo" com o nome do arquivo .mp4 (mesma pasta do index.html,
+    // preenche o quadro perfeitamente, sem depender do YouTube) ou "video" com o ID do YouTube
+    // (a parte final do link, ex.: youtube.com/shorts/ID-AQUI) quando não tiver o arquivo original.
     portfolio: [
       { titulo: "Rotina de skincare", categoria: "beleza", gradiente: "grad-1" },
       { titulo: "Resenha de batom em gel", categoria: "beleza", gradiente: "grad-3" },
@@ -931,7 +942,7 @@
       { titulo: "Meu app de organização para UGC", categoria: "apps-sites", gradiente: "grad-2" },
       { titulo: "Review de site de compras", categoria: "apps-sites", gradiente: "grad-3" },
       { titulo: "Rotina com meu casal de filhos", categoria: "maternidade", gradiente: "grad-4" },
-      { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", video: "28h-1Xeuc7I" },
+      { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", videoArquivo: "video-cartas-adelaine.mp4" },
       { titulo: "Hidratação corporal", categoria: "bodycare", gradiente: "grad-1" },
       { titulo: "Resenha de óleo corporal", categoria: "bodycare", gradiente: "grad-3" }
     ],
@@ -1017,20 +1028,31 @@
     `).join("");
 
     grade.innerHTML = config.portfolio.map(item => {
-      // Itens com "video" (ID do YouTube) mostram uma capa (thumbnail) preenchendo o quadro,
-      // com um botão de play por cima. O vídeo real só carrega quando a pessoa clica.
-      // Para adicionar outro vídeo real: troque "gradiente" por video: "ID-DO-VIDEO-DO-YOUTUBE" (a parte final do link).
-      const midia = item.video
-        ? `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
+      // Itens com "videoArquivo" (arquivo .mp4 próprio) ou "video" (ID do YouTube) mostram uma
+      // capa preenchendo o quadro, com um botão de play por cima. O vídeo só carrega/toca de
+      // verdade (numa janela ampliada) quando a pessoa clica.
+      let midia;
+      if (item.videoArquivo){
+        midia = `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
+             <video class="video-capa" src="${item.videoArquivo}" muted playsinline preload="metadata"></video>
+             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
+               <span class="video-play-icone">&#9654;</span>
+             </button>
+             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
+           </div>`;
+      } else if (item.video){
+        midia = `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
              <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/oar2.jpg" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
              <span class="video-assistir-label" aria-hidden="true">Assistir</span>
-           </div>`
-        : `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
+           </div>`;
+      } else {
+        midia = `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
              <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
            </div>`;
+      }
 
       return `
       <article class="portfolio-item reveal" data-categoria="${item.categoria}">
@@ -1065,14 +1087,30 @@
     // Clique na capa do vídeo: abre o vídeo ampliado numa janela por cima do site (modal).
     grade.querySelectorAll(".video-vertical").forEach(caixaVideo => {
       caixaVideo.addEventListener("click", () => {
-        abrirModalVideo(caixaVideo.dataset.video, caixaVideo.dataset.titulo);
+        if (caixaVideo.dataset.videoArquivo){
+          abrirModalVideoArquivo(caixaVideo.dataset.videoArquivo, caixaVideo.dataset.titulo);
+        } else {
+          abrirModalVideoYoutube(caixaVideo.dataset.video, caixaVideo.dataset.titulo);
+        }
       });
     });
   }
 
-  // Abre a janela de vídeo ampliado, já tocando e enquadrado sem barras pretas
-  // (mesma técnica de corte usada no CSS dos cards do portfólio).
-  function abrirModalVideo(id, titulo){
+  // Abre a janela de vídeo ampliado usando um arquivo .mp4 próprio: preenche o quadro
+  // perfeitamente, sem barra preta e sem nada cortado, porque não depende do player do YouTube.
+  function abrirModalVideoArquivo(arquivo, titulo){
+    const modal = document.getElementById("modalVideo");
+    const caixa = document.getElementById("modalVideoCaixa");
+    caixa.innerHTML = `<video src="${arquivo}" title="${titulo}" autoplay controls playsinline></video>`;
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalVideoFechar").focus();
+  }
+
+  // Abre a janela de vídeo ampliado usando um vídeo incorporado do YouTube (quando não
+  // há o arquivo original). Pode sobrar uma faixa preta fina nas laterais, de propósito,
+  // para garantir que nenhuma informação do vídeo fique cortada.
+  function abrirModalVideoYoutube(id, titulo){
     const modal = document.getElementById("modalVideo");
     const caixa = document.getElementById("modalVideoCaixa");
     caixa.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&modestbranding=1&rel=0" title="${titulo}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
