@@ -428,6 +428,8 @@
     gap: 30px;
   }
   .portfolio-item{
+    display: flex;
+    flex-direction: column;
     border: var(--borda);
     box-shadow: var(--sombra-dura);
     border-radius: 20px;
@@ -440,6 +442,7 @@
     box-shadow:none;
     border-radius:0;
     aspect-ratio: 4/5;
+    flex-shrink: 0;
   }
   .video-vertical{
     position: relative;
@@ -501,6 +504,10 @@
     text-shadow: 0 1px 4px rgba(0,0,0,.6);
   }
   .portfolio-item .legenda{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 16px 18px;
     background: var(--branco);
     border-top: var(--borda);
@@ -526,6 +533,8 @@
     gap: 24px;
   }
   .foto-item{
+    display: flex;
+    flex-direction: column;
     border: var(--borda);
     box-shadow: var(--sombra-dura-pequena);
     border-radius: 16px;
@@ -538,11 +547,15 @@
     box-shadow: none;
     border-radius: 0;
     aspect-ratio: 4/5;
+    flex-shrink: 0;
   }
   /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
   .foto-item .legenda-foto{
+    flex: 1;
+    display: flex;
+    align-items: center;
     padding: 12px 14px;
     background: var(--branco);
     border-top: var(--borda);
