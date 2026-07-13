@@ -591,12 +591,16 @@
     font-size: clamp(1.1rem, 3vw, 1.6rem);
     color: var(--tinta);
   }
+  .marcas-trabalhadas-faixa{
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
   .marcas-trabalhadas-grade{
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 20px;
+    animation: rolarMarcas 26s linear infinite;
   }
   .marca-trabalhada-cartao{
     width: 84px;
@@ -609,6 +613,7 @@
     align-items: center;
     justify-content: center;
     padding: 14px;
+    flex-shrink: 0;
     transition: transform .15s ease, box-shadow .15s ease;
   }
   .marca-trabalhada-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
@@ -618,6 +623,9 @@
     width: auto;
     height: auto;
     object-fit: contain;
+    /* "Multiply" faz o fundo branco/claro da logo somar com o círculo branco por trás,
+       deixando a logo parecer sem fundo, sem precisar editar a imagem. */
+    mix-blend-mode: multiply;
   }
   .marca-trabalhada-texto{
     font-family: 'Poppins', sans-serif;
@@ -952,7 +960,9 @@
         <span class="fonte-marcador">Marcas</span>
         <span>TRABALHADAS</span>
       </div>
-      <div class="marcas-trabalhadas-grade reveal" id="marcasTrabalhadasGrade"></div>
+      <div class="marcas-trabalhadas-faixa reveal">
+        <div class="marcas-trabalhadas-grade" id="marcasTrabalhadasGrade"></div>
+      </div>
     </div>
   </section>
 
@@ -1201,7 +1211,11 @@
 
   function montarMarcasTrabalhadas(){
     const grade = document.getElementById("marcasTrabalhadasGrade");
-    grade.innerHTML = config.marcas.map(marca => {
+    // repete a lista 8x (a animação anda 1/8 da largura) pra rolagem nunca mostrar espaço em branco,
+    // igual à técnica usada na faixa de nichos
+    const repeticoes = 8;
+    const listaRepetida = Array.from({ length: repeticoes }, () => config.marcas).flat();
+    grade.innerHTML = listaRepetida.map(marca => {
       const conteudo = marca.logo
         ? `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
         : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
