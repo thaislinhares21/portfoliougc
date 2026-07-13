@@ -897,7 +897,11 @@
       width: 1180px;
       transform-origin: top left;
       /* EDITE AQUI: ajuste fino da escala em telas bem pequenas, se precisar */
-      transform: scale(var(--escala-mobile, 0.3));
+      --escala-mobile: 0.3;
+      transform: scale(var(--escala-mobile));
+      /* Centraliza a página encolhida: desloca a borda esquerda pra metade do espaço
+         sobrando entre a largura da tela e a largura já reduzida da página. */
+      margin-left: calc(50vw - (1180px * var(--escala-mobile) / 2));
     }
     /* Sem position:fixed aqui: dentro de um ancestral com "transform", o fixed passa a
        ser relativo a esse ancestral (e não à tela), então o cabeçalho já rola com o
