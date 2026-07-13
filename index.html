@@ -588,6 +588,76 @@
     color: var(--vermelho);
   }
 
+  /* ===================== MARCAS (FAIXA MARQUEE) =====================
+     Efeito "marquee" clássico: a lista de marcas é renderizada 2x seguidas no mesmo
+     container (JS). O container usa width:max-content e desliza de 0 até -50% da sua
+     própria largura, então a segunda cópia entra exatamente onde a primeira saiu, sem
+     pulo nenhum no loop. A section tem overflow:hidden + máscara de fade nas laterais. */
+  .marcas-titulo{
+    text-align: center;
+    margin-bottom: 46px;
+  }
+  .marcas-titulo .fonte-marcador{
+    display: block;
+    font-size: clamp(2.2rem, 5.5vw, 3.2rem);
+    color: var(--vermelho);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .marcas-titulo span{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 3px;
+    font-size: clamp(1rem, 2.6vw, 1.4rem);
+    color: var(--tinta);
+  }
+  .marcas-marquee{
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marcas-marquee-trilho{
+    display: flex;
+    width: max-content;
+    /* EDITE AQUI: duração da rolagem. Maior = mais devagar. */
+    --duracao-marquee: 60s;
+    animation: rolarMarquee var(--duracao-marquee) linear infinite;
+  }
+  .marcas-marquee:hover .marcas-marquee-trilho{
+    animation-play-state: paused;
+  }
+  @keyframes rolarMarquee{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+  .marca-circulo{
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    margin: 0 18px;
+    border-radius: 50%;
+    background: var(--branco);
+    border: 1px solid rgba(19,19,19,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .marca-circulo img{
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+  }
+  .marca-trabalhada-texto{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: .68rem;
+    line-height: 1.15;
+    text-align: center;
+    padding: 0 8px;
+    color: var(--tinta);
+  }
+
   /* ===================== DEPOIMENTOS ===================== */
   .depoimentos-grade{
     display:grid;
@@ -812,16 +882,28 @@
   }
 
   /* ===================== PÁGINA INTEIRA IGUAL AO COMPUTADOR NO CELULAR =====================
-     Em vez de reorganizar cada seção pro celular, a página inteira é renderizada com a
-     largura de computador e depois reduzida proporcionalmente (efeito "zoom out") pra
-     caber na tela. Isso mantém a aparência idêntica ao computador do topo ao rodapé. */
+     Em vez de reorganizar cada seção pro celular, a página inteira (dentro de
+     #paginaEscalada) é renderizada com a largura de computador e depois reduzida
+     proporcionalmente com "transform: scale" pra caber na tela. Isso mantém a aparência
+     idêntica ao computador do topo ao rodapé, sem esticar nem empilhar nada.
+     Usamos "transform" (e não a propriedade não-padrão "zoom") porque funciona em
+     qualquer navegador, inclusive nos embutidos em apps como Instagram/Facebook.
+     Como "transform" não muda o espaço que o elemento ocupa no fluxo da página, um
+     script (no fim do arquivo) mede a altura real e ajusta uma margem negativa pra
+     não sobrar espaço em branco embaixo. */
   @media (max-width: 900px){
     html{ overflow-x: hidden; }
-    body{
-      zoom: 0.29;
+    #paginaEscalada{
       width: 1180px;
-      margin: 0 auto;
+      transform-origin: top left;
+      /* EDITE AQUI: ajuste fino da escala em telas bem pequenas, se precisar */
+      transform: scale(var(--escala-mobile, 0.3));
     }
+    /* Sem position:fixed aqui: dentro de um ancestral com "transform", o fixed passa a
+       ser relativo a esse ancestral (e não à tela), então o cabeçalho já rola com o
+       resto do conteúdo, mantendo a aparência idêntica ao computador. */
+    .cabecalho{ position: static; }
+    .hero{ padding-top: 60px; }
     /* Some o menu-hambúrguer e mostra o menu completo do computador, já reduzido junto com o resto */
     .menu-hamburguer{ display: none; }
     .nav{
@@ -853,6 +935,10 @@
 
 <a href="#conteudo-principal" class="pular-link">Pular para o conteúdo</a>
 
+<!-- Envolve cabeçalho + conteúdo + rodapé para permitir reduzir a página inteira
+     proporcionalmente no celular (efeito "zoom out"), sem afetar o modal de vídeo. -->
+<div id="paginaEscalada">
+
 <!-- ===================== CABEÇALHO / MENU ===================== -->
 <header class="cabecalho" id="topo">
   <div class="cabecalho-container">
@@ -863,6 +949,7 @@
     <nav class="nav" id="menuNav" aria-label="Navegação principal">
       <ul>
         <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#marcas">Marcas</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
         <li><a href="#fotos">Fotos</a></li>
         <li><a href="#servicos">Serviços</a></li>
@@ -920,6 +1007,19 @@
     </div>
     <div class="container">
       <div class="sobre-fatos" id="sobreFatos" aria-label="Fatos rápidos sobre a Thais"></div>
+    </div>
+  </section>
+
+  <!-- ===================== MARCAS (FAIXA MARQUEE) ===================== -->
+  <section class="marcas" id="marcas" aria-label="Marcas que já confiaram no trabalho de Thais Linhares">
+    <div class="container">
+      <div class="marcas-titulo reveal">
+        <span class="fonte-marcador">Marcas</span>
+        <span>PARCEIRAS</span>
+      </div>
+    </div>
+    <div class="marcas-marquee">
+      <div class="marcas-marquee-trilho" id="marcasMarqueeTrilho"></div>
     </div>
   </section>
 
@@ -1005,6 +1105,8 @@
   <p class="rodape-copy" id="rodapeCopy"></p>
 </footer>
 
+</div><!-- fim de #paginaEscalada -->
+
 <!-- ===================== JANELA (MODAL) DE VÍDEO AMPLIADO ===================== -->
 <div class="modal-video" id="modalVideo" hidden>
   <button type="button" class="modal-video-fechar" id="modalVideoFechar" aria-label="Fechar vídeo">&times;</button>
@@ -1042,17 +1144,16 @@
     // Se tiver o arquivo da logo (de preferência já redonda, com fundo preenchido), preencha
     // "logo" com o nome do arquivo (mesma pasta do index.html). Sem "logo", o nome aparece em texto.
     marcas: [
-      { nome: "Nanovit", logo: "logo-redondo-nanovit.png" },
-      { nome: "Authentic Nutri", logo: "logo-authentic-nutri.png" },
-      { nome: "CreHub", logo: "logo-redondo-crehub.png" },
-      { nome: "Hellen Parfum", logo: "logo-redondo-hellen-parfum.png" },
-      { nome: "Esquadrão Fit", logo: "logo-redondo-esquadrao-fit.png" },
-      { nome: "Beleza Néctar", logo: "logo-redondo-beleza-nectar.png" },
-      { nome: "Dove", logo: "logo-redondo-dove.png" },
-      { nome: "O Boticário", logo: "logo-redondo-o-boticario.png" },
-      { nome: "Beyoung", logo: "logo-beyoung.png" },
-      { nome: "Rosa Selvagem", logo: "logo-redondo-rosa-selvagem.png" },
-      { nome: "Sace Lady", logo: "logo-redondo-sace-lady.png" }
+      { nome: "Bella Essence", logo: "logo-bella-essence.png" },
+      { nome: "Beleza Néctar", logo: "logo-beleza-nectar.png" },
+      { nome: "Pet Love", logo: "logo-pet-love.png" },
+      { nome: "CreHub", logo: "logo-crehub-novo.png" },
+      { nome: "Authentic Nutri", logo: "logo-authentic-nutri-novo.png" },
+      { nome: "O Boticário", logo: "logo-o-boticario-novo.png" },
+      { nome: "Iôla Ateliê", logo: "logo-iola-atelie.png" },
+      { nome: "Dove", logo: "logo-dove-novo.png" },
+      { nome: "Rosa Selvagem", logo: "logo-rosa-selvagem-novo.png" },
+      { nome: "Nanovit", logo: "logo-nanovit-novo.png" }
     ],
 
     // EDITE AQUI: texto da seção Sobre
@@ -1163,6 +1264,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     preencherTextosFixos();
     montarSobreFatos();
+    montarMarcasMarquee();
     montarMarcas();
     montarFiltrosEPortfolio();
     montarFotos();
@@ -1175,7 +1277,14 @@
     configurarAnimacoesDeEntrada();
     configurarFormulario();
     configurarModalVideo();
+    ajustarEscalaMobile();
   });
+
+  // Reajusta depois que todas as imagens/vídeos terminarem de carregar (a altura da
+  // página pode mudar), e sempre que a tela for redimensionada ou girada.
+  window.addEventListener("load", ajustarEscalaMobile);
+  window.addEventListener("resize", ajustarEscalaMobile);
+  window.addEventListener("orientationchange", ajustarEscalaMobile);
 
   function preencherTextosFixos(){
     document.getElementById("heroEtiqueta").textContent = config.hero.etiqueta;
@@ -1190,6 +1299,20 @@
   function montarSobreFatos(){
     const container = document.getElementById("sobreFatos");
     container.innerHTML = config.sobre.fatos.map(fato => `<span class="fato-cartao">${fato}</span>`).join("");
+  }
+
+  function montarMarcasMarquee(){
+    const trilho = document.getElementById("marcasMarqueeTrilho");
+    // Técnica marquee: renderiza a lista 2x seguidas no mesmo container. Como o container
+    // usa width:max-content e a animação anda de 0 até -50% da própria largura, a segunda
+    // cópia entra exatamente onde a primeira saiu, e o loop fica invisível (sem pulo).
+    const listaDupla = [...config.marcas, ...config.marcas];
+    trilho.innerHTML = listaDupla.map(marca => {
+      const conteudo = marca.logo
+        ? `<img src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
+        : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
+      return `<div class="marca-circulo">${conteudo}</div>`;
+    }).join("");
   }
 
   function montarMarcas(){
@@ -1267,6 +1390,7 @@
         });
 
         window.Tracking.buttonClick(`filtro_${filtro}`);
+        ajustarEscalaMobile();
       });
     });
 
@@ -1330,6 +1454,34 @@
         fecharModalVideo();
       }
     });
+  }
+
+  // No celular, #paginaEscalada é reduzida com "transform: scale" pra ficar igual ao
+  // computador (veja o CSS "PÁGINA INTEIRA IGUAL AO COMPUTADOR NO CELULAR"). Como
+  // "transform" não muda o espaço que o elemento ocupa no fluxo da página, essa função
+  // mede a altura real (sem escala) e aplica uma margem negativa do tamanho certo pra
+  // a página não sobrar com espaço em branco embaixo nem cortar o rodapé.
+  function ajustarEscalaMobile(){
+    const pagina = document.getElementById("paginaEscalada");
+    if (!pagina) return;
+
+    if (!window.matchMedia("(max-width: 900px)").matches){
+      pagina.style.marginBottom = "";
+      return;
+    }
+
+    const transformAtual = getComputedStyle(pagina).transform;
+    let escala = 1;
+    if (transformAtual && transformAtual !== "none"){
+      const numeros = transformAtual.match(/matrix\(([^)]+)\)/);
+      if (numeros){
+        escala = parseFloat(numeros[1].split(",")[0]);
+      }
+    }
+
+    const alturaNatural = pagina.offsetHeight;
+    const alturaVisivel = alturaNatural * escala;
+    pagina.style.marginBottom = `${alturaVisivel - alturaNatural}px`;
   }
 
   function montarFotos(){
@@ -1480,6 +1632,7 @@
 
       mensagemConfirmacao.hidden = false;
       form.reset();
+      ajustarEscalaMobile();
     });
   }
 </script>
