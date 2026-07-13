@@ -774,8 +774,8 @@
   @media (max-width: 900px){
     html{ overflow-x: hidden; }
     body{
-      zoom: 0.32;
-      width: 1280px;
+      zoom: 0.29;
+      width: 1180px;
       margin: 0 auto;
     }
     /* Some o menu-hambúrguer e mostra o menu completo do computador, já reduzido junto com o resto */
@@ -1159,7 +1159,7 @@
       let midia;
       if (item.videoArquivo){
         midia = `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
-             <video class="video-capa" src="${item.videoArquivo}" muted playsinline preload="metadata"></video>
+             <video class="video-capa" src="${item.videoArquivo}#t=0.1" muted playsinline preload="metadata"></video>
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
