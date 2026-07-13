@@ -641,6 +641,25 @@
   }
   .contato-info{ flex: 1 1 380px; }
   .contato-info h2{ font-size: 2rem; margin-bottom: 18px; }
+  .etiqueta-secao{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: .85rem;
+    color: var(--vermelho);
+    margin-bottom: 12px;
+  }
+  .etiqueta-secao::before{
+    content: "";
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--vermelho);
+  }
   .contato-botoes{
     display:flex;
     flex-wrap: wrap;
@@ -981,8 +1000,9 @@
   <section class="contato" id="contato">
     <div class="container contato-container">
       <div class="contato-info reveal">
-        <h2>Vamos trabalhar juntas?</h2>
-        <p>Preencha o formulário ao lado ou chame direto em um dos canais abaixo. Respondo rápido e adoro entender o que a sua marca precisa.</p>
+        <p class="etiqueta-secao">Contato</p>
+        <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
+        <p>Conta um pouco sobre sua marca e o que você quer alcançar. Respondo rápido e adoro entender o que vocês precisam.</p>
         <div class="contato-botoes">
           <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener">WhatsApp</a>
           <a class="botao botao-email" id="botaoEmail">E-mail</a>
@@ -999,8 +1019,16 @@
           <input type="email" id="campoEmail" name="email" required>
         </div>
         <div class="campo">
-          <label for="campoMensagem">Mensagem</label>
-          <textarea id="campoMensagem" name="mensagem" rows="4" required></textarea>
+          <label for="campoMarca">Marca / Empresa</label>
+          <input type="text" id="campoMarca" name="marca" placeholder="Nome da marca">
+        </div>
+        <div class="campo">
+          <label for="campoOrcamento">Orçamento estimado</label>
+          <input type="text" id="campoOrcamento" name="orcamento" placeholder="Ex: R$ 1.000 a R$ 5.000">
+        </div>
+        <div class="campo">
+          <label for="campoMensagem">Conta sobre o projeto</label>
+          <textarea id="campoMensagem" name="mensagem" rows="4" placeholder="Categoria, formato, prazo, objetivo da campanha..." required></textarea>
         </div>
         <button type="submit" class="botao botao-primario">Enviar mensagem</button>
         <p class="mensagem-confirmacao" id="mensagemConfirmacao" role="status" hidden>Obrigada pelo contato! Vamos abrir seu aplicativo de e-mail para finalizar o envio.</p>
@@ -1100,18 +1128,18 @@
     portfolio: [
       { titulo: "Minha rotina de skincare com a Beyoung", categoria: "beleza", videoArquivo: "video-rotina-skincare-beyoung.mp4" },
       { titulo: "Testando o Exolift da Beyoung", categoria: "beleza", videoArquivo: "video-exolift-beyoung.mp4" },
-      { titulo: "Testando o queridinho da Hellen Parfum", categoria: "beleza", videoArquivo: "video-perfume-hellen-parfum.mov" },
-      { titulo: "Proteção solar que vira hábito", categoria: "beleza", videoArquivo: "video-protetor-solar.mov" },
+      { titulo: "Testando o queridinho da Hellen Parfum", categoria: "beleza", videoArquivo: "video-perfume-hellen-parfum.mp4" },
+      { titulo: "Proteção solar que vira hábito", categoria: "beleza", videoArquivo: "video-protetor-solar.mp4" },
       { titulo: "Testando um perfume árabe", categoria: "beleza", videoArquivo: "video-perfume-arabe.mp4" },
       { titulo: "Creatina Nutri Power no meu dia a dia", categoria: "bem-estar", videoArquivo: "video-creatina-nutri-power.mp4" },
-      { titulo: "Colágeno que entrou pra rotina", categoria: "bem-estar", videoArquivo: "video-colageno-natural.mov" },
+      { titulo: "Colágeno que entrou pra rotina", categoria: "bem-estar", videoArquivo: "video-colageno-natural.mp4" },
       { titulo: "Laranja Moro pra desinchar e controlar o apetite", categoria: "bem-estar", videoArquivo: "video-laranja-moro.mp4" },
       { titulo: "Dia a dia com a gata e o cachorro", categoria: "pet", gradiente: "grad-5" },
       { titulo: "Resenha do Pipi Maniero", categoria: "pet", videoArquivo: "video-pipi-maniero.mp4" },
       { titulo: "Meu app de organização para UGC", categoria: "apps-sites", gradiente: "grad-2" },
-      { titulo: "Minha dieta em dia com o app do Esquadrão Fit", categoria: "apps-sites", videoArquivo: "video-esquadrao-fit-app.mov" },
+      { titulo: "Minha dieta em dia com o app do Esquadrão Fit", categoria: "apps-sites", videoArquivo: "video-esquadrao-fit-app.mp4" },
       { titulo: "Organizando parcerias com o app da CreHub", categoria: "apps-sites", videoArquivo: "video-crehub-app.mp4" },
-      { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mov" },
+      { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mp4" },
       { titulo: "Diário com as Cartas Adelaine", categoria: "maternidade", videoArquivo: "video-diario-adelaine.mp4" },
       { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", videoArquivo: "video-cartas-adelaine.mp4" },
       { titulo: "Especial Dia das Mães para uma loja de perfumes", categoria: "maternidade", videoArquivo: "video-dia-das-maes-perfumaria.mp4" },
@@ -1144,12 +1172,15 @@
       { titulo: "Conteúdo para Anúncios", descricao: "Vídeos pensados para performance em campanhas pagas, com ganchos testados nas redes sociais." }
     ],
 
-    // EDITE AQUI: depoimentos de clientes e marcas (troque pelos depoimentos reais)
+    // EDITE AQUI: depoimentos de clientes e marcas
     depoimentos: [
-      { texto: "O conteúdo entregue teve um desempenho muito acima da nossa média em anúncios. Profissionalismo do início ao fim.", nome: "Responsável de Marketing", empresa: "Marca de Beleza" },
-      { texto: "Comunicação fácil, entrega no prazo e um vídeo que realmente parecia depoimento de cliente de verdade.", nome: "Gerente de Conteúdo", empresa: "Marca Fitness" },
-      { texto: "Contratamos para um lançamento e o resultado em engajamento superou as expectativas do time.", nome: "Coordenadora de Redes Sociais", empresa: "Marca de Moda" },
-      { texto: "Já fizemos várias campanhas juntas e o padrão de qualidade se mantém sempre alto.", nome: "Diretor de Marca", empresa: "Marca Gourmet" }
+      { texto: "O conteúdo ficou extremamente elegante e sofisticado, alinhado com a identidade visual da marca, transmitindo uma sensação de exclusividade e luxo.", nome: "Equipe Hellen Parfum", empresa: "Hellen Parfum" },
+      { texto: "Amei o seu trabalho, ficou muito autêntico. O feedback das minhas clientes depois do vídeo foi maravilhoso.", nome: "Patrícia Pedroza", empresa: "Bella Rosa" },
+      { texto: "O vídeo ficou sensacional, muito obrigada pelo excelente trabalho. Super aprovado!", nome: "Estefânia", empresa: "Estefânia Semijoias" },
+      { texto: "Nossa, adorei os vídeos, você captou bem a essência! Parabéns mesmo.", nome: "Berenice Shakti", empresa: "Cartas para Adelaine" },
+      { texto: "Que produção! Ficou lindo o vídeo. Parabéns, seu conteúdo é uma coisa profissional, elite.", nome: "Equipe Bella Essence", empresa: "Bella Essence" },
+      { texto: "Perfeição demais! Ficou curtinho, mas deu pra pegar a ideia. Sério, gostei muito.", nome: "Equipe Iôla Ateliê", empresa: "Iôla Ateliê" },
+      { texto: "Eu amei, ficou muito bom!", nome: "Equipe Beleza Néctar", empresa: "Beleza Néctar" }
     ]
   };
 
@@ -1472,14 +1503,16 @@
 
       const nome = document.getElementById("campoNome").value.trim();
       const email = document.getElementById("campoEmail").value.trim();
+      const marca = document.getElementById("campoMarca").value.trim();
+      const orcamento = document.getElementById("campoOrcamento").value.trim();
       const mensagem = document.getElementById("campoMensagem").value.trim();
 
-      const assunto = encodeURIComponent(`Contato via site - ${nome}`);
-      const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\n\nMensagem:\n${mensagem}`);
+      const assunto = encodeURIComponent(`Contato via site - ${nome}${marca ? " (" + marca + ")" : ""}`);
+      const corpo = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\nMarca/Empresa: ${marca}\nOrçamento estimado: ${orcamento}\n\nProjeto:\n${mensagem}`);
       const linkMailto = `mailto:${config.contato.email}?subject=${assunto}&body=${corpo}`;
 
       // Registra a mensagem e o clique de envio no painel administrativo
-      window.Tracking.lead({ name: nome, email: email, message: mensagem, source: "contact" });
+      window.Tracking.lead({ name: nome, email: email, brand: marca, budget: orcamento, message: mensagem, source: "contact" });
       window.Tracking.buttonClick("contact_form_submit");
 
       window.location.href = linkMailto;
