@@ -539,6 +539,9 @@
     border-radius: 0;
     aspect-ratio: 4/5;
   }
+  /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
+  .foto-rotacionar{ transform: rotate(180deg); }
+  .foto-espelhar{ transform: scaleX(-1); }
   .foto-item .legenda-foto{
     padding: 12px 14px;
     background: var(--branco);
@@ -1121,10 +1124,19 @@
     // Para uma foto real, adicione "arquivo": "nome-do-arquivo.jpg" (mesma pasta do index.html).
     // Sem o "arquivo", o item mostra um bloco em gradiente no lugar (placeholder).
     fotos: [
-      { titulo: "Foto de produto", gradiente: "grad-1" },
-      { titulo: "Foto de rotina", gradiente: "grad-2" },
-      { titulo: "Foto de unboxing", gradiente: "grad-3" },
-      { titulo: "Foto de resenha", gradiente: "grad-4" }
+      { titulo: "Acessórios em still", arquivo: "foto-acessorios-1.jpeg" },
+      { titulo: "Still de acessórios ao sol", arquivo: "foto-acessorios-2.jpeg" },
+      { titulo: "App do Esquadrão Fit", arquivo: "foto-app-esquadrao-fit.jpeg" },
+      { titulo: "Momento banho com Dove", arquivo: "foto-banho-dove.jpeg" },
+      { titulo: "Base Vegana Visella", arquivo: "foto-base-visella.jpeg" },
+      { titulo: "Body Splash Rosa Selvagem", arquivo: "foto-bodysplash-rosa-selvagem.jpeg" },
+      { titulo: "Cartas para Adelaine", arquivo: "foto-cartas-adelaine.jpeg" },
+      { titulo: "Cuidados capilares", arquivo: "foto-cuidados-capilar.jpeg" },
+      { titulo: "Dia das Mães em família", arquivo: "foto-dia-das-maes.jpeg" },
+      { titulo: "Nutri Blend Complex", arquivo: "foto-nutri-blend.jpeg" },
+      { titulo: "Protetor solar no dia a dia", arquivo: "foto-protetor-solar.jpeg" },
+      { titulo: "Pó facial Sace Lady", arquivo: "foto-sacelady.jpeg" },
+      { titulo: "Sérum O Boticário", arquivo: "foto-serum-o-boticario.jpeg", correcao: "espelhar" }
     ],
 
     // EDITE AQUI: serviços oferecidos
@@ -1336,8 +1348,10 @@
   function montarFotos(){
     const grade = document.getElementById("fotosGrade");
     grade.innerHTML = config.fotos.map(foto => {
+      // "correcao" ajeita fotos que vieram giradas/espelhadas da câmera: "rotacionar" (180°) ou "espelhar"
+      const classeCorrecao = foto.correcao ? ` foto-${foto.correcao}` : "";
       const midia = foto.arquivo
-        ? `<div class="foto-espaco"><img src="${foto.arquivo}" alt="${foto.titulo}" loading="lazy"></div>`
+        ? `<div class="foto-espaco"><img class="${classeCorrecao.trim()}" src="${foto.arquivo}" alt="${foto.titulo}" loading="lazy"></div>`
         : `<div class="foto-espaco ${foto.gradiente}" role="img" aria-label="Foto: ${foto.titulo}"></div>`;
       return `
       <article class="foto-item reveal">
