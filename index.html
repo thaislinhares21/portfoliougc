@@ -588,52 +588,6 @@
     color: var(--vermelho);
   }
 
-  /* ===================== MARCAS TRABALHADAS ===================== */
-  .marcas-trabalhadas-titulo{
-    text-align: center;
-    margin-bottom: 50px;
-  }
-  .marcas-trabalhadas-titulo .fonte-marcador{
-    display: block;
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
-    color: var(--vermelho);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .marcas-trabalhadas-titulo span{
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    letter-spacing: 3px;
-    font-size: clamp(1.1rem, 3vw, 1.6rem);
-    color: var(--tinta);
-  }
-  .marcas-trabalhadas-faixa{
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  }
-  .marcas-trabalhadas-grade{
-    display: inline-flex;
-    align-items: center;
-    gap: 40px;
-    animation: rolarMarcas 30s linear infinite;
-  }
-  .marca-trabalhada-logo{
-    max-height: 80px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-  .marca-trabalhada-texto{
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    white-space: nowrap;
-    color: var(--tinta);
-    flex-shrink: 0;
-  }
-
   /* ===================== DEPOIMENTOS ===================== */
   .depoimentos-grade{
     display:grid;
@@ -909,7 +863,6 @@
     <nav class="nav" id="menuNav" aria-label="Navegação principal">
       <ul>
         <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#marcas-trabalhadas">Marcas</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
         <li><a href="#fotos">Fotos</a></li>
         <li><a href="#servicos">Serviços</a></li>
@@ -967,19 +920,6 @@
     </div>
     <div class="container">
       <div class="sobre-fatos" id="sobreFatos" aria-label="Fatos rápidos sobre a Thais"></div>
-    </div>
-  </section>
-
-  <!-- ===================== MARCAS TRABALHADAS ===================== -->
-  <section class="marcas-trabalhadas" id="marcas-trabalhadas">
-    <div class="container">
-      <div class="marcas-trabalhadas-titulo reveal">
-        <span class="fonte-marcador">Marcas</span>
-        <span>TRABALHADAS</span>
-      </div>
-      <div class="marcas-trabalhadas-faixa reveal">
-        <div class="marcas-trabalhadas-grade" id="marcasTrabalhadasGrade"></div>
-      </div>
     </div>
   </section>
 
@@ -1223,7 +1163,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     preencherTextosFixos();
     montarSobreFatos();
-    montarMarcasTrabalhadas();
     montarMarcas();
     montarFiltrosEPortfolio();
     montarFotos();
@@ -1251,19 +1190,6 @@
   function montarSobreFatos(){
     const container = document.getElementById("sobreFatos");
     container.innerHTML = config.sobre.fatos.map(fato => `<span class="fato-cartao">${fato}</span>`).join("");
-  }
-
-  function montarMarcasTrabalhadas(){
-    const grade = document.getElementById("marcasTrabalhadasGrade");
-    // repete a lista 8x (a animação anda 1/8 da largura) pra rolagem nunca mostrar espaço em branco,
-    // igual à técnica usada na faixa de nichos
-    const repeticoes = 8;
-    const listaRepetida = Array.from({ length: repeticoes }, () => config.marcas).flat();
-    grade.innerHTML = listaRepetida.map(marca => {
-      return marca.logo
-        ? `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
-        : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
-    }).join("");
   }
 
   function montarMarcas(){
