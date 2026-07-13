@@ -591,48 +591,25 @@
     font-size: clamp(1.1rem, 3vw, 1.6rem);
     color: var(--tinta);
   }
-  .marcas-trabalhadas-faixa{
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  }
   .marcas-trabalhadas-grade{
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
     align-items: center;
-    gap: 20px;
-    animation: rolarMarcas 26s linear infinite;
+    justify-items: center;
   }
-  .marca-trabalhada-cartao{
-    width: 84px;
-    height: 84px;
-    border-radius: 50%;
-    background: var(--branco);
-    border: var(--borda);
-    box-shadow: var(--sombra-dura-pequena);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px;
-    flex-shrink: 0;
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .marca-trabalhada-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
   .marca-trabalhada-logo{
     max-width: 100%;
-    max-height: 100%;
+    max-height: 60px;
     width: auto;
     height: auto;
     object-fit: contain;
-    /* "Multiply" faz o fundo branco/claro da logo somar com o círculo branco por trás,
-       deixando a logo parecer sem fundo, sem precisar editar a imagem. */
-    mix-blend-mode: multiply;
   }
   .marca-trabalhada-texto{
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: .68rem;
-    line-height: 1.15;
-    text-align: center;
+    font-weight: 700;
+    font-size: 1.3rem;
+    white-space: nowrap;
     color: var(--tinta);
   }
 
@@ -960,9 +937,7 @@
         <span class="fonte-marcador">Marcas</span>
         <span>TRABALHADAS</span>
       </div>
-      <div class="marcas-trabalhadas-faixa reveal">
-        <div class="marcas-trabalhadas-grade" id="marcasTrabalhadasGrade"></div>
-      </div>
+      <div class="marcas-trabalhadas-grade reveal" id="marcasTrabalhadasGrade"></div>
     </div>
   </section>
 
@@ -1073,15 +1048,15 @@
     },
 
     // EDITE AQUI: marcas com quem Thais já trabalhou.
-    // Se tiver o arquivo da logo, preencha "logo" com o nome do arquivo (deixe na mesma pasta do index.html).
-    // Se não tiver a logo ainda, deixe "logo" como null que o nome aparece em texto.
+    // Se tiver o arquivo da logo (fundo transparente, de preferência), preencha "logo" com o
+    // nome do arquivo (mesma pasta do index.html). Sem "logo", o nome aparece em texto.
     marcas: [
       { nome: "Nanovit", logo: "logo-nanovit.jpg" },
       { nome: "Authentic Nutri", logo: "logo-authentic-nutri.png" },
       { nome: "CreHub", logo: "logo-crehub.png" },
       { nome: "Hellen Parfum", logo: "logo-hellen-parfum.png" },
       { nome: "Esquadrão Fit", logo: "logo-esquadrao-fit.png" },
-      { nome: "Beleza Néctar", logo: null },
+      { nome: "Beleza Néctar" },
       { nome: "Dove", logo: "logo-dove.jpg" },
       { nome: "O Boticário", logo: "logo-o-boticario.jpg" },
       { nome: "Beyoung", logo: "logo-beyoung.png" },
@@ -1211,15 +1186,10 @@
 
   function montarMarcasTrabalhadas(){
     const grade = document.getElementById("marcasTrabalhadasGrade");
-    // repete a lista 8x (a animação anda 1/8 da largura) pra rolagem nunca mostrar espaço em branco,
-    // igual à técnica usada na faixa de nichos
-    const repeticoes = 8;
-    const listaRepetida = Array.from({ length: repeticoes }, () => config.marcas).flat();
-    grade.innerHTML = listaRepetida.map(marca => {
-      const conteudo = marca.logo
+    grade.innerHTML = config.marcas.map(marca => {
+      return marca.logo
         ? `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
         : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
-      return `<div class="marca-trabalhada-cartao">${conteudo}</div>`;
     }).join("");
   }
 
