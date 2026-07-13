@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Jost:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- Supabase via CDN, depois a configuração compartilhada e o rastreamento de uso do site -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -18,14 +18,15 @@
 <style>
   /* ===================== VARIÁVEIS DE COR E BASE ===================== */
   :root{
-    --creme: #ece3c8;
-    --rosa: #f48aab;
-    --vermelho: #ec4128;
-    --tinta: #2a2622;
-    --branco: #fffaf0;
-    --sombra-dura: 6px 6px 0px var(--tinta);
-    --sombra-dura-pequena: 4px 4px 0px var(--tinta);
-    --borda: 3px solid var(--tinta);
+    --creme: #faf9f7;
+    --rosa: #fdece1;
+    --vermelho: #e8622c;
+    --tinta: #131313;
+    --branco: #ffffff;
+    --cinza-texto: #5c5c5c;
+    --sombra-dura: 0 24px 48px rgba(19,19,19,0.10);
+    --sombra-dura-pequena: 0 10px 24px rgba(19,19,19,0.08);
+    --borda: 1px solid rgba(19,19,19,0.08);
     --altura-cabecalho: 84px;
   }
 
@@ -36,26 +37,26 @@
     margin:0;
     background: var(--creme);
     color: var(--tinta);
-    font-family: 'Jost', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
-  h1,h2,h3,.logo,.numero-resultado{
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 600;
+  h1,h2,h3,.logo{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
     margin: 0;
   }
 
-  p{ line-height: 1.6; }
+  p{ line-height: 1.7; color: var(--cinza-texto); }
   ul{ list-style: none; margin:0; padding:0; }
   a{ color: inherit; text-decoration: none; }
   img{ max-width: 100%; display:block; }
 
   section{ scroll-margin-top: var(--altura-cabecalho); }
 
-  /* Marcador de destaque, usado em etiquetas e rabiscos */
-  .fonte-marcador{ font-family: 'Permanent Marker', cursive; }
+  /* Destaque em itálico laranja, usado em títulos e palavras-chave */
+  .fonte-marcador{ font-family: 'Poppins', sans-serif; font-style: italic; font-weight: 600; color: var(--vermelho); }
 
   /* Foco visível para navegação por teclado */
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
@@ -87,7 +88,7 @@
   /* ===================== BOTÕES ===================== */
   .botao{
     display:inline-block;
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 1rem;
     padding: 14px 30px;
@@ -99,15 +100,15 @@
     text-align:center;
   }
   .botao:hover, .botao:focus-visible{
-    transform: translate(-2px,-2px);
-    box-shadow: 7px 7px 0px var(--tinta);
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-dura);
   }
   .botao:active{
-    transform: translate(1px,1px);
-    box-shadow: 2px 2px 0px var(--tinta);
+    transform: translateY(0);
+    box-shadow: var(--sombra-dura-pequena);
   }
-  .botao-primario{ background: var(--vermelho); color: var(--branco); }
-  .botao-secundario{ background: var(--creme); color: var(--tinta); }
+  .botao-primario{ background: var(--vermelho); color: var(--branco); border-color: var(--vermelho); }
+  .botao-secundario{ background: var(--branco); color: var(--tinta); }
   .botao-whatsapp{ background:#3fae56; color:var(--branco); }
   .botao-email{ background: var(--rosa); color: var(--tinta); }
   .botao-instagram{ background: var(--tinta); color: var(--branco); }
@@ -199,27 +200,40 @@
   }
   .hero-texto{ flex: 1 1 420px; }
   .etiqueta-marcador{
-    display:inline-block;
-    font-family:'Permanent Marker', cursive;
-    color: var(--vermelho);
+    display:inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--tinta);
     background: var(--branco);
     border: var(--borda);
     box-shadow: var(--sombra-dura-pequena);
-    padding: 6px 18px;
+    padding: 8px 18px;
     border-radius: 50px;
-    transform: rotate(-4deg);
     margin-bottom: 22px;
-    font-size: .95rem;
+    font-size: .85rem;
+  }
+  .etiqueta-marcador::before{
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vermelho);
+    flex-shrink: 0;
   }
   .hero-texto h1{
     font-size: clamp(2.4rem, 6vw, 4rem);
     line-height: 1.05;
     margin-bottom: 20px;
+    color: var(--tinta);
   }
   .hero-frase{
     font-size: 1.2rem;
     max-width: 520px;
     margin-bottom: 32px;
+    color: var(--cinza-texto);
   }
   .foto-espaco{
     position: relative;
@@ -232,7 +246,8 @@
     justify-content:center;
   }
   .foto-iniciais{
-    font-family:'Permanent Marker', cursive;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
     color: rgba(255,255,255,.55);
     font-size: 5rem;
   }
@@ -240,45 +255,62 @@
   /* Gradientes que simulam fotos/vídeos reais nos blocos de portfólio e retratos.
      Para usar uma foto de verdade, troque a div (classe foto-espaco + grad-X) por
      um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
-  .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
+  .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
   .foto-espaco img{ width:100%; height:100%; object-fit:cover; object-position: center; }
   .sobre-foto img{ object-position: center top; }
-  .grad-1{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
-  .grad-2{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
-  .grad-3{ background: linear-gradient(150deg, var(--creme), var(--rosa)); }
-  .grad-4{ background: linear-gradient(160deg, var(--tinta), var(--rosa)); }
-  .grad-5{ background: linear-gradient(200deg, var(--rosa), var(--creme)); }
-  .hero-foto{
+  .grad-1{ background: linear-gradient(135deg, var(--vermelho), var(--tinta)); }
+  .grad-2{ background: linear-gradient(135deg, var(--tinta), var(--vermelho)); }
+  .grad-3{ background: linear-gradient(150deg, #d9d9d9, var(--vermelho)); }
+  .grad-4{ background: linear-gradient(160deg, var(--tinta), #7a7a7a); }
+  .grad-5{ background: linear-gradient(200deg, var(--vermelho), #d9d9d9); }
+  .hero-foto-wrapper{
+    position: relative;
     flex: 1 1 320px;
-    aspect-ratio: 4/5;
     max-width: 420px;
     margin: 0 auto;
-    transform: rotate(2deg);
+  }
+  .hero-foto{
+    aspect-ratio: 4/5;
+    width: 100%;
   }
 
-  /* Adesivos decorativos */
-  .adesivo{
+  /* Cartões flutuantes de prova social, sobrepostos à foto do Hero */
+  .flutuante{
     position:absolute;
-    font-family:'Permanent Marker', cursive;
-    background: var(--rosa);
+    background: var(--branco);
     border: var(--borda);
-    box-shadow: var(--sombra-dura-pequena);
+    box-shadow: var(--sombra-dura);
+    border-radius: 16px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    padding: 12px 16px;
+    max-width: 220px;
+  }
+  .flutuante-icone{
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    background: var(--vermelho);
+    color: var(--branco);
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center;
+    font-size: .9rem;
+  }
+  .flutuante-texto strong{
+    display:block;
+    font-family:'Poppins', sans-serif;
+    font-size: .82rem;
     color: var(--tinta);
-    padding: 14px;
   }
-  .adesivo-hero{
-    top: 8px;
-    right: 0;
-    width: 110px;
-    height:110px;
-    font-size: .85rem;
-    transform: rotate(10deg);
+  .flutuante-texto span{
+    font-size: .75rem;
+    color: var(--cinza-texto);
   }
+  .flutuante-hero-1{ top: -20px; right: -20px; }
+  .flutuante-hero-2{ bottom: 30px; left: -30px; }
 
   /* ===================== FAIXA DE MARCAS ===================== */
   .marcas-faixa{
@@ -296,7 +328,7 @@
     animation: rolarMarcas 24s linear infinite;
   }
   .marcas-track span{
-    font-family:'Fredoka', sans-serif;
+    font-family:'Poppins', sans-serif;
     font-weight:600;
     font-size: 1.3rem;
     color: var(--creme);
@@ -339,33 +371,31 @@
     max-width: 400px;
     aspect-ratio: 1/1;
     margin: 0 auto;
-    transform: rotate(-2deg);
   }
   .sobre-texto{ flex: 1 1 420px; }
   .sobre-texto h2{ font-size: 2rem; margin-bottom: 20px; }
   .sobre-texto p{ font-size: 1.08rem; margin-bottom: 16px; }
+  .sobre-texto p strong{ color: var(--tinta); font-weight: 700; }
 
   .sobre-fatos{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 18px;
+    gap: 14px;
     margin-top: 50px;
   }
   .fato-cartao{
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
     background: var(--branco);
     border: var(--borda);
     box-shadow: var(--sombra-dura-pequena);
-    border-radius: 16px;
-    padding: 14px 22px;
-    font-size: 1rem;
-    transition: transform .15s ease;
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-size: .95rem;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .fato-cartao:nth-child(odd){ transform: rotate(-2deg); background: var(--creme); }
-  .fato-cartao:nth-child(even){ transform: rotate(2deg); background: var(--rosa); }
-  .fato-cartao:hover{ transform: translateY(-4px) rotate(0deg); }
+  .fato-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
 
   /* ===================== PORTFÓLIO ===================== */
   .filtros{
@@ -376,7 +406,7 @@
     margin-bottom: 46px;
   }
   .filtro-botao{
-    font-family:'Fredoka', sans-serif;
+    font-family:'Poppins', sans-serif;
     font-weight: 500;
     background: var(--branco);
     border: var(--borda);
@@ -463,7 +493,7 @@
     left: 14px;
     bottom: 14px;
     color: var(--branco);
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: .8rem;
     letter-spacing: .5px;
@@ -477,7 +507,7 @@
   }
   .portfolio-item .legenda strong{
     display:block;
-    font-family:'Fredoka', sans-serif;
+    font-family:'Poppins', sans-serif;
     margin-bottom: 4px;
   }
   .portfolio-item .legenda span{
@@ -513,7 +543,7 @@
     padding: 12px 14px;
     background: var(--branco);
     border-top: var(--borda);
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: .9rem;
   }
@@ -533,8 +563,8 @@
     transition: transform .15s ease, box-shadow .15s ease;
   }
   .cartao-servico:hover{
-    transform: translate(-3px,-3px);
-    box-shadow: 8px 8px 0px var(--tinta);
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-dura);
   }
   .cartao-servico h3{
     font-size: 1.25rem;
@@ -542,28 +572,61 @@
     color: var(--vermelho);
   }
 
-  /* ===================== RESULTADOS ===================== */
-  .resultados{ background: var(--tinta); color: var(--creme); }
-  .resultados .titulo-secao{ color: var(--creme); }
-  .resultados .titulo-secao::after{ background: var(--rosa); }
-  .resultados-grade{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    text-align:center;
+  /* ===================== MARCAS TRABALHADAS ===================== */
+  .marcas-trabalhadas-titulo{
+    text-align: center;
+    margin-bottom: 50px;
   }
-  .cartao-resultado{
-    background: rgba(236,227,200,0.06);
-    border: 3px solid var(--rosa);
-    border-radius: 20px;
-    padding: 34px 18px;
+  .marcas-trabalhadas-titulo .fonte-marcador{
+    display: block;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    color: var(--vermelho);
+    line-height: 1;
+    margin-bottom: 6px;
   }
-  .numero-resultado{
-    font-size: clamp(2.2rem, 5vw, 3rem);
-    color: var(--rosa);
-    margin-bottom: 8px;
+  .marcas-trabalhadas-titulo span{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: 3px;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--tinta);
   }
-  .rotulo-resultado{ font-size: .95rem; opacity: .9; }
+  .marcas-trabalhadas-grade{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .marca-trabalhada-cartao{
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .marca-trabalhada-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
+  .marca-trabalhada-logo{
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+  .marca-trabalhada-texto{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: .68rem;
+    line-height: 1.15;
+    text-align: center;
+    color: var(--tinta);
+  }
 
   /* ===================== DEPOIMENTOS ===================== */
   .depoimentos-grade{
@@ -579,7 +642,7 @@
     padding: 28px 24px;
   }
   .cartao-depoimento p{ font-style: normal; margin-bottom: 18px; }
-  .cartao-depoimento strong{ display:block; font-family:'Fredoka', sans-serif; }
+  .cartao-depoimento strong{ display:block; font-family:'Poppins', sans-serif; }
   .cartao-depoimento .empresa-depoimento{ font-size: .85rem; opacity: .8; }
 
   /* ===================== CONTATO ===================== */
@@ -610,7 +673,7 @@
   .campo{ display:flex; flex-direction:column; gap:6px; }
   .campo label{ font-weight: 600; font-size: .95rem; }
   .campo input, .campo textarea{
-    font-family:'Jost', sans-serif;
+    font-family:'Inter', sans-serif;
     font-size: 1rem;
     padding: 12px 14px;
     border: var(--borda);
@@ -638,7 +701,7 @@
     border-top: var(--borda);
   }
   .rodape-nome{
-    font-family:'Fredoka', sans-serif;
+    font-family:'Poppins', sans-serif;
     font-size: 1.4rem;
     margin-bottom: 16px;
   }
@@ -653,7 +716,7 @@
     font-weight: 600;
     border-bottom: 2px solid transparent;
   }
-  .rodape-redes a:hover, .rodape-redes a:focus-visible{ border-bottom-color: var(--rosa); }
+  .rodape-redes a:hover, .rodape-redes a:focus-visible{ border-bottom-color: var(--vermelho); }
   .rodape-copy{ font-size: .85rem; opacity: .75; }
 
   /* ===================== ANIMAÇÃO DE ENTRADA (SCROLL) ===================== */
@@ -821,10 +884,10 @@
     <nav class="nav" id="menuNav" aria-label="Navegação principal">
       <ul>
         <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#marcas-trabalhadas">Marcas</a></li>
         <li><a href="#portfolio">Portfólio</a></li>
         <li><a href="#fotos">Fotos</a></li>
         <li><a href="#servicos">Serviços</a></li>
-        <li><a href="#resultados">Resultados</a></li>
         <li><a href="#depoimentos">Depoimentos</a></li>
         <li><a href="#contato" class="nav-cta">Fale comigo</a></li>
       </ul>
@@ -843,10 +906,19 @@
         <p class="hero-frase" id="heroFrase">Conteúdo autêntico que vira resultado de verdade para a sua marca.</p>
         <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
       </div>
-      <div class="foto-espaco hero-foto reveal">
-        <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
-        <img src="fotocapa.jpeg" alt="Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
-        <div class="adesivo adesivo-hero">100% autêntico</div>
+      <div class="hero-foto-wrapper reveal">
+        <div class="foto-espaco hero-foto">
+          <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
+          <img src="fotocapa.jpeg" alt="Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
+        </div>
+        <div class="flutuante flutuante-hero-1">
+          <span class="flutuante-icone">&#10003;</span>
+          <div class="flutuante-texto"><strong>100% autêntico</strong><span>Conteúdo genuíno</span></div>
+        </div>
+        <div class="flutuante flutuante-hero-2">
+          <span class="flutuante-icone">&#9733;</span>
+          <div class="flutuante-texto"><strong>+10 marcas</strong><span>já confiaram no trabalho</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -873,6 +945,17 @@
     </div>
   </section>
 
+  <!-- ===================== MARCAS TRABALHADAS ===================== -->
+  <section class="marcas-trabalhadas" id="marcas-trabalhadas">
+    <div class="container">
+      <div class="marcas-trabalhadas-titulo reveal">
+        <span class="fonte-marcador">Marcas</span>
+        <span>TRABALHADAS</span>
+      </div>
+      <div class="marcas-trabalhadas-grade reveal" id="marcasTrabalhadasGrade"></div>
+    </div>
+  </section>
+
   <!-- ===================== PORTFÓLIO ===================== -->
   <section class="portfolio" id="portfolio">
     <div class="container">
@@ -895,14 +978,6 @@
     <div class="container">
       <h2 class="titulo-secao reveal">Serviços</h2>
       <div class="servicos-grade" id="servicosGrade"></div>
-    </div>
-  </section>
-
-  <!-- ===================== RESULTADOS ===================== -->
-  <section class="resultados" id="resultados">
-    <div class="container">
-      <h2 class="titulo-secao reveal">Resultados</h2>
-      <div class="resultados-grade" id="resultadosGrade"></div>
     </div>
   </section>
 
@@ -1007,7 +1082,7 @@
     // EDITE AQUI: texto da seção Sobre
     sobre: {
       titulo: "Sobre mim",
-      texto: "Sou a Thais, tenho 28 anos, moro em Porto Velho (RO) e sou mãe de um casal, de idades diferentes. Formada em Design de Interiores, hoje dedico minha rotina à criação de conteúdo autêntico: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio aplicativo para organizar produções de UGC. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
+      texto: "Sou a Thais, tenho <strong>28 anos</strong> e moro em <strong>Porto Velho (RO)</strong>. Sou mãe de um casal, de idades diferentes, e formada em <strong>Design de Interiores</strong>. Hoje dedico minha rotina à criação de <strong>conteúdo autêntico</strong>: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio <strong>aplicativo para organizar produções de UGC</strong>. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
       // EDITE AQUI: fatos rápidos sobre você, aparecem como cartõezinhos abaixo do texto
       fatos: [
         "Mãe de um casal",
@@ -1077,14 +1152,6 @@
       { titulo: "Conteúdo para Anúncios", descricao: "Vídeos pensados para performance em campanhas pagas, com ganchos testados nas redes sociais." }
     ],
 
-    // EDITE AQUI: números de resultado (os contadores animam sozinhos ao aparecer na tela)
-    resultados: [
-      { numero: 45, sufixo: "mil+", rotulo: "Comunidade engajada" },
-      { numero: 8, sufixo: "mi+", rotulo: "Visualizações geradas em campanhas" },
-      { numero: 60, sufixo: "+", rotulo: "Marcas atendidas" },
-      { numero: 12, sufixo: "%", rotulo: "Taxa média de engajamento" }
-    ],
-
     // EDITE AQUI: depoimentos de clientes e marcas (troque pelos depoimentos reais)
     depoimentos: [
       { texto: "O conteúdo entregue teve um desempenho muito acima da nossa média em anúncios. Profissionalismo do início ao fim.", nome: "Responsável de Marketing", empresa: "Marca de Beleza" },
@@ -1102,18 +1169,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     preencherTextosFixos();
     montarSobreFatos();
+    montarMarcasTrabalhadas();
     montarMarcas();
     montarFiltrosEPortfolio();
     montarFotos();
     montarServicos();
-    montarResultados();
     montarDepoimentos();
     montarContatoERodape();
     configurarMenuMobile();
     configurarRolagemSuave();
     configurarRastreioDeCliques();
     configurarAnimacoesDeEntrada();
-    configurarContadores();
     configurarFormulario();
     configurarModalVideo();
   });
@@ -1124,13 +1190,23 @@
     document.getElementById("heroFrase").textContent = config.hero.frase;
     document.getElementById("heroBotao").textContent = config.hero.botao;
     document.getElementById("sobreTitulo").textContent = config.sobre.titulo;
-    document.getElementById("sobreTexto").textContent = config.sobre.texto;
+    document.getElementById("sobreTexto").innerHTML = config.sobre.texto;
     document.title = config.nome + " | Criadora de Conteúdo UGC";
   }
 
   function montarSobreFatos(){
     const container = document.getElementById("sobreFatos");
     container.innerHTML = config.sobre.fatos.map(fato => `<span class="fato-cartao">${fato}</span>`).join("");
+  }
+
+  function montarMarcasTrabalhadas(){
+    const grade = document.getElementById("marcasTrabalhadasGrade");
+    grade.innerHTML = config.marcas.map(marca => {
+      const conteudo = marca.logo
+        ? `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
+        : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
+      return `<div class="marca-trabalhada-cartao">${conteudo}</div>`;
+    }).join("");
   }
 
   function montarMarcas(){
@@ -1298,16 +1374,6 @@
     `).join("");
   }
 
-  function montarResultados(){
-    const grade = document.getElementById("resultadosGrade");
-    grade.innerHTML = config.resultados.map(resultado => `
-      <div class="cartao-resultado reveal">
-        <p class="numero-resultado" data-numero-final="${resultado.numero}" data-sufixo="${resultado.sufixo}">0${resultado.sufixo}</p>
-        <p class="rotulo-resultado">${resultado.rotulo}</p>
-      </div>
-    `).join("");
-  }
-
   function montarDepoimentos(){
     const grade = document.getElementById("depoimentosGrade");
     grade.innerHTML = config.depoimentos.map(depoimento => `
@@ -1402,39 +1468,6 @@
     }, { threshold: 0.15 });
 
     elementos.forEach(el => observador.observe(el));
-  }
-
-  function configurarContadores(){
-    const numeros = document.querySelectorAll(".numero-resultado");
-    const observador = new IntersectionObserver((entradas) => {
-      entradas.forEach(entrada => {
-        if (entrada.isIntersecting){
-          animarContador(entrada.target);
-          observador.unobserve(entrada.target);
-        }
-      });
-    }, { threshold: 0.4 });
-
-    numeros.forEach(numero => observador.observe(numero));
-  }
-
-  function animarContador(elemento){
-    const alvo = parseInt(elemento.dataset.numeroFinal, 10);
-    const sufixo = elemento.dataset.sufixo || "";
-    const duracao = 1500;
-    const inicio = performance.now();
-
-    function passo(agora){
-      const progresso = Math.min((agora - inicio) / duracao, 1);
-      const valorAtual = Math.floor(progresso * alvo);
-      elemento.textContent = valorAtual + sufixo;
-      if (progresso < 1){
-        requestAnimationFrame(passo);
-      } else {
-        elemento.textContent = alvo + sufixo;
-      }
-    }
-    requestAnimationFrame(passo);
   }
 
   function configurarFormulario(){
