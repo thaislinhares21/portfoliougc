@@ -899,9 +899,10 @@
       /* EDITE AQUI: ajuste fino da escala em telas bem pequenas, se precisar */
       --escala-mobile: 0.3;
       transform: scale(var(--escala-mobile));
-      /* Centraliza a página encolhida: desloca a borda esquerda pra metade do espaço
-         sobrando entre a largura da tela e a largura já reduzida da página. */
-      margin-left: calc(50vw - (1180px * var(--escala-mobile) / 2));
+      /* A centralização horizontal (margin-left) é calculada e aplicada via JavaScript
+         (função ajustarEscalaMobile), usando window.innerWidth em vez de "vw" do CSS,
+         porque a unidade "vw" mostrou-se pouco confiável dentro de navegadores
+         embutidos em apps (Instagram, Facebook etc.). */
     }
     /* Sem position:fixed aqui: dentro de um ancestral com "transform", o fixed passa a
        ser relativo a esse ancestral (e não à tela), então o cabeçalho já rola com o
@@ -1471,6 +1472,7 @@
 
     if (!window.matchMedia("(max-width: 900px)").matches){
       pagina.style.marginBottom = "";
+      pagina.style.marginLeft = "";
       return;
     }
 
@@ -1483,9 +1485,18 @@
       }
     }
 
+    // Ajusta a altura (evita espaço em branco embaixo, já que "transform" não muda
+    // o espaço ocupado no fluxo da página)
     const alturaNatural = pagina.offsetHeight;
     const alturaVisivel = alturaNatural * escala;
     pagina.style.marginBottom = `${alturaVisivel - alturaNatural}px`;
+
+    // Centraliza horizontalmente usando window.innerWidth (mais confiável que a
+    // unidade "vw" do CSS dentro de navegadores embutidos em apps)
+    const larguraNatural = pagina.offsetWidth;
+    const larguraVisivel = larguraNatural * escala;
+    const margemEsquerda = (window.innerWidth - larguraVisivel) / 2;
+    pagina.style.marginLeft = `${margemEsquerda}px`;
   }
 
   function montarFotos(){
