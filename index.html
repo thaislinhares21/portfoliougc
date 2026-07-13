@@ -607,19 +607,23 @@
     font-size: clamp(1.1rem, 3vw, 1.6rem);
     color: var(--tinta);
   }
+  .marcas-trabalhadas-faixa{
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
   .marcas-trabalhadas-grade{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
+    display: inline-flex;
     align-items: center;
-    justify-items: center;
+    gap: 40px;
+    animation: rolarMarcas 30s linear infinite;
   }
   .marca-trabalhada-logo{
-    max-width: 100%;
-    max-height: 60px;
+    max-height: 80px;
     width: auto;
     height: auto;
     object-fit: contain;
+    flex-shrink: 0;
   }
   .marca-trabalhada-texto{
     font-family: 'Poppins', sans-serif;
@@ -627,6 +631,7 @@
     font-size: 1.3rem;
     white-space: nowrap;
     color: var(--tinta);
+    flex-shrink: 0;
   }
 
   /* ===================== DEPOIMENTOS ===================== */
@@ -972,7 +977,9 @@
         <span class="fonte-marcador">Marcas</span>
         <span>TRABALHADAS</span>
       </div>
-      <div class="marcas-trabalhadas-grade reveal" id="marcasTrabalhadasGrade"></div>
+      <div class="marcas-trabalhadas-faixa reveal">
+        <div class="marcas-trabalhadas-grade" id="marcasTrabalhadasGrade"></div>
+      </div>
     </div>
   </section>
 
@@ -1092,20 +1099,20 @@
     },
 
     // EDITE AQUI: marcas com quem Thais já trabalhou.
-    // Se tiver o arquivo da logo (fundo transparente, de preferência), preencha "logo" com o
-    // nome do arquivo (mesma pasta do index.html). Sem "logo", o nome aparece em texto.
+    // Se tiver o arquivo da logo (de preferência já redonda, com fundo preenchido), preencha
+    // "logo" com o nome do arquivo (mesma pasta do index.html). Sem "logo", o nome aparece em texto.
     marcas: [
-      { nome: "Nanovit", logo: "logo-nanovit.jpg" },
+      { nome: "Nanovit", logo: "logo-redondo-nanovit.png" },
       { nome: "Authentic Nutri", logo: "logo-authentic-nutri.png" },
-      { nome: "CreHub", logo: "logo-crehub.png" },
-      { nome: "Hellen Parfum", logo: "logo-hellen-parfum.png" },
-      { nome: "Esquadrão Fit", logo: "logo-esquadrao-fit.png" },
-      { nome: "Beleza Néctar" },
-      { nome: "Dove", logo: "logo-dove.jpg" },
-      { nome: "O Boticário", logo: "logo-o-boticario.jpg" },
+      { nome: "CreHub", logo: "logo-redondo-crehub.png" },
+      { nome: "Hellen Parfum", logo: "logo-redondo-hellen-parfum.png" },
+      { nome: "Esquadrão Fit", logo: "logo-redondo-esquadrao-fit.png" },
+      { nome: "Beleza Néctar", logo: "logo-redondo-beleza-nectar.png" },
+      { nome: "Dove", logo: "logo-redondo-dove.png" },
+      { nome: "O Boticário", logo: "logo-redondo-o-boticario.png" },
       { nome: "Beyoung", logo: "logo-beyoung.png" },
-      { nome: "Rosa Selvagem", logo: "logo-rosa-selvagem.jpg" },
-      { nome: "Sace Lady", logo: "logo-sace-lady.png" }
+      { nome: "Rosa Selvagem", logo: "logo-redondo-rosa-selvagem.png" },
+      { nome: "Sace Lady", logo: "logo-redondo-sace-lady.png" }
     ],
 
     // EDITE AQUI: texto da seção Sobre
@@ -1139,26 +1146,37 @@
     // preenche o quadro perfeitamente, sem depender do YouTube) ou "video" com o ID do YouTube
     // (a parte final do link, ex.: youtube.com/shorts/ID-AQUI) quando não tiver o arquivo original.
     portfolio: [
+      // Beleza
       { titulo: "Minha rotina de skincare com a Beyoung", categoria: "beleza", videoArquivo: "video-rotina-skincare-beyoung.mp4" },
       { titulo: "Testando o Exolift da Beyoung", categoria: "beleza", videoArquivo: "video-exolift-beyoung.mp4" },
       { titulo: "Testando o queridinho da Hellen Parfum", categoria: "beleza", videoArquivo: "video-perfume-hellen-parfum.mp4" },
       { titulo: "Proteção solar que vira hábito", categoria: "beleza", videoArquivo: "video-protetor-solar.mp4" },
       { titulo: "Testando um perfume árabe", categoria: "beleza", videoArquivo: "video-perfume-arabe.mp4" },
+      // Bem-estar
       { titulo: "Creatina Nutri Power no meu dia a dia", categoria: "bem-estar", videoArquivo: "video-creatina-nutri-power.mp4" },
       { titulo: "Colágeno que entrou pra rotina", categoria: "bem-estar", videoArquivo: "video-colageno-natural.mp4" },
       { titulo: "Laranja Moro pra desinchar e controlar o apetite", categoria: "bem-estar", videoArquivo: "video-laranja-moro.mp4" },
-      { titulo: "Dia a dia com a gata e o cachorro", categoria: "pet", gradiente: "grad-5" },
+      { titulo: "Nutri Blend Complex no meu dia a dia", categoria: "bem-estar", videoArquivo: "video-nutriblend-complex.mp4" },
+      { titulo: "Vela aromática pra relaxar", categoria: "bem-estar", videoArquivo: "video-vela-aromatica.mp4" },
+      // Pet
       { titulo: "Resenha do Pipi Maniero", categoria: "pet", videoArquivo: "video-pipi-maniero.mp4" },
-      { titulo: "Meu app de organização para UGC", categoria: "apps-sites", gradiente: "grad-2" },
+      // Apps e Sites
       { titulo: "Minha dieta em dia com o app do Esquadrão Fit", categoria: "apps-sites", videoArquivo: "video-esquadrao-fit-app.mp4" },
       { titulo: "Organizando parcerias com o app da CreHub", categoria: "apps-sites", videoArquivo: "video-crehub-app.mp4" },
-      { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mp4" },
+      // Maternidade
       { titulo: "Diário com as Cartas Adelaine", categoria: "maternidade", videoArquivo: "video-diario-adelaine.mp4" },
       { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", categoria: "maternidade", videoArquivo: "video-cartas-adelaine.mp4" },
       { titulo: "Especial Dia das Mães para uma loja de perfumes", categoria: "maternidade", videoArquivo: "video-dia-das-maes-perfumaria.mp4" },
       { titulo: "Biscoito infantil Naturallife", categoria: "maternidade", videoArquivo: "video-biscoito-naturallife.mp4" },
+      { titulo: "Protetor solar infantil pros pequenos", categoria: "maternidade", videoArquivo: "video-protetor-solar-infantil.mp4" },
+      // Bodycare
+      { titulo: "Testando um novo desodorante", categoria: "bodycare", videoArquivo: "video-desodorante.mp4" },
       { titulo: "Banho relaxante com Dove", categoria: "bodycare", videoArquivo: "video-banho-dove.mp4" },
-      { titulo: "Noite Estrelada da Beleza Néctar", categoria: "bodycare", videoArquivo: "video-noite-estrelada.mp4" }
+      { titulo: "Noite Estrelada da Beleza Néctar", categoria: "bodycare", videoArquivo: "video-noite-estrelada.mp4" },
+      // Acessórios
+      { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mp4" },
+      { titulo: "Combinando acessórios pro dia a dia", categoria: "acessorios", videoArquivo: "video-acessorios-2.mp4" },
+      { titulo: "Acessórios que mudam o look", categoria: "acessorios", videoArquivo: "video-acessorios-3.mp4" }
     ],
 
     // EDITE AQUI: fotos reais do seu trabalho como criadora UGC (fotos, não vídeos).
@@ -1237,7 +1255,11 @@
 
   function montarMarcasTrabalhadas(){
     const grade = document.getElementById("marcasTrabalhadasGrade");
-    grade.innerHTML = config.marcas.map(marca => {
+    // repete a lista 8x (a animação anda 1/8 da largura) pra rolagem nunca mostrar espaço em branco,
+    // igual à técnica usada na faixa de nichos
+    const repeticoes = 8;
+    const listaRepetida = Array.from({ length: repeticoes }, () => config.marcas).flat();
+    grade.innerHTML = listaRepetida.map(marca => {
       return marca.logo
         ? `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="Logo da marca ${marca.nome}">`
         : `<span class="marca-trabalhada-texto">${marca.nome}</span>`;
