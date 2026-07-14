@@ -199,7 +199,9 @@ function renderizarMenuPrincipal(eventos, leads) {
   document.getElementById("num-mensagens").textContent = formatarNumero(leads.length);
   document.getElementById("num-contato").textContent = formatarNumero(cliquesContato.length);
 
+  renderizarFunilConversao(visitantesUnicos, cliquesContato.length, leads.length);
   renderizarGrafico14Dias(pageViews);
+  renderizarMapaHorarios(pageViews);
   renderizarAcessosRecentes(pageViews);
 }
 
@@ -241,6 +243,80 @@ function renderizarGrafico14Dias(pageViews) {
       `;
     })
     .join("");
+}
+
+// Funil de conversão: visitantes únicos -> cliques para contato -> mensagens enviadas
+function renderizarFunilConversao(visitantesUnicos, cliquesContato, mensagens) {
+  const container = document.getElementById("funil-conversao");
+
+  if (visitantesUnicos === 0) {
+    container.innerHTML = '<p class="lista-vazia">Ainda não há visitas suficientes para calcular o funil.</p>';
+    return;
+  }
+
+  const etapas = [
+    { rotulo: "Visitantes únicos", valor: visitantesUnicos },
+    { rotulo: "Clicaram para contato", valor: cliquesContato },
+    { rotulo: "Enviaram mensagem", valor: mensagens },
+  ];
+
+  container.innerHTML = etapas
+    .map((etapa) => {
+      const percentual = Math.round((etapa.valor / visitantesUnicos) * 100);
+      const largura = Math.max(2, percentual);
+      return `
+        <div class="funil-etapa">
+          <div class="funil-cabecalho">
+            <span>${escapeHtml(etapa.rotulo)}</span>
+            <span>${formatarNumero(etapa.valor)} <span class="funil-pct">(${percentual}%)</span></span>
+          </div>
+          <div class="funil-barra-fundo">
+            <div class="funil-barra-preenchimento" style="width: ${largura}%;"></div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+// Mapa de calor: em que dia da semana e horário as visitas mais acontecem
+function renderizarMapaHorarios(pageViews) {
+  const container = document.getElementById("mapa-horarios");
+
+  if (pageViews.length === 0) {
+    container.innerHTML = '<p class="lista-vazia">Nenhuma visita registrada ainda.</p>';
+    return;
+  }
+
+  const nomesDias = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const contagem = Array.from({ length: 7 }, () => Array(24).fill(0));
+
+  pageViews.forEach((evento) => {
+    const data = new Date(evento.created_at);
+    contagem[data.getDay()][data.getHours()]++;
+  });
+
+  const maiorContagem = Math.max(1, ...contagem.flat());
+
+  let celulas = "<div></div>";
+  for (let hora = 0; hora < 24; hora++) {
+    celulas += `<div class="hm-hora-rotulo">${hora % 3 === 0 ? hora + "h" : ""}</div>`;
+  }
+
+  nomesDias.forEach((nomeDia, indiceDia) => {
+    celulas += `<div class="hm-dia-rotulo">${nomeDia}</div>`;
+    for (let hora = 0; hora < 24; hora++) {
+      const valor = contagem[indiceDia][hora];
+      const intensidade = valor === 0 ? 0 : 0.15 + (valor / maiorContagem) * 0.85;
+      celulas += `<div class="hm-celula" style="background-color: rgba(212,87,42,${intensidade});" title="${nomeDia} ${hora}h: ${valor} acesso(s)"></div>`;
+    }
+  });
+
+  container.innerHTML = `
+    <div class="mapa-horarios-wrap">
+      <div class="mapa-horarios-grade">${celulas}</div>
+    </div>
+  `;
 }
 
 // Lista dos acessos mais recentes: horário exato, página, origem e aparelho

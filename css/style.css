@@ -651,6 +651,73 @@ label {
   font-weight: 600;
 }
 
+/* Funil de conversão */
+.funil-etapa {
+  margin-bottom: 16px;
+}
+
+.funil-etapa:last-child {
+  margin-bottom: 0;
+}
+
+.funil-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.funil-pct {
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+
+.funil-barra-fundo {
+  height: 14px;
+  background: var(--creme);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.funil-barra-preenchimento {
+  height: 100%;
+  background: var(--coral);
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+/* Mapa de horários de pico */
+.mapa-horarios-wrap {
+  overflow-x: auto;
+}
+
+.mapa-horarios-grade {
+  display: grid;
+  grid-template-columns: 36px repeat(24, 22px);
+  gap: 3px;
+  min-width: 620px;
+}
+
+.hm-hora-rotulo {
+  font-size: 10px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.hm-dia-rotulo {
+  font-size: 12px;
+  color: var(--texto-suave);
+  display: flex;
+  align-items: center;
+}
+
+.hm-celula {
+  width: 22px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--creme);
+}
+
 /* Lista de acessos recentes */
 .lista-acessos-wrap {
   overflow-x: auto;
