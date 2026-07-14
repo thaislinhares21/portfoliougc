@@ -21,6 +21,41 @@
     return id;
   }
 
+  // Identifica de onde a pessoa veio (Instagram, Google, direto, etc.)
+  function analisarOrigem(referrer) {
+    if (!referrer) return "Direto";
+    try {
+      const host = new URL(referrer).hostname.replace(/^www\./, "");
+      if (host.includes("instagram")) return "Instagram";
+      if (host.includes("google")) return "Google";
+      if (host.includes("facebook") || host.includes("fb.com")) return "Facebook";
+      if (host.includes("wa.me") || host.includes("whatsapp")) return "WhatsApp";
+      if (host.includes("t.co") || host.includes("twitter") || host.includes("x.com")) return "Twitter/X";
+      if (host.includes("linkedin")) return "LinkedIn";
+      if (host.includes("tiktok")) return "TikTok";
+      if (host.includes("youtube")) return "YouTube";
+      return host;
+    } catch (erro) {
+      return "Direto";
+    }
+  }
+
+  // Identifica o tipo de aparelho e o navegador a partir do user agent
+  function analisarDispositivo(ua) {
+    ua = ua || "";
+    let tipo = "Computador";
+    if (/Tablet|iPad/i.test(ua)) tipo = "Tablet";
+    else if (/Mobi|Android/i.test(ua)) tipo = "Celular";
+
+    let navegador = "Outro";
+    if (/Edg\//i.test(ua)) navegador = "Edge";
+    else if (/Chrome\//i.test(ua) && !/Edg\//i.test(ua)) navegador = "Chrome";
+    else if (/Firefox\//i.test(ua)) navegador = "Firefox";
+    else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) navegador = "Safari";
+
+    return `${tipo} - ${navegador}`;
+  }
+
   async function registrarEvento(eventType, eventName, metadata) {
     try {
       const { error } = await sb.from("portfolio_events").insert({
@@ -46,9 +81,12 @@
   }
 
   window.Tracking = {
-    // Visita à página (uma vez por carregamento)
+    // Visita à página (uma vez por carregamento), com origem e aparelho
     pageView() {
-      registrarEvento("page_view", null, null);
+      registrarEvento("page_view", null, {
+        referrer_source: analisarOrigem(document.referrer),
+        device: analisarDispositivo(navigator.userAgent),
+      });
     },
     // Clique em botão/link (ex.: "contact_whatsapp", "cta_fale_comigo")
     buttonClick(nome, metadata) {

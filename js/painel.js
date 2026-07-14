@@ -200,6 +200,7 @@ function renderizarMenuPrincipal(eventos, leads) {
   document.getElementById("num-contato").textContent = formatarNumero(cliquesContato.length);
 
   renderizarGrafico14Dias(pageViews);
+  renderizarAcessosRecentes(pageViews);
 }
 
 function formatarNumero(n) {
@@ -240,6 +241,59 @@ function renderizarGrafico14Dias(pageViews) {
       `;
     })
     .join("");
+}
+
+// Lista dos acessos mais recentes: horário exato, página, origem e aparelho
+function renderizarAcessosRecentes(pageViews) {
+  const container = document.getElementById("lista-acessos");
+
+  if (pageViews.length === 0) {
+    container.innerHTML = '<p class="lista-vazia">Nenhuma visita registrada ainda.</p>';
+    return;
+  }
+
+  const LIMITE = 50;
+  const recentes = [...pageViews]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, LIMITE);
+
+  const linhas = recentes
+    .map((evento) => {
+      const horario = new Date(evento.created_at).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const pagina = evento.page_path || "/";
+      const origem = (evento.metadata && evento.metadata.referrer_source) || "Direto";
+      const aparelho = (evento.metadata && evento.metadata.device) || "Não identificado";
+
+      return `
+        <div class="item-acesso">
+          <span>${escapeHtml(horario)}</span>
+          <span class="acesso-pagina">${escapeHtml(pagina)}</span>
+          <span>${escapeHtml(origem)}</span>
+          <span>${escapeHtml(aparelho)}</span>
+        </div>
+      `;
+    })
+    .join("");
+
+  const aviso =
+    pageViews.length > LIMITE
+      ? `<p class="lista-vazia">Mostrando as ${LIMITE} visitas mais recentes do período selecionado (${formatarNumero(pageViews.length)} no total).</p>`
+      : "";
+
+  container.innerHTML = `
+    <div class="lista-acessos-wrap">
+      <div class="cabecalho-acessos">
+        <span>Horário</span><span>Página</span><span>Origem</span><span>Aparelho</span>
+      </div>
+      ${linhas}
+    </div>
+    ${aviso}
+  `;
 }
 
 // ============================================================================

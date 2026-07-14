@@ -651,6 +651,46 @@ label {
   font-weight: 600;
 }
 
+/* Lista de acessos recentes */
+.lista-acessos-wrap {
+  overflow-x: auto;
+}
+
+.cabecalho-acessos,
+.item-acesso {
+  display: grid;
+  grid-template-columns: 110px 1fr 120px 170px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 4px;
+  min-width: 520px;
+}
+
+.cabecalho-acessos {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--texto-suave);
+  border-bottom: 2px solid var(--borda);
+}
+
+.item-acesso {
+  font-size: 13px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.item-acesso:last-child {
+  border-bottom: none;
+}
+
+.acesso-pagina {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--texto-suave);
+}
+
 /* Cartões de mensagens (leads) */
 .lista-mensagens {
   display: flex;
