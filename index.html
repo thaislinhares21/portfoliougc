@@ -203,6 +203,50 @@
     flex-wrap: wrap;
   }
   .hero-texto{ flex: 1 1 420px; }
+
+  /* Legendas nos cantos do Hero, tipo capa de portfólio (elemento decorativo "fofinho") */
+  .hero-cantos{
+    position: absolute;
+    top: calc(var(--altura-cabecalho) + 22px);
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    pointer-events: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: .72rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--cinza-texto);
+    line-height: 1.5;
+  }
+  .hero-canto-direita{ text-align: right; }
+
+  .hero-etiquetas-linha{
+    display:flex;
+    align-items:center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+  .hero-etiquetas-linha .etiqueta-marcador{ margin-bottom: 0; }
+  .hero-selo{
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: .85rem;
+    color: var(--cinza-texto);
+    border: 2px solid var(--tinta);
+    border-radius: 8px;
+    padding: 7px 14px;
+  }
+  .hero-assinatura{
+    display: block;
+    font-size: 1.5rem;
+    margin: -4px 0 8px;
+  }
   .etiqueta-marcador{
     display:inline-flex;
     align-items: center;
@@ -948,9 +992,17 @@
 
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="hero">
+    <div class="hero-cantos container" aria-hidden="true">
+      <span class="hero-canto-esquerda">Seja bem-vinda(o) ao<br>meu portfólio</span>
+      <span class="hero-canto-direita" id="heroCantoInstagram">@thaisugcbr</span>
+    </div>
     <div class="container hero-container">
       <div class="hero-texto reveal">
-        <p class="etiqueta-marcador" id="heroEtiqueta">Criadora UGC</p>
+        <div class="hero-etiquetas-linha">
+          <p class="etiqueta-marcador" id="heroEtiqueta">Criadora UGC</p>
+          <span class="hero-selo">[ 2026 ]</span>
+        </div>
+        <span class="hero-assinatura fonte-marcador">oi, eu sou a</span>
         <h1 id="heroNome">Thais Linhares</h1>
         <p class="hero-frase" id="heroFrase">Conteúdo autêntico que vira resultado de verdade para a sua marca.</p>
         <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
@@ -1275,6 +1327,7 @@
     document.getElementById("heroNome").textContent = config.nome;
     document.getElementById("heroFrase").textContent = config.hero.frase;
     document.getElementById("heroBotao").textContent = config.hero.botao;
+    document.getElementById("heroCantoInstagram").textContent = config.contato.instagramUsuario;
     document.getElementById("sobreTitulo").textContent = config.sobre.titulo;
     document.getElementById("sobreTexto").innerHTML = config.sobre.texto;
     document.title = config.nome + " | Criadora de Conteúdo UGC";
