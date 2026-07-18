@@ -35,7 +35,13 @@
 
   body{
     margin:0;
-    background: var(--creme);
+    /* Fundo quadriculado sutil (tipo papel milimetrado), atrás de todo o conteúdo.
+       EDITE AQUI: aumente a opacidade (0.05) ou o tamanho (24px) para deixar mais forte/maior. */
+    background-color: var(--creme);
+    background-image:
+      linear-gradient(rgba(27,27,27,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,27,27,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
     color: var(--tinta);
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
