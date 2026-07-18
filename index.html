@@ -303,7 +303,7 @@
      um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
   .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--vermelho), #f2a565); }
   .foto-espaco img{ width:100%; height:100%; object-fit:cover; object-position: center; }
-  .sobre-foto img{ object-position: center top; }
+  .sobre-foto img{ object-position: center; }
   .grad-1{ background: linear-gradient(135deg, var(--vermelho), #f2a565); }
   .grad-2{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
   .grad-3{ background: linear-gradient(150deg, var(--rosa), #c7e08a); }
@@ -568,21 +568,39 @@
   }
   .portfolio-item.escondido{ display:none; }
 
-  /* ===================== FOTOS UGC ===================== */
+  /* ===================== FOTOS UGC (ÁLBUM ESTILO POLAROID) ===================== */
   .fotos-grade{
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
+    gap: 40px 24px;
   }
   .foto-item{
     display: flex;
     flex-direction: column;
+    background: var(--branco);
+    padding: 14px 14px 0;
     box-shadow: var(--sombra-dura-pequena);
-    border-radius: 18px;
-    overflow: hidden;
-    transition: transform .2s ease;
+    border-radius: 4px;
+    transition: transform .25s ease, box-shadow .25s ease;
+    --rotacao-polaroid: 0deg;
+    transform: rotate(var(--rotacao-polaroid));
   }
-  .foto-item:hover{ transform: translateY(-6px); }
+  /* Leve rotação alternada, tipo fotos espalhadas numa mesa */
+  .foto-item:nth-child(4n+1){ --rotacao-polaroid: -3deg; }
+  .foto-item:nth-child(4n+2){ --rotacao-polaroid: 2.5deg; }
+  .foto-item:nth-child(4n+3){ --rotacao-polaroid: -1.5deg; }
+  .foto-item:nth-child(4n+4){ --rotacao-polaroid: 3deg; }
+  .foto-item:hover{
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    box-shadow: var(--sombra-dura);
+    z-index: 2;
+    position: relative;
+  }
+  /* A animação de entrada (.reveal) também usa "transform", então aqui juntamos
+     ela com a rotação da polaroid pra uma não sobrescrever a outra */
+  .foto-item.reveal{ transform: translateY(24px) rotate(var(--rotacao-polaroid)); }
+  .foto-item.reveal.visivel{ transform: rotate(var(--rotacao-polaroid)); }
+  .foto-item.reveal.visivel:hover{ transform: rotate(0deg) translateY(-8px) scale(1.03); }
   .foto-item .foto-espaco{
     border: none;
     box-shadow: none;
@@ -594,15 +612,16 @@
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
   .foto-item .legenda-foto{
-    flex: 1;
     display: flex;
     align-items: center;
-    padding: 12px 14px;
-    background: var(--branco);
-    border-top: var(--borda);
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 600;
-    font-size: .9rem;
+    justify-content: center;
+    text-align: center;
+    padding: 16px 10px 20px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--tinta);
   }
 
   /* ===================== SERVIÇOS ===================== */
@@ -627,6 +646,70 @@
     margin-bottom: 12px;
     color: var(--vermelho);
   }
+
+  /* ===================== VALORES (seção secreta) ===================== */
+  .valores-grade{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+  .cartao-valor{
+    background: var(--branco);
+    border: var(--borda);
+    border-radius: 20px;
+    padding: 30px 24px;
+    text-align: center;
+    transition: transform .15s ease;
+  }
+  .cartao-valor:hover{ transform: translateY(-6px); box-shadow: var(--sombra-dura-pequena); }
+  .cartao-valor.destaque{
+    background: var(--rosa);
+    border-color: transparent;
+    position: relative;
+  }
+  .cartao-valor.destaque::before{
+    content: "MAIS PEDIDO";
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--vermelho);
+    color: var(--branco);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+    padding: 5px 16px;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+  .cartao-valor h3{ font-size: 1.1rem; margin-bottom: 10px; }
+  .cartao-valor .preco{
+    display: block;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 700;
+    font-size: 1.9rem;
+    color: var(--vermelho);
+    margin-bottom: 6px;
+  }
+  .cartao-valor .detalhe-preco{ font-size: .82rem; color: var(--cinza-texto); }
+  .valores-extras{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .item-valor-extra{
+    background: var(--creme);
+    border: var(--borda);
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-size: .9rem;
+  }
+  .item-valor-extra strong{ color: var(--vermelho); }
 
   /* ===================== MARCAS (FAIXA MARQUEE) =====================
      Efeito "marquee" clássico: a lista de marcas é renderizada 2x seguidas no mesmo
@@ -1082,6 +1165,15 @@
     </div>
   </section>
 
+  <!-- ===================== VALORES (oculta por padrão, só aparece com ?valores no link) ===================== -->
+  <section class="valores" id="valores" hidden>
+    <div class="container">
+      <h2 class="titulo-secao reveal">Valores</h2>
+      <div class="valores-grade" id="valoresGrade"></div>
+      <div class="valores-extras" id="valoresExtras"></div>
+    </div>
+  </section>
+
   <!-- ===================== DEPOIMENTOS ===================== -->
   <section class="depoimentos" id="depoimentos">
     <div class="container">
@@ -1196,6 +1288,7 @@
       texto: "Sou a Thais, tenho <strong>28 anos</strong> e moro em <strong>Porto Velho (RO)</strong>. Sou mãe de um casal, de idades diferentes, e formada em <strong>Design de Interiores</strong>. Hoje dedico minha rotina à criação de <strong>conteúdo autêntico</strong>: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio <strong>aplicativo para organizar produções de UGC</strong>. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
       // EDITE AQUI: fatos rápidos sobre você, aparecem como cartõezinhos abaixo do texto
       fatos: [
+        "Casada",
         "Mãe de um casal",
         "Porto Velho, RO",
         "Formada em Design de Interiores",
@@ -1278,6 +1371,22 @@
       { titulo: "Conteúdo para Anúncios", descricao: "Vídeos pensados para performance em campanhas pagas, com ganchos testados nas redes sociais." }
     ],
 
+    // EDITE AQUI: tabela de valores. Essa seção só aparece pra quem abrir o site
+    // com "?valores" no final do link (ex: thaislinhares.com.br/?valores), então
+    // fica escondida no link normal que você usa em plataformas que não permitem preço.
+    valores: {
+      video: { titulo: "1 vídeo UGC", preco: "R$ 270" },
+      combos: [
+        { titulo: "Combo 3 vídeos", preco: "R$ 729", detalhe: "R$ 243 por vídeo" },
+        { titulo: "Combo 5 vídeos", preco: "R$ 1.147", detalhe: "R$ 229 por vídeo", destaque: true },
+        { titulo: "Combo 10 vídeos", preco: "R$ 2.160", detalhe: "R$ 216 por vídeo" }
+      ],
+      extras: [
+        { titulo: "Collab (parceria simples)", preco: "R$ 80" },
+        { titulo: "Renovação de uso em anúncios", preco: "R$ 120 por vídeo" }
+      ]
+    },
+
     // EDITE AQUI: depoimentos de clientes e marcas
     depoimentos: [
       { texto: "O conteúdo ficou extremamente elegante e sofisticado, alinhado com a identidade visual da marca, transmitindo uma sensação de exclusividade e luxo.", nome: "Equipe Hellen Parfum", empresa: "Hellen Parfum" },
@@ -1303,6 +1412,8 @@
     montarFiltrosEPortfolio();
     montarFotos();
     montarServicos();
+    montarValores();
+    verificarLinkDeValores();
     montarDepoimentos();
     montarContatoERodape();
     configurarMenuMobile();
@@ -1549,6 +1660,36 @@
         <p>${servico.descricao}</p>
       </div>
     `).join("");
+  }
+
+  function montarValores(){
+    const cartaoVideoAvulso = `
+      <div class="cartao-valor reveal">
+        <h3>${config.valores.video.titulo}</h3>
+        <span class="preco">${config.valores.video.preco}</span>
+      </div>
+    `;
+    const cartoesCombo = config.valores.combos.map(combo => `
+      <div class="cartao-valor reveal${combo.destaque ? " destaque" : ""}">
+        <h3>${combo.titulo}</h3>
+        <span class="preco">${combo.preco}</span>
+        <span class="detalhe-preco">${combo.detalhe}</span>
+      </div>
+    `).join("");
+    document.getElementById("valoresGrade").innerHTML = cartaoVideoAvulso + cartoesCombo;
+
+    document.getElementById("valoresExtras").innerHTML = config.valores.extras.map(item => `
+      <span class="item-valor-extra">${item.titulo}: <strong>${item.preco}</strong></span>
+    `).join("");
+  }
+
+  // A seção de valores só aparece pra quem abrir o site com "?valores" no final do
+  // link (ex: thaislinhares.com.br/?valores). O link normal nunca mostra preços.
+  function verificarLinkDeValores(){
+    const parametros = new URLSearchParams(window.location.search);
+    if(parametros.has("valores")){
+      document.getElementById("valores").hidden = false;
+    }
   }
 
   function montarDepoimentos(){
