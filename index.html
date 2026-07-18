@@ -569,14 +569,16 @@
   .portfolio-item.escondido{ display:none; }
 
   /* ===================== FOTOS UGC (ÁLBUM ESTILO POLAROID) ===================== */
+  /* Layout tipo mosaico: cada foto mantém sua proporção original, sem cortar nada */
   .fotos-grade{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px 24px;
+    columns: 4 220px;
+    column-gap: 24px;
   }
   .foto-item{
-    display: flex;
-    flex-direction: column;
+    display: inline-block;
+    width: 100%;
+    break-inside: avoid;
+    margin-bottom: 32px;
     background: var(--branco);
     padding: 14px 14px 0;
     box-shadow: var(--sombra-dura-pequena);
@@ -605,9 +607,10 @@
     border: none;
     box-shadow: none;
     border-radius: 0;
-    aspect-ratio: 4/5;
     flex-shrink: 0;
   }
+  /* Sem corte: a foto aparece inteira, na proporção original dela */
+  .foto-item .foto-espaco img{ height: auto; }
   /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
