@@ -670,16 +670,14 @@
     from{ transform: translateX(0); }
     to{ transform: translateX(-50%); }
   }
-  /* Faixa de marcas em texto, do jeito mais simples e elegante (sem logos/imagens) */
-  .marca-trabalhada-texto{
+  /* Logos reais das marcas, cada uma no seu formato original (sem forçar em círculo) */
+  .marca-trabalhada-logo{
     flex-shrink: 0;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 600;
-    font-size: 1.3rem;
-    white-space: nowrap;
-    color: var(--tinta);
-    opacity: .55;
-    margin: 0 32px;
+    height: 54px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    margin: 0 28px;
   }
 
   /* ===================== DEPOIMENTOS ===================== */
@@ -1344,7 +1342,7 @@
     // usa width:max-content e a animação anda de 0 até -50% da própria largura, a segunda
     // cópia entra exatamente onde a primeira saiu, e o loop fica invisível (sem pulo).
     const listaDupla = [...config.marcas, ...config.marcas];
-    trilho.innerHTML = listaDupla.map(marca => `<span class="marca-trabalhada-texto">${marca.nome}</span>`).join("");
+    trilho.innerHTML = listaDupla.map(marca => `<img class="marca-trabalhada-logo" src="${marca.logo}" alt="${marca.nome}" loading="lazy">`).join("");
   }
 
   function montarMarcas(){
