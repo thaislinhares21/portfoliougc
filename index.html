@@ -1674,14 +1674,11 @@
       return;
     }
 
-    const transformAtual = getComputedStyle(pagina).transform;
-    let escala = 1;
-    if (transformAtual && transformAtual !== "none"){
-      const numeros = transformAtual.match(/matrix\(([^)]+)\)/);
-      if (numeros){
-        escala = parseFloat(numeros[1].split(",")[0]);
-      }
-    }
+    // Calcula a maior escala que ainda cabe na largura da tela (em vez de um valor fixo),
+    // pra usar o máximo de espaço possível e deixar tudo maior em telas maiores de celular.
+    // O teto de 0.42 evita que fique grande demais em tablets que também entram nessa faixa.
+    const escala = Math.min(window.innerWidth / 1180, 0.42);
+    pagina.style.setProperty("--escala-mobile", escala);
 
     // Ajusta a altura (evita espaço em branco embaixo, já que "transform" não muda
     // o espaço ocupado no fluxo da página)
