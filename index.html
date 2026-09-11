@@ -1371,7 +1371,6 @@
       { titulo: "Minha rotina de skincare com a Beyoung", categoria: "beleza", videoArquivo: "video-rotina-skincare-beyoung.mp4" },
       { titulo: "Testando o Exolift da Beyoung", categoria: "beleza", videoArquivo: "video-exolift-beyoung.mp4" },
       { titulo: "Testando o queridinho da Hellen Parfum", categoria: "beleza", videoArquivo: "video-perfume-hellen-parfum.mp4" },
-      { titulo: "Proteção solar que vira hábito", categoria: "beleza", videoArquivo: "video-protetor-solar.mp4" },
       { titulo: "Testando um perfume árabe", categoria: "beleza", videoArquivo: "video-perfume-arabe.mp4" },
       { titulo: "Perfumes Bella Essence para anúncios", categoria: "beleza", videoArquivo: "video-perfumes-arabes-ads.mp4" },
       // Bem-estar
@@ -1387,7 +1386,6 @@
       { titulo: "Previsibilidade no orçamento com o plano de saúde PetLove", categoria: "pet", videoArquivo: "video-petlove-plano-saude.mp4" },
       { titulo: "Unboxing de marcas exclusivas PetLove", categoria: "pet", videoArquivo: "video-petlove-marcas-exclusivas.mp4" },
       // Apps e Sites
-      { titulo: "Minha dieta em dia com o app do Esquadrão Fit", categoria: "apps-sites", videoArquivo: "video-esquadrao-fit-app.mp4" },
       { titulo: "Organizando parcerias com o app da CreHub", categoria: "apps-sites", videoArquivo: "video-crehub-app.mp4" },
       { titulo: "Criando roteiros com o app Lumy Creators", categoria: "apps-sites", videoArquivo: "video-lumy-creators.mp4" },
       { titulo: "Site Polvo Decisões Inteligentes", categoria: "apps-sites", videoArquivo: "video-polvo-decisoes-inteligentes.mp4" },
@@ -1547,8 +1545,11 @@
       // verdade (numa janela ampliada) quando a pessoa clica.
       let midia;
       if (item.videoArquivo){
+        // Sem "src" aqui de propósito: com 30+ vídeos no portfólio, carregar todos de uma vez
+        // (mesmo os escondidos pelo filtro) trava o celular. O "src" real só é definido pela
+        // função "carregarCapasDeVideoPreguiçosamente", quando o card se aproxima da tela.
         midia = `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
-             <video class="video-capa" src="${item.videoArquivo}#t=0.1" muted playsinline preload="metadata"></video>
+             <video class="video-capa" data-src="${item.videoArquivo}#t=0.1" muted playsinline preload="none"></video>
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
@@ -1599,6 +1600,8 @@
       });
     });
 
+    carregarCapasDeVideoPreguicosamente();
+
     // Clique na capa do vídeo: abre o vídeo ampliado numa janela por cima do site (modal).
     grade.querySelectorAll(".video-vertical").forEach(caixaVideo => {
       caixaVideo.addEventListener("click", () => {
@@ -1609,6 +1612,28 @@
         }
       });
     });
+  }
+
+  // Só define o "src" de cada capa de vídeo quando ela se aproxima da tela (200px antes),
+  // em vez de carregar as 30+ capas do portfólio todas de uma vez. Isso evita que o Safari
+  // do celular trave/reinicie a página por excesso de memória/rede.
+  function carregarCapasDeVideoPreguicosamente(){
+    const capas = document.querySelectorAll(".video-capa[data-src]");
+    if (!("IntersectionObserver" in window)){
+      capas.forEach(video => { video.src = video.dataset.src; video.removeAttribute("data-src"); });
+      return;
+    }
+    const observador = new IntersectionObserver((entradas, obs) => {
+      entradas.forEach(entrada => {
+        if (!entrada.isIntersecting) return;
+        const video = entrada.target;
+        video.preload = "metadata";
+        video.src = video.dataset.src;
+        video.removeAttribute("data-src");
+        obs.unobserve(video);
+      });
+    }, { rootMargin: "200px 0px" });
+    capas.forEach(video => observador.observe(video));
   }
 
   // Abre a janela de vídeo ampliado usando um arquivo .mp4 próprio: preenche o quadro
