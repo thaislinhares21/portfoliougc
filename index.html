@@ -24,6 +24,8 @@
     --tinta: #1b1b1b;
     --branco: #ffffff;
     --cinza-texto: #5c584f;
+    /* Verde usado em detalhes que remetem a saúde/energia (etiqueta do Hero etc.) */
+    --verde: #6b9b5e;
     --sombra-dura: 0 20px 44px rgba(27,27,27,0.05);
     --sombra-dura-pequena: 0 8px 20px rgba(27,27,27,0.045);
     --borda: 1px solid rgba(27,27,27,0.07);
@@ -50,7 +52,8 @@
 
   h1,h2,h3,.logo{
     font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: -.3px;
     margin: 0;
   }
 
@@ -266,7 +269,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--vermelho);
+    background: var(--verde);
     flex-shrink: 0;
   }
   .hero-texto h1{
@@ -303,7 +306,8 @@
      um <img src="sua-foto.jpg" alt="descrição"> e pode remover a classe grad-X. */
   .hero-foto, .sobre-foto{ background: linear-gradient(135deg, var(--vermelho), #f2a565); }
   .foto-espaco img{ width:100%; height:100%; object-fit:cover; object-position: center; }
-  .sobre-foto img{ object-position: center; }
+  .sobre-foto img{ object-position: center 15%; }
+  .hero-foto img{ object-position: center 10%; }
   .grad-1{ background: linear-gradient(135deg, var(--vermelho), #f2a565); }
   .grad-2{ background: linear-gradient(135deg, var(--rosa), var(--vermelho)); }
   .grad-3{ background: linear-gradient(150deg, var(--rosa), #c7e08a); }
@@ -490,12 +494,53 @@
     color: var(--branco);
   }
 
+  /* ===================== DESTAQUES ===================== */
+  .destaques-grade{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+  .destaque-item{
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--sombra-dura);
+    border-radius: 26px;
+    overflow: hidden;
+    transition: transform .2s ease;
+  }
+  .destaque-item:hover{ transform: translateY(-6px); }
+  .destaque-item .foto-espaco{
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    aspect-ratio: 4/5;
+    flex-shrink: 0;
+  }
+  .destaque-item .legenda{
+    padding: 18px 20px;
+    background: var(--branco);
+  }
+  .destaque-item .legenda strong{
+    display: block;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 1.05rem;
+  }
+
+  /* Rolagem horizontal em vez de grade: assim nem todos os vídeos aparecem de uma vez,
+     a pessoa rola pro lado (ou clica num nicho no filtro) pra ver os outros. */
   .portfolio-grade{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 30px;
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 4px;
+    padding: 4px 4px 20px;
+    margin: -4px -4px 0;
+    -webkit-overflow-scrolling: touch;
   }
   .portfolio-item{
+    flex: 0 0 240px;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     box-shadow: var(--sombra-dura);
@@ -594,48 +639,43 @@
   .portfolio-item.escondido{ display:none; }
 
   /* ===================== FOTOS UGC (ÁLBUM ESTILO POLAROID) ===================== */
-  /* Layout tipo mosaico: cada foto mantém sua proporção original, sem cortar nada */
+  /* Faixa que rola pro lado, igual ao portfólio: cada foto mantém sua proporção
+     original (sem cortar nada) e nem todas aparecem de uma vez. */
   .fotos-grade{
-    columns: 4 220px;
-    column-gap: 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 28px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 4px;
+    padding: 20px 4px 20px;
+    margin: -20px -4px 0;
+    -webkit-overflow-scrolling: touch;
   }
   .foto-item{
-    display: inline-block;
-    width: 100%;
-    break-inside: avoid;
-    margin-bottom: 32px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
     background: var(--branco);
     padding: 14px 14px 0;
     box-shadow: var(--sombra-dura-pequena);
     border-radius: 4px;
     transition: transform .25s ease, box-shadow .25s ease;
-    --rotacao-polaroid: 0deg;
-    transform: rotate(var(--rotacao-polaroid));
   }
-  /* Leve rotação alternada, tipo fotos espalhadas numa mesa */
-  .foto-item:nth-child(4n+1){ --rotacao-polaroid: -3deg; }
-  .foto-item:nth-child(4n+2){ --rotacao-polaroid: 2.5deg; }
-  .foto-item:nth-child(4n+3){ --rotacao-polaroid: -1.5deg; }
-  .foto-item:nth-child(4n+4){ --rotacao-polaroid: 3deg; }
   .foto-item:hover{
-    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    transform: translateY(-8px) scale(1.03);
     box-shadow: var(--sombra-dura);
     z-index: 2;
     position: relative;
   }
-  /* A animação de entrada (.reveal) também usa "transform", então aqui juntamos
-     ela com a rotação da polaroid pra uma não sobrescrever a outra */
-  .foto-item.reveal{ transform: translateY(24px) rotate(var(--rotacao-polaroid)); }
-  .foto-item.reveal.visivel{ transform: rotate(var(--rotacao-polaroid)); }
-  .foto-item.reveal.visivel:hover{ transform: rotate(0deg) translateY(-8px) scale(1.03); }
+  .foto-item.reveal.visivel:hover{ transform: translateY(-8px) scale(1.03); }
   .foto-item .foto-espaco{
     border: none;
     box-shadow: none;
     border-radius: 0;
-    flex-shrink: 0;
+    height: 320px;
   }
-  /* Sem corte: a foto aparece inteira, na proporção original dela */
-  .foto-item .foto-espaco img{ height: auto; }
+  /* Sem corte: a foto aparece inteira, na proporção original dela (altura fixa, largura livre) */
+  .foto-item .foto-espaco img{ width: auto; height: 100%; max-width: none; display: block; }
   /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
@@ -1127,7 +1167,7 @@
         </div>
         <div class="flutuante flutuante-hero-2">
           <span class="flutuante-icone">&#9733;</span>
-          <div class="flutuante-texto"><strong>+10 marcas</strong><span>já confiaram no trabalho</span></div>
+          <div class="flutuante-texto"><strong>+20 marcas</strong><span>já confiaram no trabalho</span></div>
         </div>
       </div>
     </div>
@@ -1188,6 +1228,14 @@
     </div>
     <div class="marcas-marquee">
       <div class="marcas-marquee-trilho" id="marcasMarqueeTrilho"></div>
+    </div>
+  </section>
+
+  <!-- ===================== DESTAQUES ===================== -->
+  <section class="destaques" id="destaques">
+    <div class="container">
+      <h2 class="titulo-secao reveal">Destaques</h2>
+      <div class="destaques-grade" id="destaquesGrade"></div>
     </div>
   </section>
 
@@ -1313,7 +1361,7 @@
     // EDITE AQUI: textos da seção Hero (primeira dobra da página)
     hero: {
       etiqueta: "Criadora UGC",
-      frase: "Conteúdo autêntico que vira resultado de verdade para a sua marca.",
+      frase: "Conteúdo autêntico e cheio de energia que vira resultado de verdade para a sua marca.",
       botao: "Fale comigo"
     },
 
@@ -1337,7 +1385,7 @@
     // EDITE AQUI: texto da seção Sobre
     sobre: {
       titulo: "Sobre mim",
-      texto: "Sou a Thais, tenho <strong>28 anos</strong> e moro em <strong>Porto Velho (RO)</strong>. Sou mãe de um casal, de idades diferentes, e formada em <strong>Design de Interiores</strong>. Hoje dedico minha rotina à criação de <strong>conteúdo autêntico</strong>: entre os treinos funcionais, a corrida e a hidroginástica que fazem parte do meu dia a dia, também sou apaixonada por organização, e cheguei a criar meu próprio <strong>aplicativo para organizar produções de UGC</strong>. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
+      texto: "Sou a Thais, tenho <strong>28 anos</strong> e moro em <strong>Porto Velho (RO)</strong>. Rotina fit é o que me move: <strong>treino funcional, corrida e hidroginástica</strong> fazem parte do meu dia a dia, e é dessa energia que nasce o conteúdo que eu crio. Sou mãe de um casal, formada em <strong>Design de Interiores</strong> e apaixonada por organização — cheguei a criar meu próprio <strong>aplicativo para organizar produções de UGC</strong>. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
       // EDITE AQUI: fatos rápidos sobre você, aparecem como cartõezinhos abaixo do texto
       fatos: [
         "Casada",
@@ -1360,6 +1408,14 @@
       { chave: "bodycare", rotulo: "Bodycare" },
       { chave: "acessorios", rotulo: "Acessórios" },
       { chave: "gastronomia", rotulo: "Gastronomia" }
+    ],
+
+    // EDITE AQUI: os 3 vídeos que você quer destacar em grande, antes do portfólio completo.
+    // Use o mesmo formato dos itens do portfólio ("videoArquivo" ou "video").
+    destaques: [
+      { titulo: "Ração Purina One para gatos castrados", videoArquivo: "video-purina-one-castrados.mp4" },
+      { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", videoArquivo: "video-cartas-adelaine.mp4" },
+      { titulo: "Brigadeiro com Leite Moça", videoArquivo: "video-leite-moca.mp4" }
     ],
 
     // EDITE AQUI: trabalhos do portfólio (cada bloco em gradiente simula uma foto ou vídeo).
@@ -1471,7 +1527,9 @@
     montarSobreFatos();
     montarMarcasMarquee();
     montarMarcas();
+    montarDestaques();
     montarFiltrosEPortfolio();
+    carregarCapasDeVideoPreguicosamente();
     montarFotos();
     montarServicos();
     montarValores();
@@ -1529,6 +1587,65 @@
     track.innerHTML = listaRepetida.map(nicho => `<span>${nicho.rotulo}</span>`).join("");
   }
 
+  // Monta a capa de vídeo (com botão de play) usada tanto no portfólio quanto nos destaques.
+  // Itens com "videoArquivo" (arquivo .mp4 próprio) ou "video" (ID do YouTube) mostram uma
+  // capa preenchendo o quadro, com um botão de play por cima. O vídeo só carrega/toca de
+  // verdade (numa janela ampliada) quando a pessoa clica.
+  function montarMidiaDeVideo(item){
+    if (item.videoArquivo){
+      // Sem "src" aqui de propósito: com 30+ vídeos no site, carregar todos de uma vez
+      // (mesmo os escondidos pelo filtro) trava o celular. O "src" real só é definido pela
+      // função "carregarCapasDeVideoPreguiçosamente", quando o card se aproxima da tela.
+      return `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
+             <video class="video-capa" data-src="${item.videoArquivo}#t=0.1" muted playsinline preload="none"></video>
+             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
+               <span class="video-play-icone">&#9654;</span>
+             </button>
+             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
+           </div>`;
+    }
+    if (item.video){
+      return `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
+             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/oar2.jpg" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
+             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
+               <span class="video-play-icone">&#9654;</span>
+             </button>
+             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
+           </div>`;
+    }
+    return `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
+             <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
+           </div>`;
+  }
+
+  // Clique na capa do vídeo: abre o vídeo ampliado numa janela por cima do site (modal).
+  // Usado tanto no portfólio quanto nos destaques.
+  function configurarCliqueVideoVertical(container){
+    container.querySelectorAll(".video-vertical").forEach(caixaVideo => {
+      caixaVideo.addEventListener("click", () => {
+        if (caixaVideo.dataset.videoArquivo){
+          abrirModalVideoArquivo(caixaVideo.dataset.videoArquivo, caixaVideo.dataset.titulo);
+        } else {
+          abrirModalVideoYoutube(caixaVideo.dataset.video, caixaVideo.dataset.titulo);
+        }
+      });
+    });
+  }
+
+  function montarDestaques(){
+    const grade = document.getElementById("destaquesGrade");
+    if (!grade) return;
+    grade.innerHTML = config.destaques.map(item => `
+      <article class="destaque-item reveal">
+        ${montarMidiaDeVideo(item)}
+        <div class="legenda">
+          <strong>${item.titulo}</strong>
+        </div>
+      </article>
+    `).join("");
+    configurarCliqueVideoVertical(grade);
+  }
+
   function montarFiltrosEPortfolio(){
     const filtrosEl = document.getElementById("filtros");
     const grade = document.getElementById("portfolioGrade");
@@ -1539,46 +1656,15 @@
       </button>
     `).join("");
 
-    grade.innerHTML = config.portfolio.map(item => {
-      // Itens com "videoArquivo" (arquivo .mp4 próprio) ou "video" (ID do YouTube) mostram uma
-      // capa preenchendo o quadro, com um botão de play por cima. O vídeo só carrega/toca de
-      // verdade (numa janela ampliada) quando a pessoa clica.
-      let midia;
-      if (item.videoArquivo){
-        // Sem "src" aqui de propósito: com 30+ vídeos no portfólio, carregar todos de uma vez
-        // (mesmo os escondidos pelo filtro) trava o celular. O "src" real só é definido pela
-        // função "carregarCapasDeVideoPreguiçosamente", quando o card se aproxima da tela.
-        midia = `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
-             <video class="video-capa" data-src="${item.videoArquivo}#t=0.1" muted playsinline preload="none"></video>
-             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
-               <span class="video-play-icone">&#9654;</span>
-             </button>
-             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
-           </div>`;
-      } else if (item.video){
-        midia = `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
-             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/oar2.jpg" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
-             <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
-               <span class="video-play-icone">&#9654;</span>
-             </button>
-             <span class="video-assistir-label" aria-hidden="true">Assistir</span>
-           </div>`;
-      } else {
-        midia = `<div class="foto-espaco ${item.gradiente}" role="img" aria-label="Trabalho de ${item.titulo}, categoria ${item.categoria}">
-             <!-- Para trocar por uma foto real: substitua esta div por <img src="seu-arquivo.jpg" alt="${item.titulo}"> -->
-           </div>`;
-      }
-
-      return `
+    grade.innerHTML = config.portfolio.map(item => `
       <article class="portfolio-item reveal" data-categoria="${item.categoria}">
-        ${midia}
+        ${montarMidiaDeVideo(item)}
         <div class="legenda">
           <strong>${item.titulo}</strong>
           <span>${item.categoria}</span>
         </div>
       </article>
-    `;
-    }).join("");
+    `).join("");
 
     filtrosEl.querySelectorAll(".filtro-botao").forEach(botao => {
       botao.addEventListener("click", () => {
@@ -1600,18 +1686,7 @@
       });
     });
 
-    carregarCapasDeVideoPreguicosamente();
-
-    // Clique na capa do vídeo: abre o vídeo ampliado numa janela por cima do site (modal).
-    grade.querySelectorAll(".video-vertical").forEach(caixaVideo => {
-      caixaVideo.addEventListener("click", () => {
-        if (caixaVideo.dataset.videoArquivo){
-          abrirModalVideoArquivo(caixaVideo.dataset.videoArquivo, caixaVideo.dataset.titulo);
-        } else {
-          abrirModalVideoYoutube(caixaVideo.dataset.video, caixaVideo.dataset.titulo);
-        }
-      });
-    });
+    configurarCliqueVideoVertical(grade);
   }
 
   // Só define o "src" de cada capa de vídeo quando ela se aproxima da tela (200px antes),
