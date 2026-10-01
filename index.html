@@ -117,7 +117,7 @@
   }
   .botao-primario{ background: var(--vermelho); color: var(--branco); }
   .botao-secundario{ background: var(--rosa); color: var(--tinta); }
-  .botao-whatsapp{ background:#3fae56; color:var(--branco); }
+  .botao-whatsapp{ background: var(--vermelho); color:var(--branco); }
   .botao-email{ background: var(--rosa); color: var(--tinta); }
   .botao-instagram{ background: var(--tinta); color: var(--branco); }
 
@@ -205,7 +205,8 @@
     gap: 50px;
     flex-wrap: wrap;
   }
-  .hero-texto{ flex: 1 1 420px; }
+  .hero-texto{ flex: 1 1 420px; order: 2; }
+  .hero-foto-wrapper{ order: 1; }
 
   /* Legendas nos cantos do Hero, tipo capa de portfólio (elemento decorativo "fofinho") */
   .hero-cantos{
@@ -228,61 +229,62 @@
   }
   .hero-canto-direita{ text-align: right; }
 
-  .hero-etiquetas-linha{
-    display:flex;
-    align-items:center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-bottom: 26px;
-  }
-  .hero-etiquetas-linha .etiqueta-marcador{ margin-bottom: 0; }
-  .hero-selo{
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: .85rem;
-    color: var(--cinza-texto);
-    border: 2px solid var(--tinta);
-    border-radius: 8px;
-    padding: 7px 14px;
-  }
-  .hero-assinatura{
-    display: block;
-    font-size: 1.5rem;
-    margin: -4px 0 8px;
-  }
-  .etiqueta-marcador{
-    display:inline-flex;
+  /* Etiqueta + localização, tipo "UGC CREATOR · Porto Velho, RO" */
+  .hero-etiqueta-local{
+    display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
-    letter-spacing: .3px;
-    color: var(--tinta);
-    background: var(--rosa);
-    padding: 9px 20px;
-    border-radius: 50px;
-    margin-bottom: 26px;
-    font-size: .85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: .8rem;
+    color: var(--cinza-texto);
+    margin-bottom: 20px;
   }
-  .etiqueta-marcador::before{
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--verde);
-    flex-shrink: 0;
-  }
+  .hero-etiqueta-local span:first-child{ color: var(--verde); }
+  .hero-etiqueta-ponto{ color: var(--cinza-texto); opacity: .5; }
   .hero-texto h1{
-    font-size: clamp(2.6rem, 6.4vw, 4.4rem);
-    line-height: 1.05;
-    margin-bottom: 24px;
+    font-size: clamp(2.4rem, 5.8vw, 3.8rem);
+    line-height: 1.08;
+    text-transform: uppercase;
+    margin-bottom: 20px;
     color: var(--tinta);
+  }
+  .hero-titulo-destaque{
+    display: block;
+    text-transform: none;
+    font-size: 1.15em;
+    color: var(--vermelho);
   }
   .hero-frase{
-    font-size: 1.25rem;
-    max-width: 520px;
-    margin-bottom: 36px;
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin-bottom: 26px;
     color: var(--cinza-texto);
+  }
+  /* Faixa de números reais, tipo "+30 vídeos | +20 marcas | +8 nichos" */
+  .hero-estatisticas{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 36px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: .95rem;
+    color: var(--cinza-texto);
+  }
+  .hero-estatisticas .hero-estatistica{
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding-right: 18px;
+    border-right: var(--borda);
+  }
+  .hero-estatisticas .hero-estatistica:last-child{ border-right: none; padding-right: 0; }
+  .hero-estatisticas .hero-estatistica strong{
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--tinta);
   }
   .foto-espaco{
     position: relative;
@@ -323,40 +325,47 @@
     aspect-ratio: 4/5;
     width: 100%;
   }
+  /* Foto do Hero sem fundo/moldura: mostra só a pessoa recortada, sem cartão por trás */
+  .hero-foto.hero-foto-recortada{
+    aspect-ratio: auto;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .hero-foto.hero-foto-recortada img{
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+  }
 
-  /* Cartões flutuantes de prova social, sobrepostos à foto do Hero */
+  /* Cartões flutuantes com depoimentos reais, sobrepostos à foto do Hero */
   .flutuante{
     position:absolute;
     background: var(--branco);
     box-shadow: var(--sombra-dura);
     border-radius: 18px;
-    display:flex;
-    align-items:center;
-    gap: 10px;
     padding: 14px 18px;
-    max-width: 220px;
+    max-width: 230px;
   }
-  .flutuante-icone{
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--rosa);
-    color: var(--vermelho);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size: .9rem;
-  }
-  .flutuante-texto strong{
-    display:block;
-    font-family:'Be Vietnam Pro', sans-serif;
-    font-size: .82rem;
+  .flutuante-citacao{
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: .88rem;
+    line-height: 1.35;
     color: var(--tinta);
+    margin-bottom: 6px;
   }
-  .flutuante-texto span{
-    font-size: .75rem;
-    color: var(--cinza-texto);
+  .flutuante-autor{
+    display: block;
+    font-family:'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-size: .72rem;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    color: var(--vermelho);
   }
   .flutuante-hero-1{ top: -20px; right: -20px; }
   .flutuante-hero-2{ bottom: 30px; left: -30px; }
@@ -470,29 +479,49 @@
   }
   .fato-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
 
-  /* ===================== PORTFÓLIO ===================== */
-  .filtros{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content:center;
-    gap: 14px;
-    margin-bottom: 46px;
+  /* ===================== PORTFÓLIO (AGRUPADO POR NICHO) ===================== */
+  .portfolio-nicho{ margin-bottom: 52px; }
+  .portfolio-nicho.escondido-nicho{ display: none; }
+  .portfolio-nicho-cabecalho{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 22px;
   }
-  .filtro-botao{
-    font-family:'Be Vietnam Pro', sans-serif;
-    font-weight: 500;
-    background: var(--rosa);
-    border: none;
-    padding: 10px 22px;
+  .portfolio-nicho-cabecalho h3{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    color: var(--tinta);
+  }
+  .portfolio-nicho-contagem{
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--cinza-texto);
+  }
+  .portfolio-nicho-grade{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .portfolio-mostrar-mais{
+    display: block;
+    margin: 10px auto 0;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    background: none;
+    border: 2px solid var(--tinta);
+    color: var(--tinta);
+    padding: 12px 28px;
     border-radius: 50px;
-    cursor:pointer;
-    transition: transform .15s ease, background .15s ease;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease, color .15s ease;
   }
-  .filtro-botao:hover{ transform: translate(-2px,-2px); }
-  .filtro-botao.ativo{
-    background: var(--vermelho);
-    color: var(--branco);
-  }
+  .portfolio-mostrar-mais:hover{ background: var(--tinta); color: var(--branco); }
+  .portfolio-mostrar-mais[hidden]{ display: none; }
 
   /* ===================== DESTAQUES ===================== */
   .destaques-grade{
@@ -526,21 +555,7 @@
     font-size: 1.05rem;
   }
 
-  /* Rolagem horizontal em vez de grade: assim nem todos os vídeos aparecem de uma vez,
-     a pessoa rola pro lado (ou clica num nicho no filtro) pra ver os outros. */
-  .portfolio-grade{
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    scroll-padding-left: 4px;
-    padding: 4px 4px 20px;
-    margin: -4px -4px 0;
-    -webkit-overflow-scrolling: touch;
-  }
   .portfolio-item{
-    flex: 0 0 240px;
-    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     box-shadow: var(--sombra-dura);
@@ -636,60 +651,73 @@
     color: var(--vermelho);
     font-weight: 600;
   }
-  .portfolio-item.escondido{ display:none; }
 
-  /* ===================== FOTOS UGC (ÁLBUM ESTILO POLAROID) ===================== */
-  /* Faixa que rola pro lado, igual ao portfólio: cada foto mantém sua proporção
-     original (sem cortar nada) e nem todas aparecem de uma vez. */
+  /* ===================== FOTOS UGC (FAIXA SUTIL, ESTILO ROLO DE FILME) ===================== */
+  /* Faixa clara (sem o fundo escuro/perfuração de antes), rolando sozinha
+     (igual a faixa de marcas) — só uma etiqueta e uma numeração discretas
+     em cada foto lembram a ideia de rolo de filme, sem pesar visualmente. */
+  .fotos-filme{
+    overflow: hidden;
+    position: relative;
+    padding: 10px 0;
+  }
+  .fotos-filme + .fotos-filme{ margin-top: 20px; }
+  /* A segunda faixa roda no sentido contrário */
+  .fotos-grade-volta{ animation-direction: reverse; }
   .fotos-grade{
     display: flex;
-    align-items: flex-end;
-    gap: 28px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    scroll-padding-left: 4px;
-    padding: 20px 4px 20px;
-    margin: -20px -4px 0;
-    -webkit-overflow-scrolling: touch;
+    width: max-content;
+    gap: 16px;
+    /* EDITE AQUI: duração da rolagem. Maior = mais devagar. */
+    animation: rolarFilme 50s linear infinite;
+  }
+  .fotos-filme:hover .fotos-grade{ animation-play-state: paused; }
+  @keyframes rolarFilme{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
   }
   .foto-item{
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    background: var(--branco);
-    padding: 14px 14px 0;
-    box-shadow: var(--sombra-dura-pequena);
-    border-radius: 4px;
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  .foto-item:hover{
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: var(--sombra-dura);
-    z-index: 2;
     position: relative;
+    flex: 0 0 auto;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--sombra-dura-pequena);
   }
-  .foto-item.reveal.visivel:hover{ transform: translateY(-8px) scale(1.03); }
   .foto-item .foto-espaco{
     border: none;
     box-shadow: none;
     border-radius: 0;
-    height: 320px;
+    height: 260px;
   }
   /* Sem corte: a foto aparece inteira, na proporção original dela (altura fixa, largura livre) */
   .foto-item .foto-espaco img{ width: auto; height: 100%; max-width: none; display: block; }
   /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
+  /* Etiqueta discreta no canto (tipo legenda de rolo de filme) e numeração sequencial */
   .foto-item .legenda-foto{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 16px 10px 20px;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: 1.05rem;
-    color: var(--tinta);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(27,27,27,.55);
+    color: var(--creme);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-size: .62rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 50px;
+  }
+  .foto-item .foto-numero{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: var(--creme);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: .72rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
   }
 
   /* ===================== SERVIÇOS ===================== */
@@ -838,8 +866,9 @@
     gap: 28px;
   }
   .cartao-depoimento{
-    background: var(--rosa);
-    border: none;
+    background: var(--branco);
+    border: var(--borda);
+    box-shadow: var(--sombra-dura-pequena);
     border-radius: 24px;
     padding: 30px 26px;
   }
@@ -1147,28 +1176,26 @@
     </div>
     <div class="container hero-container">
       <div class="hero-texto reveal">
-        <div class="hero-etiquetas-linha">
-          <p class="etiqueta-marcador" id="heroEtiqueta">Criadora UGC</p>
-          <span class="hero-selo">[ 2026 ]</span>
-        </div>
-        <span class="hero-assinatura fonte-marcador">oi, eu sou a</span>
-        <h1 id="heroNome">Thais Linhares</h1>
-        <p class="hero-frase" id="heroFrase">Conteúdo autêntico que vira resultado de verdade para a sua marca.</p>
+        <p class="hero-etiqueta-local">
+          <span id="heroEtiqueta">Criadora UGC</span>
+          <span class="hero-etiqueta-ponto" aria-hidden="true">&#8226;</span>
+          <span id="heroLocal">Porto Velho, RO</span>
+        </p>
+        <h1 id="heroTitulo">
+          Conteúdo que vira
+          <span class="fonte-marcador hero-titulo-destaque" id="heroTituloDestaque">resultado de verdade</span>
+        </h1>
+        <p class="hero-frase" id="heroFrase">Vídeos autênticos, cheios de energia, do jeito que uma cliente real mostraria pra sua marca.</p>
+        <div class="hero-estatisticas" id="heroEstatisticas"></div>
         <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
       </div>
       <div class="hero-foto-wrapper reveal">
-        <div class="foto-espaco hero-foto">
-          <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
-          <img src="fotocapa.jpeg" alt="Thais Linhares sorrindo para a câmera, em cenário claro e acolhedor">
+        <div class="foto-espaco hero-foto hero-foto-recortada">
+          <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa-sem-fundo.png" (mesma pasta do index.html, com fundo já removido/transparente) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
+          <img src="fotocapa-sem-fundo.png" alt="Thais Linhares sorrindo para a câmera">
         </div>
-        <div class="flutuante flutuante-hero-1">
-          <span class="flutuante-icone">&#10003;</span>
-          <div class="flutuante-texto"><strong>100% autêntico</strong><span>Conteúdo genuíno</span></div>
-        </div>
-        <div class="flutuante flutuante-hero-2">
-          <span class="flutuante-icone">&#9733;</span>
-          <div class="flutuante-texto"><strong>+20 marcas</strong><span>já confiaram no trabalho</span></div>
-        </div>
+        <div class="flutuante flutuante-hero-1" id="heroDepoimento1"></div>
+        <div class="flutuante flutuante-hero-2" id="heroDepoimento2"></div>
       </div>
     </div>
   </section>
@@ -1239,20 +1266,25 @@
     </div>
   </section>
 
-  <!-- ===================== PORTFÓLIO ===================== -->
+  <!-- ===================== PORTFÓLIO (AGRUPADO POR NICHO) ===================== -->
   <section class="portfolio" id="portfolio">
     <div class="container">
       <h2 class="titulo-secao reveal">Portfólio</h2>
-      <div class="filtros" id="filtros" role="group" aria-label="Filtrar portfólio por nicho"></div>
-      <div class="portfolio-grade" id="portfolioGrade"></div>
+      <div class="portfolio-nichos" id="portfolioNichos"></div>
+      <button type="button" class="portfolio-mostrar-mais" id="portfolioMostrarMais">Mostrar mais nichos</button>
     </div>
   </section>
 
-  <!-- ===================== FOTOS UGC ===================== -->
+  <!-- ===================== FOTOS UGC (ROLO DE FILME) ===================== -->
   <section class="fotos" id="fotos">
     <div class="container">
       <h2 class="titulo-secao reveal">Fotos UGC</h2>
+    </div>
+    <div class="fotos-filme">
       <div class="fotos-grade" id="fotosGrade"></div>
+    </div>
+    <div class="fotos-filme">
+      <div class="fotos-grade fotos-grade-volta" id="fotosGradeVolta"></div>
     </div>
   </section>
 
@@ -1361,7 +1393,16 @@
     // EDITE AQUI: textos da seção Hero (primeira dobra da página)
     hero: {
       etiqueta: "Criadora UGC",
-      frase: "Conteúdo autêntico e cheio de energia que vira resultado de verdade para a sua marca.",
+      local: "Porto Velho, RO",
+      titulo: "Conteúdo que vira",
+      tituloDestaque: "resultado de verdade",
+      frase: "Vídeos autênticos, cheios de energia, do jeito que uma cliente real mostraria pra sua marca.",
+      // EDITE AQUI: números reais que aparecem no Hero (vídeos, marcas e nichos)
+      estatisticas: [
+        { numero: "+30", rotulo: "vídeos" },
+        { numero: "+20", rotulo: "marcas" },
+        { numero: "+8", rotulo: "nichos" }
+      ],
       botao: "Fale comigo"
     },
 
@@ -1528,7 +1569,7 @@
     montarMarcasMarquee();
     montarMarcas();
     montarDestaques();
-    montarFiltrosEPortfolio();
+    montarPortfolio();
     carregarCapasDeVideoPreguicosamente();
     montarFotos();
     montarServicos();
@@ -1553,10 +1594,22 @@
 
   function preencherTextosFixos(){
     document.getElementById("heroEtiqueta").textContent = config.hero.etiqueta;
-    document.getElementById("heroNome").textContent = config.nome;
+    document.getElementById("heroLocal").textContent = config.hero.local;
+    document.getElementById("heroTitulo").innerHTML = `${config.hero.titulo}<span class="fonte-marcador hero-titulo-destaque" id="heroTituloDestaque">${config.hero.tituloDestaque}</span>`;
     document.getElementById("heroFrase").textContent = config.hero.frase;
+    document.getElementById("heroEstatisticas").innerHTML = config.hero.estatisticas.map(est => `
+      <span class="hero-estatistica"><strong>${est.numero}</strong> ${est.rotulo}</span>
+    `).join("");
     document.getElementById("heroBotao").textContent = config.hero.botao;
     document.getElementById("heroCantoInstagram").textContent = config.contato.instagramUsuario;
+
+    // Depoimentos reais em destaque, flutuando sobre a foto do Hero
+    // (escolhidos por serem curtos o bastante pra caber num cartãozinho)
+    const depoimento1 = config.depoimentos[6];
+    const depoimento2 = config.depoimentos[3];
+    document.getElementById("heroDepoimento1").innerHTML = `<span class="flutuante-citacao">"${depoimento1.texto}"</span><span class="flutuante-autor">${depoimento1.nome}</span>`;
+    document.getElementById("heroDepoimento2").innerHTML = `<span class="flutuante-citacao">"${depoimento2.texto}"</span><span class="flutuante-autor">${depoimento2.nome}</span>`;
+
     document.getElementById("sobreTitulo").textContent = config.sobre.titulo;
     document.getElementById("sobreTexto").innerHTML = config.sobre.texto;
     document.title = config.nome + " | Criadora de Conteúdo UGC";
@@ -1646,47 +1699,50 @@
     configurarCliqueVideoVertical(grade);
   }
 
-  function montarFiltrosEPortfolio(){
-    const filtrosEl = document.getElementById("filtros");
-    const grade = document.getElementById("portfolioGrade");
+  // EDITE AQUI: quantos nichos aparecem antes de precisar clicar em "Mostrar mais"
+  // e quantos vídeos aparecem por nicho (o resto do nicho fica disponível rolando
+  // normalmente pela página, já que cada nicho mostra sua contagem real de vídeos).
+  const PORTFOLIO_NICHOS_VISIVEIS = 3;
+  const PORTFOLIO_VIDEOS_POR_NICHO = 3;
 
-    filtrosEl.innerHTML = config.categorias.map((cat, indice) => `
-      <button class="filtro-botao ${indice === 0 ? "ativo" : ""}" data-filtro="${cat.chave}" aria-pressed="${indice === 0}">
-        ${cat.rotulo}
-      </button>
-    `).join("");
+  function montarPortfolio(){
+    const container = document.getElementById("portfolioNichos");
+    const botaoMostrarMais = document.getElementById("portfolioMostrarMais");
 
-    grade.innerHTML = config.portfolio.map(item => `
-      <article class="portfolio-item reveal" data-categoria="${item.categoria}">
-        ${montarMidiaDeVideo(item)}
-        <div class="legenda">
-          <strong>${item.titulo}</strong>
-          <span>${item.categoria}</span>
+    // Agrupa os itens do portfólio por categoria, na ordem definida em "config.categorias"
+    const nichos = config.categorias
+      .filter(cat => cat.chave !== "todos")
+      .map(cat => ({ categoria: cat, itens: config.portfolio.filter(item => item.categoria === cat.chave) }))
+      .filter(nicho => nicho.itens.length > 0);
+
+    container.innerHTML = nichos.map((nicho, indice) => `
+      <div class="portfolio-nicho reveal${indice >= PORTFOLIO_NICHOS_VISIVEIS ? " escondido-nicho" : ""}">
+        <div class="portfolio-nicho-cabecalho">
+          <h3>${nicho.categoria.rotulo}</h3>
+          <span class="portfolio-nicho-contagem">${nicho.itens.length}</span>
         </div>
-      </article>
+        <div class="portfolio-nicho-grade">
+          ${nicho.itens.slice(0, PORTFOLIO_VIDEOS_POR_NICHO).map(item => `
+            <article class="portfolio-item">
+              ${montarMidiaDeVideo(item)}
+              <div class="legenda">
+                <strong>${item.titulo}</strong>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </div>
     `).join("");
 
-    filtrosEl.querySelectorAll(".filtro-botao").forEach(botao => {
-      botao.addEventListener("click", () => {
-        filtrosEl.querySelectorAll(".filtro-botao").forEach(b => {
-          b.classList.remove("ativo");
-          b.setAttribute("aria-pressed", "false");
-        });
-        botao.classList.add("ativo");
-        botao.setAttribute("aria-pressed", "true");
-
-        const filtro = botao.dataset.filtro;
-        grade.querySelectorAll(".portfolio-item").forEach(item => {
-          const mostrar = filtro === "todos" || item.dataset.categoria === filtro;
-          item.classList.toggle("escondido", !mostrar);
-        });
-
-        window.Tracking.buttonClick(`filtro_${filtro}`);
-        ajustarEscalaMobile();
-      });
+    botaoMostrarMais.hidden = nichos.length <= PORTFOLIO_NICHOS_VISIVEIS;
+    botaoMostrarMais.addEventListener("click", () => {
+      container.querySelectorAll(".portfolio-nicho.escondido-nicho").forEach(nicho => nicho.classList.remove("escondido-nicho"));
+      botaoMostrarMais.hidden = true;
+      window.Tracking.buttonClick("portfolio_mostrar_mais");
+      ajustarEscalaMobile();
     });
 
-    configurarCliqueVideoVertical(grade);
+    configurarCliqueVideoVertical(container);
   }
 
   // Só define o "src" de cada capa de vídeo quando ela se aproxima da tela (200px antes),
@@ -1797,20 +1853,28 @@
   }
 
   function montarFotos(){
-    const grade = document.getElementById("fotosGrade");
-    grade.innerHTML = config.fotos.map(foto => {
+    // Técnica marquee (igual à faixa de marcas): a lista entra 2x seguidas no mesmo
+    // trilho, que desliza de 0 até -50% da própria largura, dando a volta sem pulo,
+    // feito um rolo de filme passando sem parar. Duas faixas, uma indo e outra voltando.
+    const listaDupla = [...config.fotos, ...config.fotos];
+    const html = listaDupla.map((foto, indice) => {
       // "correcao" ajeita fotos que vieram giradas/espelhadas da câmera: "rotacionar" (180°) ou "espelhar"
       const classeCorrecao = foto.correcao ? ` foto-${foto.correcao}` : "";
       const midia = foto.arquivo
         ? `<div class="foto-espaco"><img class="${classeCorrecao.trim()}" src="${foto.arquivo}" alt="${foto.titulo}" loading="lazy"></div>`
         : `<div class="foto-espaco ${foto.gradiente}" role="img" aria-label="Foto: ${foto.titulo}"></div>`;
+      // Numeração discreta (mesmo número nas duas cópias da lista, já que é só efeito visual)
+      const numero = (indice % config.fotos.length) + 1;
       return `
-      <article class="foto-item reveal">
+      <article class="foto-item">
         ${midia}
-        <div class="legenda-foto">${foto.titulo}</div>
+        <div class="legenda-foto">Fotos UGC</div>
+        <span class="foto-numero">${numero}</span>
       </article>
     `;
     }).join("");
+    document.getElementById("fotosGrade").innerHTML = html;
+    document.getElementById("fotosGradeVolta").innerHTML = html;
   }
 
   function montarServicos(){
