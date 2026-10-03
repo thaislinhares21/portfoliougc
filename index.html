@@ -344,7 +344,10 @@
   }
   /* Foto do Hero sem fundo/moldura: mostra só a pessoa recortada, sem cartão por trás */
   .hero-foto.hero-foto-recortada{
-    aspect-ratio: auto;
+    /* Mesma proporção do arquivo "fotocapa-sem-fundo.png" (1180x2096), pra reservar
+       o espaço certo na hora, sem esperar a imagem carregar (evita a página medir
+       errado a altura no celular enquanto a imagem ainda não chegou). */
+    aspect-ratio: 1180/2096;
     background: none;
     box-shadow: none;
     border-radius: 0;
@@ -433,6 +436,9 @@
   }
 
   section{ padding: 130px 0; }
+  /* Marcas e nichos ficam logo depois do Hero, com espaço bem mais enxuto pra
+     parecer uma continuação do Hero, tipo uma página só, em vez de uma seção nova */
+  .marcas{ padding: 40px 0 50px; }
 
   /* ===================== SOBRE ===================== */
   .sobre{ position: relative; overflow: hidden; }
@@ -1277,8 +1283,8 @@
       </div>
       <div class="hero-foto-wrapper reveal">
         <div class="foto-espaco hero-foto hero-foto-recortada">
-          <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa-sem-fundo.png" (mesma pasta do index.html, com fundo já removido/transparente) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
-          <img src="fotocapa-sem-fundo.png" alt="Thais Linhares sorrindo para a câmera">
+          <!-- EDITE AQUI: para trocar a foto de capa, substitua o arquivo "fotocapa-sem-fundo.webp" (mesma pasta do index.html, com fundo já removido/transparente) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
+          <img src="fotocapa-sem-fundo.webp" alt="Thais Linhares sorrindo para a câmera">
         </div>
         <div class="flutuante flutuante-hero-1" id="heroDepoimento1"></div>
         <div class="flutuante flutuante-hero-2" id="heroDepoimento2"></div>
