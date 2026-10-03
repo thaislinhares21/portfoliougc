@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 
 <!-- Supabase via CDN, depois a configuração compartilhada e o rastreamento de uso do site -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -18,13 +18,15 @@
 <style>
   /* ===================== VARIÁVEIS DE COR E BASE ===================== */
   :root{
-    --creme: #ffffff;
-    --rosa: #e9f5c9;
-    --vermelho: #d46928;
-    --tinta: #1b1b1b;
+    /* Direção visual: scrapbook rosa/branco. "--vermelho" manteve o nome por
+       compatibilidade com o resto do código, mas agora é o rosa principal de destaque. */
+    --creme: #fdf6e3;
+    --rosa: #f7d3e1;
+    --vermelho: #e37ba6;
+    --laranja: #e37ba6;
+    --tinta: #14110d;
     --branco: #ffffff;
     --cinza-texto: #5c584f;
-    /* Verde usado em detalhes que remetem a saúde/energia (etiqueta do Hero etc.) */
     --verde: #6b9b5e;
     --sombra-dura: 0 20px 44px rgba(27,27,27,0.05);
     --sombra-dura-pequena: 0 8px 20px rgba(27,27,27,0.045);
@@ -45,14 +47,14 @@
       linear-gradient(90deg, rgba(27,27,27,0.05) 1px, transparent 1px);
     background-size: 24px 24px;
     color: var(--tinta);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
   h1,h2,h3,.logo{
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 800;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
     letter-spacing: -.3px;
     margin: 0;
   }
@@ -80,7 +82,7 @@
     left: -999px;
     top: 0;
     background: var(--vermelho);
-    color: var(--branco);
+    color: var(--tinta);
     padding: 12px 20px;
     z-index: 999;
     border-radius: 0 0 8px 0;
@@ -97,7 +99,7 @@
   /* ===================== BOTÕES ===================== */
   .botao{
     display:inline-block;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: 1rem;
     padding: 16px 34px;
@@ -115,9 +117,9 @@
     transform: translateY(0);
     opacity: 1;
   }
-  .botao-primario{ background: var(--vermelho); color: var(--branco); }
+  .botao-primario{ background: var(--vermelho); color: var(--tinta); }
   .botao-secundario{ background: var(--rosa); color: var(--tinta); }
-  .botao-whatsapp{ background: var(--vermelho); color:var(--branco); }
+  .botao-whatsapp{ background: var(--vermelho); color:var(--tinta); }
   .botao-email{ background: var(--rosa); color: var(--tinta); }
   .botao-instagram{ background: var(--tinta); color: var(--branco); }
 
@@ -187,7 +189,7 @@
   .nav a:hover, .nav a:focus-visible{ border-bottom-color: var(--vermelho); }
   .nav-cta{
     background: var(--vermelho) !important;
-    color: var(--branco) !important;
+    color: var(--tinta) !important;
     padding: 10px 22px !important;
     border-radius: 50px;
     white-space: nowrap;
@@ -200,6 +202,8 @@
     position: relative;
   }
   .hero-container{
+    position: relative;
+    z-index: 1;
     display:flex;
     align-items:center;
     gap: 50px;
@@ -219,7 +223,7 @@
     align-items: flex-start;
     gap: 20px;
     pointer-events: none;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: .72rem;
     letter-spacing: .5px;
@@ -228,21 +232,34 @@
     line-height: 1.5;
   }
   .hero-canto-direita{ text-align: right; }
+  /* Adesivos de scrapbook espalhados no Hero */
+  .hero-adesivos{ position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .hero-adesivos svg{ position: absolute; color: var(--vermelho); opacity: .8; }
+  .hero-adesivo-estrela{ top: 18%; left: 2%; width: 34px; transform: rotate(-12deg); }
+  .hero-adesivo-flor{ top: 8%; right: 6%; width: 40px; transform: rotate(10deg); }
+  .hero-adesivo-brilho{ bottom: 10%; left: 6%; width: 30px; }
 
   /* Etiqueta + localização, tipo "UGC CREATOR · Porto Velho, RO" */
   .hero-etiqueta-local{
-    display: flex;
+    position: relative;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: .8rem;
     color: var(--cinza-texto);
-    margin-bottom: 20px;
+    margin: 10px 0 26px;
+    background: var(--branco);
+    padding: 10px 18px;
+    /* Cantos meio tortos, tipo papelzinho rasgado de caderno */
+    border-radius: 2px 9px 3px 8px;
+    box-shadow: var(--sombra-dura-pequena);
+    transform: rotate(-2deg);
   }
-  .hero-etiqueta-local span:first-child{ color: var(--verde); }
+  .hero-etiqueta-local span:first-child{ color: var(--laranja); }
   .hero-etiqueta-ponto{ color: var(--cinza-texto); opacity: .5; }
   .hero-texto h1{
     font-size: clamp(2.4rem, 5.8vw, 3.8rem);
@@ -269,7 +286,7 @@
     flex-wrap: wrap;
     gap: 18px;
     margin-bottom: 36px;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: .95rem;
     color: var(--cinza-texto);
   }
@@ -297,7 +314,7 @@
     justify-content:center;
   }
   .foto-iniciais{
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
     color: rgba(255,255,255,.55);
     font-size: 5rem;
@@ -360,7 +377,7 @@
   }
   .flutuante-autor{
     display: block;
-    font-family:'Be Vietnam Pro', sans-serif;
+    font-family:'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: .72rem;
     letter-spacing: .3px;
@@ -386,7 +403,7 @@
     animation: rolarMarcas 24s linear infinite;
   }
   .marcas-track span{
-    font-family:'Be Vietnam Pro', sans-serif;
+    font-family:'Plus Jakarta Sans', sans-serif;
     font-weight:600;
     font-size: 1.3rem;
     color: var(--creme);
@@ -455,6 +472,48 @@
     aspect-ratio: 1/1;
     margin: 0 auto;
   }
+  /* Pilha de fotos do "sobre mim": 3 fotos empilhadas, clica e a de cima vai pro
+     fim da pilha, revelando a próxima. */
+  .sobre-foto-pilha{
+    position: relative;
+    flex: 1 1 380px;
+    max-width: 480px;
+    aspect-ratio: 1/1;
+    margin: 0 36px 36px 0;
+    cursor: pointer;
+  }
+  .sobre-foto-card{
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: var(--sombra-dura);
+    background: linear-gradient(135deg, var(--vermelho), #f2a565);
+    transition: transform .4s ease;
+  }
+  .sobre-foto-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+  }
+  /* Fita adesiva (washi tape) decorativa, tipo página de diário/scrapbook */
+  .fita-adesiva{
+    position: absolute;
+    width: 100px;
+    height: 36px;
+    background-color: rgba(247,211,225,.75);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 6px, transparent 6px 12px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.55) 0 6px, transparent 6px 12px);
+    box-shadow: 0 2px 6px rgba(20,17,13,.12);
+    z-index: 5;
+  }
+  .fita-adesiva-topo{
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+  }
   .sobre-texto{ flex: 1 1 420px; }
   .sobre-texto h2{ font-size: 2rem; margin-bottom: 20px; }
   .sobre-texto p{ font-size: 1.08rem; margin-bottom: 16px; }
@@ -468,7 +527,7 @@
     margin-top: 50px;
   }
   .fato-cartao{
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     background: var(--rosa);
     border: none;
@@ -479,81 +538,35 @@
   }
   .fato-cartao:hover{ transform: translateY(-4px); box-shadow: var(--sombra-dura); }
 
-  /* ===================== PORTFÓLIO (AGRUPADO POR NICHO) ===================== */
-  .portfolio-nicho{ margin-bottom: 52px; }
-  .portfolio-nicho.escondido-nicho{ display: none; }
-  .portfolio-nicho-cabecalho{
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 22px;
+  /* ===================== TRABALHOS POR NICHO (GALERIA COM FILTRO) ===================== */
+  .filtros{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 14px;
+    margin-bottom: 46px;
   }
-  .portfolio-nicho-cabecalho h3{
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 800;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    color: var(--tinta);
-  }
-  .portfolio-nicho-contagem{
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: .95rem;
-    color: var(--cinza-texto);
-  }
-  .portfolio-nicho-grade{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .portfolio-mostrar-mais{
-    display: block;
-    margin: 10px auto 0;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 600;
-    background: none;
-    border: 2px solid var(--tinta);
-    color: var(--tinta);
-    padding: 12px 28px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform .15s ease, background .15s ease, color .15s ease;
-  }
-  .portfolio-mostrar-mais:hover{ background: var(--tinta); color: var(--branco); }
-  .portfolio-mostrar-mais[hidden]{ display: none; }
-
-  /* ===================== DESTAQUES ===================== */
-  .destaques-grade{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 36px;
-  }
-  .destaque-item{
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--sombra-dura);
-    border-radius: 26px;
-    overflow: hidden;
-    transition: transform .2s ease;
-  }
-  .destaque-item:hover{ transform: translateY(-6px); }
-  .destaque-item .foto-espaco{
+  .filtro-botao{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+    background: var(--rosa);
     border: none;
-    box-shadow: none;
-    border-radius: 0;
-    aspect-ratio: 4/5;
-    flex-shrink: 0;
+    padding: 10px 22px;
+    border-radius: 50px;
+    cursor:pointer;
+    transition: transform .15s ease, background .15s ease;
   }
-  .destaque-item .legenda{
-    padding: 18px 20px;
-    background: var(--branco);
+  .filtro-botao:hover{ transform: translate(-2px,-2px); }
+  .filtro-botao.ativo{
+    background: var(--vermelho);
+    color: var(--tinta);
   }
-  .destaque-item .legenda strong{
-    display: block;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-size: 1.05rem;
+  .portfolio-grade{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
   }
+  .portfolio-item.escondido{ display: none; }
 
   .portfolio-item{
     display: flex;
@@ -623,7 +636,7 @@
     left: 14px;
     bottom: 14px;
     color: var(--branco);
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: .8rem;
     letter-spacing: .5px;
@@ -641,7 +654,7 @@
   }
   .portfolio-item .legenda strong{
     display:block;
-    font-family:'Be Vietnam Pro', sans-serif;
+    font-family:'Plus Jakarta Sans', sans-serif;
     margin-bottom: 4px;
   }
   .portfolio-item .legenda span{
@@ -652,72 +665,88 @@
     font-weight: 600;
   }
 
-  /* ===================== FOTOS UGC (FAIXA SUTIL, ESTILO ROLO DE FILME) ===================== */
-  /* Faixa clara (sem o fundo escuro/perfuração de antes), rolando sozinha
-     (igual a faixa de marcas) — só uma etiqueta e uma numeração discretas
-     em cada foto lembram a ideia de rolo de filme, sem pesar visualmente. */
-  .fotos-filme{
-    overflow: hidden;
+  /* ===================== FOTOS UGC (COLAGEM ESTÁTICA DE SCRAPBOOK) ===================== */
+  /* Fotos espalhadas, de tamanhos/rotação/altura variados, sem rolagem nenhuma —
+     feito uma colagem de recortes coladas numa página de álbum. */
+  .fotos-colagem{
     position: relative;
-    padding: 10px 0;
-  }
-  .fotos-filme + .fotos-filme{ margin-top: 20px; }
-  /* A segunda faixa roda no sentido contrário */
-  .fotos-grade-volta{ animation-direction: reverse; }
-  .fotos-grade{
     display: flex;
-    width: max-content;
-    gap: 16px;
-    /* EDITE AQUI: duração da rolagem. Maior = mais devagar. */
-    animation: rolarFilme 50s linear infinite;
-  }
-  .fotos-filme:hover .fotos-grade{ animation-play-state: paused; }
-  @keyframes rolarFilme{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 36px 10px 50px;
   }
   .foto-item{
     position: relative;
     flex: 0 0 auto;
-    border-radius: 14px;
-    overflow: hidden;
+    width: 200px;
+    background: var(--branco);
+    padding: 8px 8px 0;
+    border-radius: 6px;
     box-shadow: var(--sombra-dura-pequena);
+    transition: transform .2s ease, box-shadow .2s ease;
+    --rotacao-colagem: 0deg;
+    --deslocamento-colagem: 0px;
+    transform: rotate(var(--rotacao-colagem)) translateY(var(--deslocamento-colagem));
+  }
+  /* EDITE AQUI: tamanho/rotação/altura de cada foto na colagem (repete a cada 6) */
+  .foto-item:nth-child(6n+1){ width: 225px; --deslocamento-colagem: 14px; }
+  .foto-item:nth-child(6n+2){ width: 165px; --deslocamento-colagem: 38px; }
+  .foto-item:nth-child(6n+3){ width: 195px; --deslocamento-colagem: 0px; }
+  .foto-item:nth-child(6n+4){ width: 180px; --deslocamento-colagem: 26px; }
+  .foto-item:nth-child(6n+5){ width: 210px; --deslocamento-colagem: 48px; }
+  .foto-item:nth-child(6n+6){ width: 190px; --deslocamento-colagem: 10px; }
+  .foto-item:hover{
+    transform: rotate(0deg) translateY(0) scale(1.05);
+    box-shadow: var(--sombra-dura);
+    z-index: 3;
   }
   .foto-item .foto-espaco{
     border: none;
     box-shadow: none;
     border-radius: 0;
-    height: 260px;
+    aspect-ratio: 4/5;
   }
-  /* Sem corte: a foto aparece inteira, na proporção original dela (altura fixa, largura livre) */
-  .foto-item .foto-espaco img{ width: auto; height: 100%; max-width: none; display: block; }
+  .foto-item .foto-espaco img{ width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
   /* Corrige fotos que vieram giradas/espelhadas direto da câmera */
   .foto-rotacionar{ transform: rotate(180deg); }
   .foto-espelhar{ transform: scaleX(-1); }
-  /* Etiqueta discreta no canto (tipo legenda de rolo de filme) e numeração sequencial */
   .foto-item .legenda-foto{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(27,27,27,.55);
-    color: var(--creme);
-    font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 600;
-    font-size: .62rem;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    border-radius: 50px;
+    text-align: center;
+    padding: 8px 4px 10px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: .82rem;
+    color: var(--tinta);
   }
-  .foto-item .foto-numero{
+  /* Clipe de papel colorido, só decoração, em algumas fotos */
+  .colagem-clipe{
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: var(--creme);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: .72rem;
-    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    top: -16px;
+    left: 50%;
+    width: 30px;
+    height: 44px;
+    transform: translateX(-50%) rotate(-8deg);
+    z-index: 4;
+    pointer-events: none;
+  }
+  /* Etiqueta de papel rasgado, fixa no canto da colagem */
+  .colagem-etiqueta{
+    position: absolute;
+    bottom: 6px;
+    right: 18px;
+    background: var(--branco);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--tinta);
+    padding: 10px 20px;
+    border-radius: 3px 10px 4px 9px;
+    box-shadow: var(--sombra-dura-pequena);
+    transform: rotate(3deg);
   }
 
   /* ===================== SERVIÇOS ===================== */
@@ -732,9 +761,17 @@
     border-radius: 24px;
     padding: 34px 28px;
     transition: transform .15s ease;
+    /* Leve inclinação alternada, tipo recorte colado num scrapbook */
+    --rotacao-colagem: 0deg;
+    transform: rotate(var(--rotacao-colagem));
   }
-  .cartao-servico:hover{
-    transform: translateY(-6px);
+  .cartao-servico:nth-child(3n+1){ --rotacao-colagem: -2deg; }
+  .cartao-servico:nth-child(3n+2){ --rotacao-colagem: 1.5deg; }
+  .cartao-servico:nth-child(3n+3){ --rotacao-colagem: -1deg; }
+  .cartao-servico.reveal{ transform: translateY(24px) rotate(var(--rotacao-colagem)); }
+  .cartao-servico.reveal.visivel{ transform: rotate(var(--rotacao-colagem)); }
+  .cartao-servico.reveal.visivel:hover, .cartao-servico:hover{
+    transform: rotate(0deg) translateY(-6px);
     box-shadow: var(--sombra-dura);
   }
   .cartao-servico h3{
@@ -771,8 +808,8 @@
     left: 50%;
     transform: translateX(-50%);
     background: var(--vermelho);
-    color: var(--branco);
-    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--tinta);
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: .7rem;
     font-weight: 700;
     letter-spacing: .5px;
@@ -783,7 +820,7 @@
   .cartao-valor h3{ font-size: 1.1rem; margin-bottom: 10px; }
   .cartao-valor .preco{
     display: block;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
     font-size: 1.9rem;
     color: var(--vermelho);
@@ -801,7 +838,7 @@
     border: var(--borda);
     border-radius: 50px;
     padding: 12px 22px;
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     font-size: .9rem;
   }
@@ -824,7 +861,7 @@
     margin-bottom: 6px;
   }
   .marcas-titulo span{
-    font-family: 'Be Vietnam Pro', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     letter-spacing: 3px;
     font-size: clamp(1rem, 2.6vw, 1.4rem);
@@ -857,6 +894,34 @@
     max-width: 160px;
     object-fit: contain;
     margin: 0 28px;
+    /* Arredonda as logos que vieram com fundo quadrado/retangular (branco ou colorido),
+       pra ficar harmônico com as que já são redondas/sem fundo */
+    border-radius: 12px;
+  }
+
+  /* ===================== NÚMEROS (dentro da seção Números e depoimentos) ===================== */
+  .numeros-grade{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 70px;
+    text-align: center;
+  }
+  .numero-item strong{
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    color: var(--vermelho);
+  }
+  .numero-item span{
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    color: var(--cinza-texto);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-size: .9rem;
   }
 
   /* ===================== DEPOIMENTOS ===================== */
@@ -871,9 +936,24 @@
     box-shadow: var(--sombra-dura-pequena);
     border-radius: 24px;
     padding: 30px 26px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    --rotacao-colagem: 0deg;
+    transform: rotate(var(--rotacao-colagem));
+  }
+  .cartao-depoimento:nth-child(4n+1){ --rotacao-colagem: -2deg; }
+  .cartao-depoimento:nth-child(4n+2){ --rotacao-colagem: 1.5deg; }
+  .cartao-depoimento:nth-child(4n+3){ --rotacao-colagem: -1.5deg; }
+  .cartao-depoimento:nth-child(4n+4){ --rotacao-colagem: 2deg; }
+  .cartao-depoimento.reveal{ transform: translateY(24px) rotate(var(--rotacao-colagem)); }
+  .cartao-depoimento.reveal.visivel{ transform: rotate(var(--rotacao-colagem)); }
+  .cartao-depoimento.reveal.visivel:hover, .cartao-depoimento:hover{
+    transform: rotate(0deg) translateY(-6px);
+    box-shadow: var(--sombra-dura);
+    position: relative;
+    z-index: 2;
   }
   .cartao-depoimento p{ font-style: normal; margin-bottom: 18px; }
-  .cartao-depoimento strong{ display:block; font-family:'Be Vietnam Pro', sans-serif; }
+  .cartao-depoimento strong{ display:block; font-family:'Plus Jakarta Sans', sans-serif; }
   .cartao-depoimento .empresa-depoimento{ font-size: .85rem; opacity: .8; }
 
   /* ===================== CONTATO ===================== */
@@ -888,7 +968,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -923,7 +1003,7 @@
   .campo{ display:flex; flex-direction:column; gap:6px; }
   .campo label{ font-weight: 600; font-size: .95rem; }
   .campo input, .campo textarea{
-    font-family:'DM Sans', sans-serif;
+    font-family:'Plus Jakarta Sans', sans-serif;
     font-size: 1rem;
     padding: 13px 16px;
     border: none;
@@ -951,7 +1031,7 @@
     border-top: var(--borda);
   }
   .rodape-nome{
-    font-family:'Be Vietnam Pro', sans-serif;
+    font-family:'Plus Jakarta Sans', sans-serif;
     font-size: 1.4rem;
     margin-bottom: 16px;
   }
@@ -1174,6 +1254,12 @@
       <span class="hero-canto-esquerda">Seja bem-vinda(o) ao<br>meu portfólio</span>
       <span class="hero-canto-direita" id="heroCantoInstagram">@thaisugcbr</span>
     </div>
+    <!-- Adesivos decorativos (estrela, flor, brilho), só enfeite de scrapbook -->
+    <div class="hero-adesivos" aria-hidden="true">
+      <svg class="hero-adesivo-estrela" viewBox="0 0 64 64" fill="currentColor"><path d="M32 4l6 18h19l-15.5 11.5L47 52 32 41 17 52l5.5-18.5L7 22h19Z"/></svg>
+      <svg class="hero-adesivo-flor" viewBox="0 0 64 64" fill="currentColor"><path d="M32 32c0-9 6-14 6-14s6 5 6 14-6 14-6 14-6-5-6-14Z"/><path d="M32 32c-9 0-14 6-14 6s5 6 14 6 14-6 14-6-5-6-14-6Z"/><path d="M32 32c0 9-6 14-6 14s-6-5-6-14 6-14 6-14 6 5 6 14Z"/><path d="M32 32c9 0 14-6 14-6s-5-6-14-6-14 6-14 6 5 6 14 6Z"/><circle cx="32" cy="32" r="5"/></svg>
+      <svg class="hero-adesivo-brilho" viewBox="0 0 64 64" fill="currentColor"><path d="M14 14l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"/><path d="M46 36l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5Z"/></svg>
+    </div>
     <div class="container hero-container">
       <div class="hero-texto reveal">
         <p class="hero-etiqueta-local">
@@ -1200,7 +1286,20 @@
     </div>
   </section>
 
-  <!-- ===================== FAIXA DE MARCAS ===================== -->
+  <!-- ===================== MARCAS (FAIXA MARQUEE) ===================== -->
+  <section class="marcas" id="marcas" aria-label="Marcas que já confiaram no trabalho de Thais Linhares">
+    <div class="container">
+      <div class="marcas-titulo reveal">
+        <span class="fonte-marcador">Marcas</span>
+        <span>PARCEIRAS</span>
+      </div>
+    </div>
+    <div class="marcas-marquee">
+      <div class="marcas-marquee-trilho" id="marcasMarqueeTrilho"></div>
+    </div>
+  </section>
+
+  <!-- ===================== FAIXA DE MARCAS (NICHOS) ===================== -->
   <section class="marcas-faixa" aria-label="Nichos de conteúdo em que Thais Linhares atua">
     <div class="marcas-track" id="marcasTrack"></div>
   </section>
@@ -1231,10 +1330,8 @@
       <svg class="sobre-icone-10" viewBox="0 0 64 64" fill="none" stroke-width="1.6"><path d="M32 8c8 12 14 20 14 30a14 14 0 0 1-28 0c0-10 6-18 14-30Z"/></svg>
     </div>
     <div class="container sobre-container">
-      <div class="foto-espaco sobre-foto reveal">
-        <!-- EDITE AQUI: para trocar a foto do Sobre, substitua o arquivo "foto-sobre.jpeg" (mesma pasta do index.html) por outra imagem com o mesmo nome, ou troque o "src" abaixo -->
-        <img src="foto-sobre.jpeg" alt="Thais Linhares em seu dia a dia criando conteúdo">
-      </div>
+      <!-- EDITE AQUI: as 3 fotos da pilha estão em config.sobre.fotosPilha, lá embaixo no <script> -->
+      <div class="sobre-foto-pilha reveal" id="sobreFotoPilha" role="button" tabindex="0" aria-label="Clique para ver a próxima foto"></div>
       <div class="sobre-texto reveal">
         <h2 id="sobreTitulo">Sobre mim</h2>
         <p id="sobreTexto"></p>
@@ -1245,46 +1342,20 @@
     </div>
   </section>
 
-  <!-- ===================== MARCAS (FAIXA MARQUEE) ===================== -->
-  <section class="marcas" id="marcas" aria-label="Marcas que já confiaram no trabalho de Thais Linhares">
-    <div class="container">
-      <div class="marcas-titulo reveal">
-        <span class="fonte-marcador">Marcas</span>
-        <span>PARCEIRAS</span>
-      </div>
-    </div>
-    <div class="marcas-marquee">
-      <div class="marcas-marquee-trilho" id="marcasMarqueeTrilho"></div>
-    </div>
-  </section>
-
-  <!-- ===================== DESTAQUES ===================== -->
-  <section class="destaques" id="destaques">
-    <div class="container">
-      <h2 class="titulo-secao reveal">Destaques</h2>
-      <div class="destaques-grade" id="destaquesGrade"></div>
-    </div>
-  </section>
-
-  <!-- ===================== PORTFÓLIO (AGRUPADO POR NICHO) ===================== -->
+  <!-- ===================== TRABALHOS POR NICHO (GALERIA COM FILTRO) ===================== -->
   <section class="portfolio" id="portfolio">
     <div class="container">
-      <h2 class="titulo-secao reveal">Portfólio</h2>
-      <div class="portfolio-nichos" id="portfolioNichos"></div>
-      <button type="button" class="portfolio-mostrar-mais" id="portfolioMostrarMais">Mostrar mais nichos</button>
+      <h2 class="titulo-secao reveal">Trabalhos por nicho</h2>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar trabalhos por nicho"></div>
+      <div class="portfolio-grade" id="portfolioGrade"></div>
     </div>
   </section>
 
-  <!-- ===================== FOTOS UGC (ROLO DE FILME) ===================== -->
+  <!-- ===================== FOTOS UGC (COLAGEM ESTÁTICA) ===================== -->
   <section class="fotos" id="fotos">
     <div class="container">
       <h2 class="titulo-secao reveal">Fotos UGC</h2>
-    </div>
-    <div class="fotos-filme">
-      <div class="fotos-grade" id="fotosGrade"></div>
-    </div>
-    <div class="fotos-filme">
-      <div class="fotos-grade fotos-grade-volta" id="fotosGradeVolta"></div>
+      <div class="fotos-colagem reveal" id="fotosColagem"></div>
     </div>
   </section>
 
@@ -1308,7 +1379,8 @@
   <!-- ===================== DEPOIMENTOS ===================== -->
   <section class="depoimentos" id="depoimentos">
     <div class="container">
-      <h2 class="titulo-secao reveal">Depoimentos</h2>
+      <h2 class="titulo-secao reveal">Números e depoimentos</h2>
+      <div class="numeros-grade reveal" id="numerosGrade"></div>
       <div class="depoimentos-grade" id="depoimentosGrade"></div>
     </div>
   </section>
@@ -1420,12 +1492,18 @@
       { nome: "Dove", logo: "logo-dove-novo.png" },
       { nome: "Rosa Selvagem", logo: "logo-rosa-selvagem-novo.png" },
       { nome: "Nanovit", logo: "logo-nanovit-novo.png" },
-      { nome: "Nestlé Moça", logo: "logo-nestle-moca.png" }
+      { nome: "Nestlé Moça", logo: "logo-nestle-moca.png" },
+      { nome: "Eudora", logo: "logo-eudora.png" },
+      { nome: "VExpenses", logo: "logo-vexpenses.png" },
+      { nome: "méliuz", logo: "logo-meliuz.png" },
+      { nome: "NatusVita", logo: "logo-natusvita.png" }
     ],
 
     // EDITE AQUI: texto da seção Sobre
     sobre: {
       titulo: "Sobre mim",
+      // EDITE AQUI: as 3 fotos da pilha clicável (a primeira é a que aparece na frente)
+      fotosPilha: ["foto-sobre.jpeg", "foto-sobre-2.jpeg", "foto-sobre-3.jpeg"],
       texto: "Sou a Thais, tenho <strong>28 anos</strong> e moro em <strong>Porto Velho (RO)</strong>. Rotina fit é o que me move: <strong>treino funcional, corrida e hidroginástica</strong> fazem parte do meu dia a dia, e é dessa energia que nasce o conteúdo que eu crio. Sou mãe de um casal, formada em <strong>Design de Interiores</strong> e apaixonada por organização — cheguei a criar meu próprio <strong>aplicativo para organizar produções de UGC</strong>. Esse olhar de verdade, prático e genuíno, é o que levo para cada vídeo e foto que produzo, mostrando marcas e produtos do jeito que uma cliente de verdade mostraria.",
       // EDITE AQUI: fatos rápidos sobre você, aparecem como cartõezinhos abaixo do texto
       fatos: [
@@ -1449,14 +1527,6 @@
       { chave: "bodycare", rotulo: "Bodycare" },
       { chave: "acessorios", rotulo: "Acessórios" },
       { chave: "gastronomia", rotulo: "Gastronomia" }
-    ],
-
-    // EDITE AQUI: os 3 vídeos que você quer destacar em grande, antes do portfólio completo.
-    // Use o mesmo formato dos itens do portfólio ("videoArquivo" ou "video").
-    destaques: [
-      { titulo: "Ração Purina One para gatos castrados", videoArquivo: "video-purina-one-castrados.mp4" },
-      { titulo: "Cartas Adelaine: apoio para mães na puberdade das filhas", videoArquivo: "video-cartas-adelaine.mp4" },
-      { titulo: "Brigadeiro com Leite Moça", videoArquivo: "video-leite-moca.mp4" }
     ],
 
     // EDITE AQUI: trabalhos do portfólio (cada bloco em gradiente simula uma foto ou vídeo).
@@ -1519,7 +1589,12 @@
       { titulo: "Sérum O Boticário", arquivo: "foto-serum-o-boticario.jpeg", correcao: "espelhar" },
       { titulo: "Diário de Adelaine", arquivo: "foto-diario-adelaine.jpeg" },
       { titulo: "Perfumes árabes", arquivo: "foto-perfumes-arabes.jpeg" },
-      { titulo: "Brigadeiro com Leite Moça", arquivo: "foto-brigadeiro-leite-moca.jpeg" }
+      { titulo: "Brigadeiro com Leite Moça", arquivo: "foto-brigadeiro-leite-moca.jpeg" },
+      { titulo: "Sérum Soliv", arquivo: "foto-soliv.jpeg" },
+      { titulo: "Eudora Siàge", arquivo: "foto-eudora.jpeg" },
+      { titulo: "méliuz", arquivo: "foto-meliuz.jpeg" },
+      { titulo: "Unboxing Moça Lovers", arquivo: "foto-moca-lovers.jpeg" },
+      { titulo: "Bolo de chocolate", arquivo: "foto-bolo-chocolate.jpeg" }
     ],
 
     // EDITE AQUI: serviços oferecidos
@@ -1566,21 +1641,23 @@
   document.addEventListener("DOMContentLoaded", () => {
     preencherTextosFixos();
     montarSobreFatos();
+    montarSobreFotoPilha();
     montarMarcasMarquee();
     montarMarcas();
-    montarDestaques();
     montarPortfolio();
     carregarCapasDeVideoPreguicosamente();
     montarFotos();
     montarServicos();
     montarValores();
     verificarLinkDeValores();
+    montarNumeros();
     montarDepoimentos();
     montarContatoERodape();
     configurarMenuMobile();
     configurarRolagemSuave();
     configurarRastreioDeCliques();
     configurarAnimacoesDeEntrada();
+    configurarContagemDeNumeros();
     configurarFormulario();
     configurarModalVideo();
     ajustarEscalaMobile();
@@ -1618,6 +1695,54 @@
   function montarSobreFatos(){
     const container = document.getElementById("sobreFatos");
     container.innerHTML = config.sobre.fatos.map(fato => `<span class="fato-cartao">${fato}</span>`).join("");
+  }
+
+  // Pilha de fotos clicável do "sobre mim": clica em cima e a foto da frente vai
+  // pro fim da pilha, revelando a próxima (ordem controlada aqui, não mexe no DOM
+  // toda hora, só reposiciona os cartões já criados).
+  let ordemPilhaSobre = [];
+  function montarSobreFotoPilha(){
+    const pilha = document.getElementById("sobreFotoPilha");
+    const fotos = config.sobre.fotosPilha;
+    ordemPilhaSobre = fotos.map((_, indice) => indice);
+
+    pilha.innerHTML = fotos.map((src, indice) => `
+      <div class="sobre-foto-card" data-indice="${indice}">
+        <img src="${src}" alt="Thais Linhares" loading="lazy">
+      </div>
+    `).join("") + `<span class="fita-adesiva fita-adesiva-topo" aria-hidden="true"></span>`;
+
+    const avancar = () => {
+      ordemPilhaSobre.push(ordemPilhaSobre.shift());
+      atualizarPosicoesPilhaSobre();
+      window.Tracking.buttonClick("sobre_foto_pilha");
+    };
+    pilha.addEventListener("click", avancar);
+    pilha.addEventListener("keydown", (evento) => {
+      if (evento.key === "Enter" || evento.key === " "){
+        evento.preventDefault();
+        avancar();
+      }
+    });
+
+    atualizarPosicoesPilhaSobre();
+  }
+
+  function atualizarPosicoesPilhaSobre(){
+    const pilha = document.getElementById("sobreFotoPilha");
+    // EDITE AQUI: posição/rotação de cada card conforme o lugar dele na pilha
+    // (0 = na frente, 1 = segundo, 2 = atrás, ...)
+    const estilosPorPosicao = [
+      { transform: "translate(0px, 0px) rotate(0deg)", z: 3 },
+      { transform: "translate(16px, 16px) rotate(-4deg)", z: 2 },
+      { transform: "translate(30px, 30px) rotate(5deg)", z: 1 }
+    ];
+    ordemPilhaSobre.forEach((indiceFoto, posicao) => {
+      const card = pilha.querySelector(`.sobre-foto-card[data-indice="${indiceFoto}"]`);
+      const estilo = estilosPorPosicao[posicao] || estilosPorPosicao[estilosPorPosicao.length - 1];
+      card.style.transform = estilo.transform;
+      card.style.zIndex = estilo.z;
+    });
   }
 
   function montarMarcasMarquee(){
@@ -1685,64 +1810,47 @@
     });
   }
 
-  function montarDestaques(){
-    const grade = document.getElementById("destaquesGrade");
-    if (!grade) return;
-    grade.innerHTML = config.destaques.map(item => `
-      <article class="destaque-item reveal">
+  function montarPortfolio(){
+    const filtrosEl = document.getElementById("filtros");
+    const grade = document.getElementById("portfolioGrade");
+
+    filtrosEl.innerHTML = config.categorias.map((cat, indice) => `
+      <button class="filtro-botao ${indice === 0 ? "ativo" : ""}" data-filtro="${cat.chave}" aria-pressed="${indice === 0}">
+        ${cat.rotulo}
+      </button>
+    `).join("");
+
+    grade.innerHTML = config.portfolio.map(item => `
+      <article class="portfolio-item reveal" data-categoria="${item.categoria}">
         ${montarMidiaDeVideo(item)}
         <div class="legenda">
           <strong>${item.titulo}</strong>
+          <span>${item.categoria}</span>
         </div>
       </article>
     `).join("");
-    configurarCliqueVideoVertical(grade);
-  }
 
-  // EDITE AQUI: quantos nichos aparecem antes de precisar clicar em "Mostrar mais"
-  // e quantos vídeos aparecem por nicho (o resto do nicho fica disponível rolando
-  // normalmente pela página, já que cada nicho mostra sua contagem real de vídeos).
-  const PORTFOLIO_NICHOS_VISIVEIS = 3;
-  const PORTFOLIO_VIDEOS_POR_NICHO = 3;
+    filtrosEl.querySelectorAll(".filtro-botao").forEach(botao => {
+      botao.addEventListener("click", () => {
+        filtrosEl.querySelectorAll(".filtro-botao").forEach(b => {
+          b.classList.remove("ativo");
+          b.setAttribute("aria-pressed", "false");
+        });
+        botao.classList.add("ativo");
+        botao.setAttribute("aria-pressed", "true");
 
-  function montarPortfolio(){
-    const container = document.getElementById("portfolioNichos");
-    const botaoMostrarMais = document.getElementById("portfolioMostrarMais");
+        const filtro = botao.dataset.filtro;
+        grade.querySelectorAll(".portfolio-item").forEach(item => {
+          const mostrar = filtro === "todos" || item.dataset.categoria === filtro;
+          item.classList.toggle("escondido", !mostrar);
+        });
 
-    // Agrupa os itens do portfólio por categoria, na ordem definida em "config.categorias"
-    const nichos = config.categorias
-      .filter(cat => cat.chave !== "todos")
-      .map(cat => ({ categoria: cat, itens: config.portfolio.filter(item => item.categoria === cat.chave) }))
-      .filter(nicho => nicho.itens.length > 0);
-
-    container.innerHTML = nichos.map((nicho, indice) => `
-      <div class="portfolio-nicho reveal${indice >= PORTFOLIO_NICHOS_VISIVEIS ? " escondido-nicho" : ""}">
-        <div class="portfolio-nicho-cabecalho">
-          <h3>${nicho.categoria.rotulo}</h3>
-          <span class="portfolio-nicho-contagem">${nicho.itens.length}</span>
-        </div>
-        <div class="portfolio-nicho-grade">
-          ${nicho.itens.slice(0, PORTFOLIO_VIDEOS_POR_NICHO).map(item => `
-            <article class="portfolio-item">
-              ${montarMidiaDeVideo(item)}
-              <div class="legenda">
-                <strong>${item.titulo}</strong>
-              </div>
-            </article>
-          `).join("")}
-        </div>
-      </div>
-    `).join("");
-
-    botaoMostrarMais.hidden = nichos.length <= PORTFOLIO_NICHOS_VISIVEIS;
-    botaoMostrarMais.addEventListener("click", () => {
-      container.querySelectorAll(".portfolio-nicho.escondido-nicho").forEach(nicho => nicho.classList.remove("escondido-nicho"));
-      botaoMostrarMais.hidden = true;
-      window.Tracking.buttonClick("portfolio_mostrar_mais");
-      ajustarEscalaMobile();
+        window.Tracking.buttonClick(`filtro_${filtro}`);
+        ajustarEscalaMobile();
+      });
     });
 
-    configurarCliqueVideoVertical(container);
+    configurarCliqueVideoVertical(grade);
   }
 
   // Só define o "src" de cada capa de vídeo quando ela se aproxima da tela (200px antes),
@@ -1852,29 +1960,29 @@
     pagina.style.marginLeft = `${margemEsquerda}px`;
   }
 
+  // Clipes de papel coloridos (SVG simples), alternando cor a cada foto que ganha um
+  const CORES_CLIPE = ["#e37ba6", "#8e7cc3", "#6fb3b8", "#e3b23c"];
   function montarFotos(){
-    // Técnica marquee (igual à faixa de marcas): a lista entra 2x seguidas no mesmo
-    // trilho, que desliza de 0 até -50% da própria largura, dando a volta sem pulo,
-    // feito um rolo de filme passando sem parar. Duas faixas, uma indo e outra voltando.
-    const listaDupla = [...config.fotos, ...config.fotos];
-    const html = listaDupla.map((foto, indice) => {
+    const colagem = document.getElementById("fotosColagem");
+    const html = config.fotos.map((foto, indice) => {
       // "correcao" ajeita fotos que vieram giradas/espelhadas da câmera: "rotacionar" (180°) ou "espelhar"
       const classeCorrecao = foto.correcao ? ` foto-${foto.correcao}` : "";
       const midia = foto.arquivo
         ? `<div class="foto-espaco"><img class="${classeCorrecao.trim()}" src="${foto.arquivo}" alt="${foto.titulo}" loading="lazy"></div>`
         : `<div class="foto-espaco ${foto.gradiente}" role="img" aria-label="Foto: ${foto.titulo}"></div>`;
-      // Numeração discreta (mesmo número nas duas cópias da lista, já que é só efeito visual)
-      const numero = (indice % config.fotos.length) + 1;
+      // Clipe de papel só em algumas fotos (1 a cada 3), pra não ficar repetitivo
+      const clipe = indice % 3 === 0
+        ? `<svg class="colagem-clipe" viewBox="0 0 30 44" fill="none" stroke="${CORES_CLIPE[(indice / 3) % CORES_CLIPE.length]}" stroke-width="3" aria-hidden="true"><path d="M8 14V8a7 7 0 0 1 14 0v22a4 4 0 0 1-8 0V13a2 2 0 0 1 4 0v15"/></svg>`
+        : "";
       return `
       <article class="foto-item">
+        ${clipe}
         ${midia}
-        <div class="legenda-foto">Fotos UGC</div>
-        <span class="foto-numero">${numero}</span>
+        <div class="legenda-foto">${foto.titulo}</div>
       </article>
     `;
     }).join("");
-    document.getElementById("fotosGrade").innerHTML = html;
-    document.getElementById("fotosGradeVolta").innerHTML = html;
+    colagem.innerHTML = html + `<span class="colagem-etiqueta">Fotos UGC</span>`;
   }
 
   function montarServicos(){
@@ -1915,6 +2023,40 @@
     if(parametros.has("valores")){
       document.getElementById("valores").hidden = false;
     }
+  }
+
+  function montarNumeros(){
+    const grade = document.getElementById("numerosGrade");
+    grade.innerHTML = config.hero.estatisticas.map(est => `
+      <div class="numero-item">
+        <strong data-numero-final="${est.numero}">0</strong>
+        <span>${est.rotulo}</span>
+      </div>
+    `).join("");
+  }
+
+  // Anima os números subindo de 0 até o valor real, quando a seção aparece na tela
+  function configurarContagemDeNumeros(){
+    const itens = document.querySelectorAll("#numerosGrade strong[data-numero-final]");
+    if (!itens.length) return;
+    const observador = new IntersectionObserver((entradas, obs) => {
+      entradas.forEach(entrada => {
+        if (!entrada.isIntersecting) return;
+        const elemento = entrada.target;
+        const alvoTexto = elemento.dataset.numeroFinal;
+        const alvoNumero = parseInt(alvoTexto.replace(/\D/g, ""), 10) || 0;
+        const prefixo = alvoTexto.match(/^\D*/)[0];
+        const duracao = 1200;
+        const inicio = performance.now();
+        (function passo(agora){
+          const progresso = Math.min((agora - inicio) / duracao, 1);
+          elemento.textContent = prefixo + Math.round(alvoNumero * progresso);
+          if (progresso < 1) requestAnimationFrame(passo);
+        })(inicio);
+        obs.unobserve(elemento);
+      });
+    }, { threshold: 0.4 });
+    itens.forEach(item => observador.observe(item));
   }
 
   function montarDepoimentos(){
