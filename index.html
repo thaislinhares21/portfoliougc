@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 
 <!-- Supabase via CDN, depois a configuração compartilhada e o rastreamento de uso do site -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -18,15 +18,18 @@
 <style>
   /* ===================== VARIÁVEIS DE COR E BASE ===================== */
   :root{
-    /* Direção visual: scrapbook rosa/branco. "--vermelho" manteve o nome por
-       compatibilidade com o resto do código, mas agora é o rosa principal de destaque. */
+    /* Direção visual: as suas cores (amarelinho + rosa), com a estrutura/tamanho
+       inspirados na referência. "--azul" aponta pra mesma cor escura do texto
+       (--tinta), só pra não precisar reescrever as regras que usam essa variável
+       — assim o nome no Hero/menu fica em rosa + escuro, sem introduzir azul. */
     --creme: #fdf6e3;
-    --rosa: #f7d3e1;
+    --rosa: #fdeaf1;
     --vermelho: #e37ba6;
     --laranja: #e37ba6;
-    --tinta: #14110d;
+    --tinta: #1a1410;
+    --azul: var(--tinta);
     --branco: #ffffff;
-    --cinza-texto: #5c584f;
+    --cinza-texto: #5c5650;
     --verde: #6b9b5e;
     --sombra-dura: 0 20px 44px rgba(27,27,27,0.05);
     --sombra-dura-pequena: 0 8px 20px rgba(27,27,27,0.045);
@@ -53,8 +56,8 @@
   }
 
   h1,h2,h3,.logo{
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
     letter-spacing: -.3px;
     margin: 0;
   }
@@ -66,8 +69,10 @@
 
   section{ scroll-margin-top: var(--altura-cabecalho); }
 
-  /* Destaque em itálico serifado, usado em títulos e palavras-chave */
-  .fonte-marcador{ font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; color: var(--vermelho); }
+  /* Destaque cursivo, tipo anotação à mão, usado em títulos e palavras-chave */
+  .fonte-marcador{ font-family: 'Caveat', cursive; font-weight: 600; color: var(--vermelho); }
+  /* Palavra em azul royal, pra alternar com o laranja nos títulos (tipo "Tati Ribeiro") */
+  .destaque-azul{ color: var(--azul); }
 
   /* Foco visível para navegação por teclado */
   a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
@@ -82,7 +87,7 @@
     left: -999px;
     top: 0;
     background: var(--vermelho);
-    color: var(--tinta);
+    color: var(--branco);
     padding: 12px 20px;
     z-index: 999;
     border-radius: 0 0 8px 0;
@@ -100,11 +105,12 @@
   .botao{
     display:inline-block;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 16px 34px;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 18px 38px;
     border-radius: 50px;
-    border: none;
+    border: 2px solid transparent;
     cursor: pointer;
     transition: transform .15s ease, opacity .15s ease;
     text-align:center;
@@ -117,10 +123,22 @@
     transform: translateY(0);
     opacity: 1;
   }
-  .botao-primario{ background: var(--vermelho); color: var(--tinta); }
-  .botao-secundario{ background: var(--rosa); color: var(--tinta); }
-  .botao-whatsapp{ background: var(--vermelho); color:var(--tinta); }
-  .botao-email{ background: var(--rosa); color: var(--tinta); }
+  .botao-icone{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: rgba(255,255,255,.3);
+    border-radius: 8px;
+    margin-right: 10px;
+    font-style: normal;
+    vertical-align: middle;
+  }
+  .botao-primario{ background: var(--vermelho); color: var(--branco); }
+  .botao-secundario{ background: var(--branco); border-color: var(--tinta); color: var(--tinta); }
+  .botao-whatsapp{ background: var(--vermelho); color: var(--branco); }
+  .botao-email{ background: var(--azul); color: var(--branco); }
   .botao-instagram{ background: var(--tinta); color: var(--branco); }
 
   /* ===================== CABEÇALHO / MENU ===================== */
@@ -149,6 +167,7 @@
     font-size: 1.5rem;
     color: var(--tinta);
   }
+  .logo{ color: var(--azul); }
   .logo span{ color: var(--vermelho); }
 
   .menu-hamburguer{
@@ -189,7 +208,7 @@
   .nav a:hover, .nav a:focus-visible{ border-bottom-color: var(--vermelho); }
   .nav-cta{
     background: var(--vermelho) !important;
-    color: var(--tinta) !important;
+    color: var(--branco) !important;
     padding: 10px 22px !important;
     border-radius: 50px;
     white-space: nowrap;
@@ -198,18 +217,25 @@
 
   /* ===================== HERO ===================== */
   .hero{
-    padding: calc(var(--altura-cabecalho) + 60px) 0 30px;
+    padding: calc(var(--altura-cabecalho) + 36px) 0 10px;
     position: relative;
   }
   .hero-container{
     position: relative;
     z-index: 1;
     display:flex;
-    align-items:flex-start;
-    gap: 50px;
+    align-items:stretch;
+    gap: 36px;
     flex-wrap: wrap;
   }
-  .hero-texto{ flex: 1 1 420px; order: 2; }
+  .hero-texto{
+    flex: 1 1 420px;
+    order: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Empurra o botão pro final da coluna, preenchendo a altura toda ao lado da foto */
+  .hero-texto #heroBotao{ margin-top: auto; align-self: flex-start; }
   .hero-foto-wrapper{ order: 1; }
 
   /* Legendas nos cantos do Hero, tipo capa de portfólio (elemento decorativo "fofinho") */
@@ -234,10 +260,10 @@
   .hero-canto-direita{ text-align: right; }
   /* Adesivos de scrapbook espalhados no Hero */
   .hero-adesivos{ position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-  .hero-adesivos svg{ position: absolute; color: var(--vermelho); opacity: .8; }
-  .hero-adesivo-estrela{ top: 18%; left: 2%; width: 34px; transform: rotate(-12deg); }
-  .hero-adesivo-flor{ top: 8%; right: 6%; width: 40px; transform: rotate(10deg); }
-  .hero-adesivo-brilho{ bottom: 10%; left: 6%; width: 30px; }
+  .hero-adesivos svg{ position: absolute; opacity: .85; }
+  .hero-adesivo-estrela{ top: 18%; left: 2%; width: 34px; color: var(--vermelho); transform: rotate(-12deg); }
+  .hero-adesivo-flor{ top: 8%; right: 6%; width: 40px; color: var(--azul); transform: rotate(10deg); }
+  .hero-adesivo-brilho{ bottom: 10%; left: 6%; width: 30px; color: var(--azul); }
 
   /* Etiqueta + localização, tipo "UGC CREATOR · Porto Velho, RO" */
   .hero-etiqueta-local{
@@ -246,37 +272,35 @@
     align-items: center;
     gap: 10px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
+    font-style: italic;
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: .8rem;
-    color: var(--cinza-texto);
-    margin: 10px 0 26px;
-    background: var(--branco);
-    padding: 10px 18px;
-    /* Cantos meio tortos, tipo papelzinho rasgado de caderno */
-    border-radius: 2px 9px 3px 8px;
-    box-shadow: var(--sombra-dura-pequena);
-    transform: rotate(-2deg);
+    color: var(--vermelho);
+    margin: 0 0 12px;
   }
-  .hero-etiqueta-local span:first-child{ color: var(--laranja); }
-  .hero-etiqueta-ponto{ color: var(--cinza-texto); opacity: .5; }
+  .hero-etiqueta-ponto{ color: var(--cinza-texto); opacity: .6; font-style: normal; }
   .hero-texto h1{
-    font-size: clamp(2.4rem, 5.8vw, 3.8rem);
-    line-height: 1.08;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+    font-size: clamp(3.2rem, 7.5vw, 5.4rem);
+    line-height: 1.02;
+    margin-bottom: 14px;
+  }
+  #heroNomeSegundo{ color: var(--vermelho); }
+  .hero-tagline{
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.6vw, 2.5rem);
     color: var(--tinta);
+    margin-bottom: 24px;
   }
   .hero-titulo-destaque{
-    display: block;
-    text-transform: none;
-    font-size: 1.15em;
+    font-size: 1.1em;
     color: var(--vermelho);
   }
   .hero-frase{
-    font-size: 1.1rem;
-    max-width: 480px;
+    font-size: 1.3rem;
+    max-width: 560px;
     margin-bottom: 26px;
     color: var(--cinza-texto);
   }
@@ -284,10 +308,10 @@
   .hero-estatisticas{
     display: flex;
     flex-wrap: wrap;
-    gap: 18px;
-    margin-bottom: 36px;
+    gap: 24px;
+    margin-bottom: 32px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: .95rem;
+    font-size: 1.15rem;
     color: var(--cinza-texto);
   }
   .hero-estatisticas .hero-estatistica{
@@ -299,7 +323,7 @@
   }
   .hero-estatisticas .hero-estatistica:last-child{ border-right: none; padding-right: 0; }
   .hero-estatisticas .hero-estatistica strong{
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--tinta);
   }
@@ -334,8 +358,8 @@
   .grad-5{ background: linear-gradient(200deg, var(--vermelho), var(--rosa)); }
   .hero-foto-wrapper{
     position: relative;
-    flex: 1 1 320px;
-    max-width: 420px;
+    flex: 1 1 360px;
+    max-width: 460px;
     margin: 0 auto;
   }
   .hero-foto{
@@ -371,10 +395,11 @@
   }
   .flutuante-citacao{
     display: block;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: .88rem;
-    line-height: 1.35;
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 1.15rem;
+    line-height: 1.25;
     color: var(--tinta);
     margin-bottom: 6px;
   }
@@ -435,10 +460,10 @@
     border-radius: 10px;
   }
 
-  section{ padding: 90px 0; }
+  section{ padding: 70px 0; }
   /* Marcas e nichos ficam logo depois do Hero, com espaço bem mais enxuto pra
      parecer uma continuação do Hero, tipo uma página só, em vez de uma seção nova */
-  .marcas{ padding: 20px 0 40px; }
+  .marcas{ padding: 10px 0 24px; }
 
   /* ===================== SOBRE ===================== */
   .sobre{ position: relative; overflow: hidden; }
@@ -488,16 +513,19 @@
     margin: 0 36px 36px 0;
     cursor: pointer;
   }
+  /* Cartão tipo Polaroid: moldura branca, mais grossa embaixo */
   .sobre-foto-card{
     position: absolute;
     inset: 0;
-    border-radius: 28px;
-    overflow: hidden;
+    display: flex;
+    border-radius: 6px;
+    background: var(--branco);
+    padding: 10px 10px 28px;
     box-shadow: var(--sombra-dura);
-    background: linear-gradient(135deg, var(--vermelho), #f2a565);
     transition: transform .4s ease;
   }
   .sobre-foto-card img{
+    flex: 1 1 auto;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -554,10 +582,11 @@
   }
   .filtro-botao{
     font-family:'Plus Jakarta Sans', sans-serif;
-    font-weight: 500;
-    background: var(--rosa);
-    border: none;
-    padding: 10px 22px;
+    font-weight: 700;
+    background: var(--branco);
+    border: 2px solid var(--vermelho);
+    color: var(--vermelho);
+    padding: 9px 20px;
     border-radius: 50px;
     cursor:pointer;
     transition: transform .15s ease, background .15s ease;
@@ -565,7 +594,7 @@
   .filtro-botao:hover{ transform: translate(-2px,-2px); }
   .filtro-botao.ativo{
     background: var(--vermelho);
-    color: var(--tinta);
+    color: var(--branco);
   }
   .portfolio-grade{
     display: grid;
@@ -721,10 +750,9 @@
   .foto-item .legenda-foto{
     text-align: center;
     padding: 8px 4px 10px;
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: .82rem;
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.05rem;
     color: var(--tinta);
   }
   /* Clipe de papel colorido, só decoração, em algumas fotos */
@@ -744,10 +772,9 @@
     bottom: 6px;
     right: 18px;
     background: var(--branco);
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.35rem;
     color: var(--tinta);
     padding: 10px 20px;
     border-radius: 3px 10px 4px 9px;
@@ -814,7 +841,7 @@
     left: 50%;
     transform: translateX(-50%);
     background: var(--vermelho);
-    color: var(--tinta);
+    color: var(--branco);
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: .7rem;
     font-weight: 700;
@@ -916,8 +943,8 @@
   }
   .numero-item strong{
     display: block;
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
     font-size: clamp(2.4rem, 5vw, 3.4rem);
     color: var(--vermelho);
   }
@@ -963,12 +990,27 @@
   .cartao-depoimento .empresa-depoimento{ font-size: .85rem; opacity: .8; }
 
   /* ===================== CONTATO ===================== */
-  .contato-container{
+  .contato-topo{
     display:flex;
     gap: 60px;
     flex-wrap: wrap;
+    margin-bottom: 60px;
   }
   .contato-info{ flex: 1 1 380px; }
+  .contato-foto-wrapper{
+    position: relative;
+    flex: 1 1 260px;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .contato-foto{
+    aspect-ratio: 1024/1536;
+    background: none;
+    box-shadow: none;
+  }
+  .contato-brilho{ position: absolute; color: var(--vermelho); opacity: .85; }
+  .contato-brilho-1{ top: 6%; left: -6%; width: 28px; }
+  .contato-brilho-2{ bottom: 12%; right: -4%; width: 36px; }
   .contato-info h2{ font-size: 2rem; margin-bottom: 18px; }
   .etiqueta-secao{
     display: flex;
@@ -991,12 +1033,15 @@
   }
   .contato-botoes{
     display:flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 14px;
     margin-top: 26px;
   }
+  .contato-botoes .botao{ width: 100%; max-width: 420px; text-align: left; }
   .contato-form{
-    flex: 1 1 380px;
+    max-width: 700px;
+    margin: 0 auto;
     background: var(--branco);
     border: none;
     box-shadow: var(--sombra-dura);
@@ -1273,10 +1318,13 @@
           <span class="hero-etiqueta-ponto" aria-hidden="true">&#8226;</span>
           <span id="heroLocal">Porto Velho, RO</span>
         </p>
-        <h1 id="heroTitulo">
+        <h1 id="heroNome">
+          <span class="destaque-azul" id="heroNomePrimeiro">Thais</span> <span id="heroNomeSegundo">Linhares</span>
+        </h1>
+        <p class="hero-tagline" id="heroTagline">
           Conteúdo que vira
           <span class="fonte-marcador hero-titulo-destaque" id="heroTituloDestaque">resultado de verdade</span>
-        </h1>
+        </p>
         <p class="hero-frase" id="heroFrase">Vídeos autênticos, cheios de energia, do jeito que uma cliente real mostraria pra sua marca.</p>
         <div class="hero-estatisticas" id="heroEstatisticas"></div>
         <a href="#contato" class="botao botao-primario" id="heroBotao">Fale comigo</a>
@@ -1394,14 +1442,24 @@
   <!-- ===================== CONTATO ===================== -->
   <section class="contato" id="contato">
     <div class="container contato-container">
-      <div class="contato-info reveal">
-        <p class="etiqueta-secao">Contato</p>
-        <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
-        <p>Conta um pouco sobre sua marca e o que você quer alcançar. Respondo rápido e adoro entender o que vocês precisam.</p>
-        <div class="contato-botoes">
-          <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener">WhatsApp</a>
-          <a class="botao botao-email" id="botaoEmail">E-mail</a>
-          <a class="botao botao-instagram" id="botaoInstagram" target="_blank" rel="noopener">Instagram</a>
+      <div class="contato-topo">
+        <div class="contato-info reveal">
+          <p class="etiqueta-secao">Contato</p>
+          <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
+          <p>Conta um pouco sobre sua marca e o que você quer alcançar. Respondo rápido e adoro entender o que vocês precisam.</p>
+          <div class="contato-botoes">
+            <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128172;</span>WhatsApp</a>
+            <a class="botao botao-email" id="botaoEmail"><span class="botao-icone" aria-hidden="true">&#9993;</span>E-mail</a>
+            <a class="botao botao-instagram" id="botaoInstagram" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128247;</span>Instagram</a>
+          </div>
+        </div>
+        <div class="contato-foto-wrapper reveal">
+          <div class="foto-espaco contato-foto hero-foto-recortada">
+            <!-- EDITE AQUI: para trocar essa foto, substitua "foto-contato-sem-fundo.webp" por outra imagem com fundo removido, mesmo nome -->
+            <img src="foto-contato-sem-fundo.webp" alt="Thais Linhares sorrindo, segurando o celular e um painel de luz">
+          </div>
+          <svg class="contato-brilho contato-brilho-1" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M14 14l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"/></svg>
+          <svg class="contato-brilho contato-brilho-2" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M32 4l6 18h19l-15.5 11.5L47 52 32 41 17 52l5.5-18.5L7 22h19Z"/></svg>
         </div>
       </div>
       <form class="contato-form reveal" id="formContato" novalidate>
@@ -1673,7 +1731,11 @@
   function preencherTextosFixos(){
     document.getElementById("heroEtiqueta").textContent = config.hero.etiqueta;
     document.getElementById("heroLocal").textContent = config.hero.local;
-    document.getElementById("heroTitulo").innerHTML = `${config.hero.titulo}<span class="fonte-marcador hero-titulo-destaque" id="heroTituloDestaque">${config.hero.tituloDestaque}</span>`;
+    // Nome em duas cores (azul + laranja), tipo "Thais" / "Linhares"
+    const [primeiroNome, ...restoNome] = config.nome.split(" ");
+    document.getElementById("heroNomePrimeiro").textContent = primeiroNome;
+    document.getElementById("heroNomeSegundo").textContent = restoNome.join(" ");
+    document.getElementById("heroTagline").innerHTML = `${config.hero.titulo} <span class="fonte-marcador hero-titulo-destaque" id="heroTituloDestaque">${config.hero.tituloDestaque}</span>`;
     document.getElementById("heroFrase").textContent = config.hero.frase;
     document.getElementById("heroEstatisticas").innerHTML = config.hero.estatisticas.map(est => `
       <span class="hero-estatistica"><strong>${est.numero}</strong> ${est.rotulo}</span>
@@ -2076,11 +2138,11 @@
     const emailLink = `mailto:${config.contato.email}`;
 
     document.getElementById("botaoWhatsapp").href = whatsappLink;
-    document.getElementById("botaoWhatsapp").textContent = "WhatsApp";
+    document.getElementById("botaoWhatsapp").innerHTML = '<span class="botao-icone" aria-hidden="true">&#128172;</span>WhatsApp';
     document.getElementById("botaoEmail").href = emailLink;
-    document.getElementById("botaoEmail").textContent = "E-mail";
+    document.getElementById("botaoEmail").innerHTML = '<span class="botao-icone" aria-hidden="true">&#9993;</span>E-mail';
     document.getElementById("botaoInstagram").href = config.contato.instagramUrl;
-    document.getElementById("botaoInstagram").textContent = "Instagram";
+    document.getElementById("botaoInstagram").innerHTML = '<span class="botao-icone" aria-hidden="true">&#128247;</span>Instagram';
 
     document.getElementById("rodapeNome").textContent = config.nome;
     document.getElementById("rodapeRedes").innerHTML = `
