@@ -198,14 +198,14 @@
 
   /* ===================== HERO ===================== */
   .hero{
-    padding: calc(var(--altura-cabecalho) + 60px) 0 80px;
+    padding: calc(var(--altura-cabecalho) + 60px) 0 30px;
     position: relative;
   }
   .hero-container{
     position: relative;
     z-index: 1;
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     gap: 50px;
     flex-wrap: wrap;
   }
@@ -435,10 +435,10 @@
     border-radius: 10px;
   }
 
-  section{ padding: 130px 0; }
+  section{ padding: 90px 0; }
   /* Marcas e nichos ficam logo depois do Hero, com espaço bem mais enxuto pra
      parecer uma continuação do Hero, tipo uma página só, em vez de uma seção nova */
-  .marcas{ padding: 40px 0 50px; }
+  .marcas{ padding: 20px 0 40px; }
 
   /* ===================== SOBRE ===================== */
   .sobre{ position: relative; overflow: hidden; }
@@ -857,7 +857,7 @@
      pulo nenhum no loop. A section tem overflow:hidden + máscara de fade nas laterais. */
   .marcas-titulo{
     text-align: center;
-    margin-bottom: 46px;
+    margin-bottom: 26px;
   }
   .marcas-titulo .fonte-marcador{
     display: block;
