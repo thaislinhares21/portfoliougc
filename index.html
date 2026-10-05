@@ -766,22 +766,6 @@
     z-index: 4;
     pointer-events: none;
   }
-  /* Etiqueta de papel rasgado, fixa no canto da colagem */
-  .colagem-etiqueta{
-    position: absolute;
-    bottom: 6px;
-    right: 18px;
-    background: var(--branco);
-    font-family: 'Caveat', cursive;
-    font-weight: 600;
-    font-size: 1.35rem;
-    color: var(--tinta);
-    padding: 10px 20px;
-    border-radius: 3px 10px 4px 9px;
-    box-shadow: var(--sombra-dura-pequena);
-    transform: rotate(3deg);
-  }
-
   /* ===================== SERVIÇOS ===================== */
   .servicos-grade{
     display:grid;
@@ -990,26 +974,12 @@
   .cartao-depoimento .empresa-depoimento{ font-size: .85rem; opacity: .8; }
 
   /* ===================== CONTATO ===================== */
-  .contato-topo{
+  .contato-container{
     display:flex;
     gap: 60px;
     flex-wrap: wrap;
-    margin-bottom: 60px;
   }
   .contato-info{ flex: 1 1 380px; }
-  .contato-foto-wrapper{
-    position: relative;
-    flex: 1 1 260px;
-    max-width: 320px;
-    margin: 0 auto;
-  }
-  .contato-foto{
-    aspect-ratio: 1024/1536;
-  }
-  .contato-foto img{ object-fit: cover; object-position: center 15%; }
-  .contato-brilho{ position: absolute; color: var(--vermelho); opacity: .85; }
-  .contato-brilho-1{ top: 6%; left: -6%; width: 28px; }
-  .contato-brilho-2{ bottom: 12%; right: -4%; width: 36px; }
   .contato-info h2{ font-size: 2rem; margin-bottom: 18px; }
   .etiqueta-secao{
     display: flex;
@@ -1039,8 +1009,7 @@
   }
   .contato-botoes .botao{ width: 100%; max-width: 420px; text-align: left; }
   .contato-form{
-    max-width: 700px;
-    margin: 0 auto;
+    flex: 1 1 380px;
     background: var(--branco);
     border: none;
     box-shadow: var(--sombra-dura);
@@ -1441,24 +1410,14 @@
   <!-- ===================== CONTATO ===================== -->
   <section class="contato" id="contato">
     <div class="container contato-container">
-      <div class="contato-topo">
-        <div class="contato-info reveal">
-          <p class="etiqueta-secao">Contato</p>
-          <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
-          <p>Conta um pouco sobre sua marca e o que você quer alcançar. Respondo rápido e adoro entender o que vocês precisam.</p>
-          <div class="contato-botoes">
-            <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128172;</span>WhatsApp</a>
-            <a class="botao botao-email" id="botaoEmail"><span class="botao-icone" aria-hidden="true">&#9993;</span>E-mail</a>
-            <a class="botao botao-instagram" id="botaoInstagram" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128247;</span>Instagram</a>
-          </div>
-        </div>
-        <div class="contato-foto-wrapper reveal">
-          <div class="foto-espaco contato-foto">
-            <!-- EDITE AQUI: para trocar essa foto, substitua "foto-contato.jpeg" por outra imagem com o mesmo nome -->
-            <img src="foto-contato.jpeg" alt="Thais Linhares sorrindo, segurando o celular e um painel de luz">
-          </div>
-          <svg class="contato-brilho contato-brilho-1" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M14 14l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"/></svg>
-          <svg class="contato-brilho contato-brilho-2" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M32 4l6 18h19l-15.5 11.5L47 52 32 41 17 52l5.5-18.5L7 22h19Z"/></svg>
+      <div class="contato-info reveal">
+        <p class="etiqueta-secao">Contato</p>
+        <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
+        <p>Conta um pouco sobre sua marca e o que você quer alcançar. Respondo rápido e adoro entender o que vocês precisam.</p>
+        <div class="contato-botoes">
+          <a class="botao botao-whatsapp" id="botaoWhatsapp" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128172;</span>WhatsApp</a>
+          <a class="botao botao-email" id="botaoEmail"><span class="botao-icone" aria-hidden="true">&#9993;</span>E-mail</a>
+          <a class="botao botao-instagram" id="botaoInstagram" target="_blank" rel="noopener"><span class="botao-icone" aria-hidden="true">&#128247;</span>Instagram</a>
         </div>
       </div>
       <form class="contato-form reveal" id="formContato" novalidate>
@@ -1637,21 +1596,14 @@
     // Sem o "arquivo", o item mostra um bloco em gradiente no lugar (placeholder).
     fotos: [
       { titulo: "Acessórios em still", arquivo: "foto-acessorios-1.jpeg" },
-      { titulo: "App do Esquadrão Fit", arquivo: "foto-app-esquadrao-fit.jpeg" },
       { titulo: "Momento banho com Dove", arquivo: "foto-banho-dove.jpeg" },
       { titulo: "Body Splash Rosa Selvagem", arquivo: "foto-bodysplash-rosa-selvagem.jpeg" },
       { titulo: "Cartas para Adelaine", arquivo: "foto-cartas-adelaine.jpeg" },
       { titulo: "Dia das Mães em família", arquivo: "foto-dia-das-maes.jpeg" },
-      { titulo: "Nutri Blend Complex", arquivo: "foto-nutri-blend.jpeg" },
-      { titulo: "Pó facial Sace Lady", arquivo: "foto-sacelady.jpeg" },
-      { titulo: "Sérum O Boticário", arquivo: "foto-serum-o-boticario.jpeg", correcao: "espelhar" },
-      { titulo: "Diário de Adelaine", arquivo: "foto-diario-adelaine.jpeg" },
       { titulo: "Perfumes árabes", arquivo: "foto-perfumes-arabes.jpeg" },
       { titulo: "Brigadeiro com Leite Moça", arquivo: "foto-brigadeiro-leite-moca.jpeg" },
       { titulo: "Sérum Soliv", arquivo: "foto-soliv.jpeg" },
       { titulo: "Eudora Siàge", arquivo: "foto-eudora.jpeg" },
-      { titulo: "méliuz", arquivo: "foto-meliuz.jpeg" },
-      { titulo: "Unboxing Moça Lovers", arquivo: "foto-moca-lovers.jpeg" },
       { titulo: "Bolo de chocolate", arquivo: "foto-bolo-chocolate.jpeg" }
     ],
 
@@ -2044,7 +1996,7 @@
       </article>
     `;
     }).join("");
-    colagem.innerHTML = html + `<span class="colagem-etiqueta">Fotos UGC</span>`;
+    colagem.innerHTML = html;
   }
 
   function montarServicos(){
