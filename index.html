@@ -1678,6 +1678,16 @@
   window.addEventListener("load", ajustarEscalaMobile);
   window.addEventListener("resize", ajustarEscalaMobile);
   window.addEventListener("orientationchange", ajustarEscalaMobile);
+  // As fontes do Google (Baloo 2, Caveat etc.) às vezes terminam de carregar depois
+  // do "load" da página, e isso muda a altura do texto (troca da fonte substituta
+  // pela fonte de verdade). Reajusta de novo quando elas terminarem.
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(ajustarEscalaMobile);
+  }
+  // Rede de segurança: reajusta de novo depois de um tempinho, caso alguma coisa
+  // (imagem lenta, fonte, etc.) ainda mude a altura da página depois de tudo isso.
+  setTimeout(ajustarEscalaMobile, 1200);
+  setTimeout(ajustarEscalaMobile, 3000);
 
   function preencherTextosFixos(){
     document.getElementById("heroEtiqueta").textContent = config.hero.etiqueta;
@@ -1785,11 +1795,16 @@
   // verdade (numa janela ampliada) quando a pessoa clica.
   function montarMidiaDeVideo(item){
     if (item.videoArquivo){
-      // Sem "src" aqui de propósito: com 30+ vídeos no site, carregar todos de uma vez
-      // (mesmo os escondidos pelo filtro) trava o celular. O "src" real só é definido pela
-      // função "carregarCapasDeVideoPreguiçosamente", quando o card se aproxima da tela.
+      // EDITE AQUI: se o item tiver "capa" (uma imagem, tipo a capa que você escolhe
+      // pros Reels do Instagram), ela é usada no lugar do frame automático do vídeo.
+      // Sem "capa", o "src" do frame automático só é definido pela função
+      // "carregarCapasDeVideoPreguiçosamente", quando o card se aproxima da tela —
+      // isso evita carregar os 30+ vídeos do site de uma vez (trava o celular).
+      const capa = item.capa
+        ? `<img class="video-capa" src="${item.capa}" alt="${item.titulo}" loading="lazy">`
+        : `<video class="video-capa" data-src="${item.videoArquivo}#t=0.1" muted playsinline preload="none"></video>`;
       return `<div class="foto-espaco video-vertical" data-video-arquivo="${item.videoArquivo}" data-titulo="${item.titulo}">
-             <video class="video-capa" data-src="${item.videoArquivo}#t=0.1" muted playsinline preload="none"></video>
+             ${capa}
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
@@ -1797,8 +1812,9 @@
            </div>`;
     }
     if (item.video){
+      const capa = item.capa || `https://i.ytimg.com/vi/${item.video}/oar2.jpg`;
       return `<div class="foto-espaco video-vertical" data-video="${item.video}" data-titulo="${item.titulo}">
-             <img class="video-capa" src="https://i.ytimg.com/vi/${item.video}/oar2.jpg" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
+             <img class="video-capa" src="${capa}" alt="${item.titulo}" loading="lazy" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${item.video}/hqdefault.jpg';">
              <button type="button" class="video-play-botao" aria-label="Assistir vídeo: ${item.titulo}">
                <span class="video-play-icone">&#9654;</span>
              </button>
