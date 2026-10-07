@@ -778,13 +778,9 @@
     border-radius: 24px;
     padding: 34px 28px;
     transition: transform .15s ease;
-    /* Leve inclinação alternada, tipo recorte colado num scrapbook */
     --rotacao-colagem: 0deg;
     transform: rotate(var(--rotacao-colagem));
   }
-  .cartao-servico:nth-child(3n+1){ --rotacao-colagem: -2deg; }
-  .cartao-servico:nth-child(3n+2){ --rotacao-colagem: 1.5deg; }
-  .cartao-servico:nth-child(3n+3){ --rotacao-colagem: -1deg; }
   .cartao-servico.reveal{ transform: translateY(24px) rotate(var(--rotacao-colagem)); }
   .cartao-servico.reveal.visivel{ transform: rotate(var(--rotacao-colagem)); }
   .cartao-servico.reveal.visivel:hover, .cartao-servico:hover{
@@ -798,6 +794,12 @@
   }
 
   /* ===================== VALORES (seção secreta) ===================== */
+  .titulo-subsecao-valores{
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    text-align:center;
+    margin-bottom: 24px;
+  }
   .valores-grade{
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -957,10 +959,6 @@
     --rotacao-colagem: 0deg;
     transform: rotate(var(--rotacao-colagem));
   }
-  .cartao-depoimento:nth-child(4n+1){ --rotacao-colagem: -2deg; }
-  .cartao-depoimento:nth-child(4n+2){ --rotacao-colagem: 1.5deg; }
-  .cartao-depoimento:nth-child(4n+3){ --rotacao-colagem: -1.5deg; }
-  .cartao-depoimento:nth-child(4n+4){ --rotacao-colagem: 2deg; }
   .cartao-depoimento.reveal{ transform: translateY(24px) rotate(var(--rotacao-colagem)); }
   .cartao-depoimento.reveal.visivel{ transform: rotate(var(--rotacao-colagem)); }
   .cartao-depoimento.reveal.visivel:hover, .cartao-depoimento:hover{
@@ -1394,6 +1392,8 @@
     <div class="container">
       <h2 class="titulo-secao reveal">Valores</h2>
       <div class="valores-grade" id="valoresGrade"></div>
+      <h3 class="titulo-subsecao-valores reveal">Pacotes recorrentes</h3>
+      <div class="valores-grade" id="valoresRecorrentes"></div>
       <div class="valores-extras" id="valoresExtras"></div>
     </div>
   </section>
@@ -1547,7 +1547,7 @@
       { chave: "apps-sites", rotulo: "Apps e Sites" },
       { chave: "maternidade", rotulo: "Maternidade" },
       { chave: "bodycare", rotulo: "Bodycare" },
-      { chave: "acessorios", rotulo: "Acessórios" },
+      { chave: "moda-acessorios", rotulo: "Moda e Acessórios" },
       { chave: "gastronomia", rotulo: "Gastronomia" }
     ],
 
@@ -1586,7 +1586,10 @@
       { titulo: "Banho relaxante com Dove", categoria: "bodycare", videoArquivo: "video-banho-dove.mp4" },
       { titulo: "Noite Estrelada da Beleza Néctar", categoria: "bodycare", videoArquivo: "video-noite-estrelada.mp4" },
       // Acessórios
-      { titulo: "Acessórios que completam o look", categoria: "acessorios", videoArquivo: "video-acessorios.mp4" },
+      { titulo: "Acessórios que completam o look", categoria: "moda-acessorios", videoArquivo: "video-acessorios.mp4" },
+      { titulo: "Uma bolsa, três ocasiões", categoria: "moda-acessorios", videoArquivo: "video-bolsa-tres-ocasioes.mp4" },
+      { titulo: "Provando peças novas no closet", categoria: "moda-acessorios", videoArquivo: "video-roupao-moda.mp4" },
+      { titulo: "Blusa nova da Iôla Ateliê", categoria: "moda-acessorios", videoArquivo: "video-blusa-iola-atelie.mp4" },
       // Gastronomia
       { titulo: "Brigadeiro com Leite Moça", categoria: "gastronomia", videoArquivo: "video-leite-moca.mp4" }
     ],
@@ -1624,6 +1627,10 @@
         { titulo: "Combo 3 vídeos", preco: "R$ 729", detalhe: "R$ 243 por vídeo" },
         { titulo: "Combo 5 vídeos", preco: "R$ 1.147", detalhe: "R$ 229 por vídeo", destaque: true },
         { titulo: "Combo 10 vídeos", preco: "R$ 2.160", detalhe: "R$ 216 por vídeo" }
+      ],
+      recorrentes: [
+        { titulo: "3 vídeos/mês", preco: "R$ 710", detalhe: "por mês · fechamento mínimo de 3 meses" },
+        { titulo: "5 vídeos/mês", preco: "R$ 1.100", detalhe: "por mês · fechamento mínimo de 3 meses", destaque: true }
       ],
       extras: [
         { titulo: "Collab (parceria simples)", preco: "R$ 80" },
@@ -2040,6 +2047,14 @@
       </div>
     `).join("");
     document.getElementById("valoresGrade").innerHTML = cartaoVideoAvulso + cartoesCombo;
+
+    document.getElementById("valoresRecorrentes").innerHTML = config.valores.recorrentes.map(item => `
+      <div class="cartao-valor reveal${item.destaque ? " destaque" : ""}">
+        <h3>${item.titulo}</h3>
+        <span class="preco">${item.preco}</span>
+        <span class="detalhe-preco">${item.detalhe}</span>
+      </div>
+    `).join("");
 
     document.getElementById("valoresExtras").innerHTML = config.valores.extras.map(item => `
       <span class="item-valor-extra">${item.titulo}: <strong>${item.preco}</strong></span>
