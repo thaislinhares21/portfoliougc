@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thais Linhares | Mídia Kit</title>
+<meta name="description" content="Mídia kit da Thais Linhares, criadora de conteúdo UGC e micro-influenciadora. Números do Instagram, nichos, marcas parceiras e portfólio.">
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/supabase-config.js"></script>
+<script src="/js/tracking.js"></script>
+
+<style>
+  :root{
+    --creme: #fdf6e3;
+    --rosa: #fdeaf1;
+    --vermelho: #e37ba6;
+    --tinta: #1a1410;
+    --branco: #ffffff;
+    --cinza-texto: #5c5650;
+    --sombra-dura: 0 20px 44px rgba(27,27,27,0.05);
+    --sombra-dura-pequena: 0 8px 20px rgba(27,27,27,0.045);
+    --borda: 1px solid rgba(27,27,27,0.07);
+  }
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background-color: var(--creme);
+    background-image:
+      linear-gradient(rgba(27,27,27,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,27,27,0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--tinta);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,.logo{ font-family: 'Baloo 2', sans-serif; font-weight: 700; letter-spacing: -.3px; }
+  .fonte-marcador{ font-family: 'Caveat', cursive; font-weight: 600; color: var(--vermelho); }
+  .container{ max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  a{ color: inherit; }
+  img{ max-width: 100%; display:block; }
+
+  .destaque-rosa{ color: var(--vermelho); }
+
+  /* ===================== ADESIVOS DECORATIVOS (SCRAPBOOK) ===================== */
+  .adesivo{ position:absolute; pointer-events:none; color: var(--vermelho); }
+  .kit-hero{ position: relative; }
+  .adesivo-estrela{ top: -6px; left: 36%; width: 30px; transform: rotate(-10deg); }
+  .adesivo-flor{ top: 10%; right: 2%; width: 38px; color: var(--tinta); transform: rotate(12deg); }
+  .adesivo-brilho{ bottom: 6%; left: 0; width: 26px; }
+
+  .kit-nota-flutuante{
+    display:inline-block; background: var(--branco); border: 2px dashed var(--vermelho);
+    border-radius: 14px; padding: 10px 18px; font-family:'Caveat', cursive;
+    font-weight: 600; font-size: 1.25rem; transform: rotate(-2deg); margin-bottom: 22px;
+  }
+
+  .flutuante{
+    position:absolute; background: var(--branco); box-shadow: var(--sombra-dura);
+    border-radius: 18px; padding: 14px 18px; max-width: 210px;
+    font-family:'Caveat', cursive; font-weight:600; font-size: 1.1rem; line-height:1.25;
+  }
+  .flutuante-hero-1{ top: 0; right: -10px; }
+  .flutuante-hero-2{ bottom: 16px; left: -24px; }
+
+  .topo{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px 24px; max-width: 1080px; margin: 0 auto;
+  }
+  .topo .logo{ font-size: 1.3rem; }
+  .topo .logo span{ color: var(--vermelho); }
+  .topo a.voltar{
+    font-weight: 600; font-size: .95rem; text-decoration: none;
+    border-bottom: 2px solid var(--vermelho); padding-bottom: 2px;
+  }
+
+  .etiqueta-secao{
+    display:flex; align-items:center; gap:10px;
+    font-weight:600; letter-spacing:2px; text-transform:uppercase;
+    font-size:.8rem; color: var(--cinza-texto); margin-bottom: 14px;
+  }
+  .etiqueta-secao::before{ content:""; display:block; width:24px; height:2px; background: var(--vermelho); }
+
+  /* ===================== HERO ===================== */
+  .kit-hero{ padding: 20px 0 60px; }
+  .kit-hero-grade{
+    display:flex; gap: 48px; align-items:center; flex-wrap: wrap;
+  }
+  .kit-hero-texto{ flex: 1 1 380px; }
+  .kit-hero-texto h1{ font-size: clamp(2.4rem, 5vw, 3.4rem); margin: 0 0 10px; line-height: 1.05; }
+  .kit-hero-subtitulo{ font-size: 1.2rem; color: var(--cinza-texto); margin: 0 0 24px; }
+  .kit-hero-foto-wrapper{ position: relative; flex: 0 0 260px; width: 260px; }
+  .kit-hero-foto{
+    width: 100%; aspect-ratio: 1180/2096;
+    background: none; box-shadow: none; overflow: visible;
+  }
+  .kit-hero-foto img{ width:100%; height:auto; object-fit: contain; object-position: center 10%; }
+  .kit-botoes{ display:flex; flex-wrap:wrap; gap: 14px; }
+  .botao{
+    display:inline-block; font-weight:700; font-style: italic; font-size: 1rem;
+    padding: 15px 30px; border-radius: 50px; border: 2px solid transparent;
+    text-decoration:none; cursor:pointer; transition: transform .15s ease;
+  }
+  .botao:hover{ transform: translateY(-2px); }
+  .botao-whatsapp{ background: var(--vermelho); color: var(--branco); }
+  .botao-instagram{ background: var(--tinta); color: var(--branco); }
+  .botao-email{ background: var(--branco); border-color: var(--tinta); color: var(--tinta); }
+
+  /* ===================== BLOCOS DE NÚMEROS ===================== */
+  .bloco{ padding: 46px 0; }
+  .bloco h2{ font-size: clamp(1.6rem, 3.5vw, 2.1rem); margin: 0 0 28px; }
+  .numeros-grade{
+    display:flex; flex-wrap:wrap; gap: 36px; text-align:left;
+  }
+  .numero-item{
+    background: var(--branco); border: var(--borda); border-radius: 20px;
+    padding: 24px 26px; flex: 1 1 200px; box-shadow: var(--sombra-dura-pequena);
+    position: relative;
+  }
+  .numero-item.destaque{ background: var(--rosa); border-color: transparent; }
+  .numero-item .emoji-numero{ font-size: 1.4rem; display:block; margin-bottom: 6px; }
+  .kit-subcopy{ font-family:'Caveat', cursive; font-weight:600; font-size: 1.25rem; color: var(--vermelho); margin: -14px 0 26px; }
+  .numero-item strong{
+    display:block; font-family:'Baloo 2', sans-serif; font-weight:700;
+    font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--vermelho);
+  }
+  .numero-item span{
+    font-weight:600; color: var(--cinza-texto); font-size: .9rem;
+  }
+  .numero-item small{ display:block; color: var(--cinza-texto); font-size: .8rem; margin-top: 4px; }
+  .nota-dados{ font-size: .85rem; color: var(--cinza-texto); margin-top: 18px; }
+  .outras-redes{ display:flex; flex-wrap:wrap; gap: 12px; margin-top: 22px; }
+  .outras-redes a{
+    display:inline-flex; align-items:center; gap:8px; font-weight:700;
+    background: var(--branco); border: var(--borda); border-radius: 50px;
+    padding: 10px 18px; text-decoration:none; font-size: .9rem;
+  }
+
+  /* ===================== NICHOS ===================== */
+  .nichos-grade{ display:flex; flex-wrap:wrap; gap: 12px; }
+  .nicho-pill{
+    font-weight: 700; background: var(--branco); border: 2px solid var(--vermelho);
+    color: var(--vermelho); padding: 9px 20px; border-radius: 50px; font-size: .95rem;
+  }
+
+  /* ===================== SERVIÇOS ===================== */
+  .servicos-grade{ display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 20px; }
+  .cartao-servico{
+    background: var(--rosa); border-radius: 20px; padding: 26px 24px;
+  }
+  .cartao-servico h3{ font-size: 1.1rem; margin: 0 0 8px; }
+  .cartao-servico p{ margin: 0; color: var(--cinza-texto); font-size: .92rem; }
+
+  /* ===================== PORTFÓLIO EM DESTAQUE ===================== */
+  .portfolio-amostra-grade{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; }
+  .portfolio-amostra-item{
+    position: relative; border-radius: 16px; overflow:hidden; aspect-ratio: 9/16;
+    box-shadow: var(--sombra-dura-pequena); text-decoration:none; display:block;
+  }
+  .portfolio-amostra-item img{ width:100%; height:100%; object-fit: cover; }
+  .portfolio-amostra-play{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  }
+  .portfolio-amostra-play::after{
+    content:""; width:0; height:0; margin-left: 4px;
+    border-top: 11px solid transparent; border-bottom: 11px solid transparent;
+    border-left: 18px solid var(--branco);
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.4));
+  }
+  .ver-portfolio-link{
+    display:inline-block; margin-top: 22px; font-weight:700; text-decoration:none;
+    border-bottom: 2px solid var(--vermelho); padding-bottom: 2px;
+  }
+
+  /* ===================== MARCAS ===================== */
+  .marcas-marquee{
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marcas-marquee-trilho{
+    display:flex; width: max-content; --duracao-marquee: 50s;
+    animation: rolarMarquee var(--duracao-marquee) linear infinite;
+  }
+  .marcas-marquee:hover .marcas-marquee-trilho{ animation-play-state: paused; }
+  @keyframes rolarMarquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+  .marca-trabalhada-logo{ height: 46px; width:auto; object-fit:contain; margin: 0 30px; opacity:.85; }
+
+  /* ===================== DEPOIMENTOS ===================== */
+  .depoimentos-grade{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 22px; }
+  .cartao-depoimento{
+    background: var(--branco); border: var(--borda); border-radius: 20px;
+    padding: 26px 24px; box-shadow: var(--sombra-dura-pequena);
+  }
+  .cartao-depoimento p{ margin: 0 0 16px; }
+  .cartao-depoimento strong{ display:block; }
+  .cartao-depoimento .empresa-depoimento{ font-size:.85rem; opacity:.8; }
+
+  /* ===================== CONTATO / RODAPÉ ===================== */
+  .kit-contato{
+    background: var(--rosa); border-radius: 28px; padding: 46px 40px;
+    text-align:center; margin: 20px 0 50px;
+  }
+  .kit-contato h2{ margin: 0 0 10px; }
+  .kit-contato p{ color: var(--cinza-texto); margin: 0 0 24px; }
+  .kit-contato .kit-botoes{ justify-content:center; }
+  .rodape{ text-align:center; padding: 30px 0 50px; font-size:.85rem; opacity:.75; }
+
+  @media (max-width: 720px){
+    .kit-hero-grade{ flex-direction: column-reverse; }
+    .kit-hero-foto-wrapper{ width: 200px; flex-basis: 200px; }
+    .kit-contato{ padding: 34px 22px; }
+    .flutuante{ max-width: 160px; font-size: .95rem; padding: 10px 14px; }
+    .flutuante-hero-1{ right: -4px; }
+    .flutuante-hero-2{ left: -4px; }
+    .adesivo-flor{ right: -2%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <a href="index.html" class="logo">Thais<span>UGC</span></a>
+  <a href="index.html" class="voltar">← Ver site completo</a>
+</div>
+
+<main class="container">
+
+  <section class="kit-hero">
+    <svg class="adesivo adesivo-estrela" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M32 4l6 18h19l-15.5 11.5L47 52 32 41 17 52l5.5-18.5L7 22h19Z"/></svg>
+    <svg class="adesivo adesivo-flor" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M32 32c0-9 6-14 6-14s6 5 6 14-6 14-6 14-6-5-6-14Z"/><path d="M32 32c-9 0-14 6-14 6s5 6 14 6 14-6 14-6-5-6-14-6Z"/><path d="M32 32c0 9-6 14-6 14s-6-5-6-14 6-14 6-14 6 5 6 14Z"/><path d="M32 32c9 0 14-6 14-6s-5-6-14-6-14 6-14 6 5 6 14 6Z"/><circle cx="32" cy="32" r="5"/></svg>
+    <svg class="adesivo adesivo-brilho" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M14 14l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"/><path d="M46 36l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5Z"/></svg>
+    <div class="kit-hero-grade">
+      <div class="kit-hero-texto">
+        <p class="etiqueta-secao">Mídia Kit</p>
+        <h1>Thais Linhares</h1>
+        <p class="kit-hero-subtitulo" id="kitSubtitulo">Criadora de conteúdo UGC &amp; micro-influenciadora</p>
+        <span class="kit-nota-flutuante">Conteúdo que vira resultado de verdade ✨</span>
+        <div class="kit-botoes" id="kitBotoes"></div>
+      </div>
+      <div class="kit-hero-foto-wrapper">
+        <div class="kit-hero-foto">
+          <img src="fotocapa-sem-fundo.webp" alt="Thais Linhares sorrindo para a câmera">
+        </div>
+        <div class="flutuante flutuante-hero-1">+20 marcas parceiras 💛</div>
+        <div class="flutuante flutuante-hero-2">📍 Porto Velho, RO</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2>Instagram em <span class="fonte-marcador">números</span></h2>
+    <p class="kit-subcopy">Público pequeno, mas que acompanha de verdade — sem seguidor fantasma. 💛</p>
+    <div class="numeros-grade" id="numerosInstagram"></div>
+    <p class="nota-dados" id="notaDados"></p>
+    <div class="outras-redes" id="outrasRedes"></div>
+  </section>
+
+  <section class="bloco">
+    <h2>Alcance <span class="fonte-marcador">médio</span> mensal</h2>
+    <div class="numeros-grade" id="numerosAlcance"></div>
+  </section>
+
+  <section class="bloco">
+    <h2><span class="fonte-marcador">Público</span> que me acompanha</h2>
+    <div class="numeros-grade" id="numerosPublico"></div>
+  </section>
+
+  <section class="bloco">
+    <h2>Nichos em que <span class="fonte-marcador">atuo</span></h2>
+    <div class="nichos-grade" id="nichosGrade"></div>
+  </section>
+
+  <section class="bloco">
+    <h2>O que eu <span class="fonte-marcador">entrego</span></h2>
+    <div class="servicos-grade" id="servicosGrade"></div>
+  </section>
+
+  <section class="bloco">
+    <h2>Portfólio em <span class="fonte-marcador">destaque</span></h2>
+    <div class="portfolio-amostra-grade" id="portfolioAmostraGrade"></div>
+    <a class="ver-portfolio-link" href="index.html#portfolio" target="_blank" rel="noopener">Ver portfólio completo →</a>
+  </section>
+
+  <section class="bloco">
+    <h2>Marcas que já <span class="fonte-marcador">confiaram</span> no meu trabalho</h2>
+    <div class="marcas-marquee">
+      <div class="marcas-marquee-trilho" id="marcasMarqueeTrilho"></div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2>O que as marcas <span class="fonte-marcador">dizem</span></h2>
+    <div class="depoimentos-grade" id="depoimentosGrade"></div>
+  </section>
+
+  <section class="kit-contato" style="position:relative;">
+    <svg class="adesivo adesivo-brilho" style="top:14px; left:6%; color:var(--vermelho);" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M14 14l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"/><path d="M46 36l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5Z"/></svg>
+    <h2>Vamos criar algo <span class="fonte-marcador">juntas</span>?</h2>
+    <p>Me chama pra conversar sobre parcerias, collabs e campanhas.</p>
+    <div class="kit-botoes" id="kitBotoesContato"></div>
+  </section>
+
+</main>
+
+<footer class="rodape" id="rodape"></footer>
+
+<script>
+  // EDITE AQUI: dados do mídia kit. Atualize os números do Instagram sempre que
+  // olhar o Insights de novo (Instagram > seu perfil > Insights > Visão geral/Público).
+  const config = {
+    contato: {
+      email: "thaisoliveira.linhares@hotmail.com",
+      whatsappNumero: "5569992833724",
+      instagramUsuario: "@thaisugcbr",
+      instagramUrl: "https://www.instagram.com/thaisugcbr"
+    },
+
+    // EDITE AQUI: outras redes. Seguidores ficam vazios ("") até você me passar os números.
+    outrasRedes: [
+      { emoji: "🎵", rotulo: "TikTok", usuario: "@thaislinhares__", url: "https://www.tiktok.com/@thaislinhares__", seguidores: "" },
+      { emoji: "▶️", rotulo: "YouTube", usuario: "@thaisugcbr", url: "https://www.youtube.com/@thaisugcbr", seguidores: "" }
+    ],
+
+    // EDITE AQUI: quando atualizar os números abaixo, troque esta data também
+    dataAtualizacao: "outubro de 2026",
+
+    instagram: {
+      seguidores: { emoji: "📈", numero: "1.838", rotulo: "Seguidores", nota: "+12,4% nos últimos 30 dias", destaque: true },
+      visitasPerfil: { emoji: "👀", numero: "1.234", rotulo: "Visitas ao perfil", nota: "últimos 30 dias" },
+      toquesBio: { emoji: "🖱️", numero: "71", rotulo: "Toques no link da bio", nota: "últimos 30 dias" }
+    },
+
+    alcance: [
+      { emoji: "🎬", numero: "17 mil", rotulo: "Alcance em Stories" },
+      { emoji: "🎥", numero: "15 mil", rotulo: "Alcance em Reels" },
+      { emoji: "🖼️", numero: "3 mil", rotulo: "Alcance em Posts" }
+    ],
+
+    publico: [
+      { emoji: "🇧🇷", numero: "96,3%", rotulo: "Do público é do Brasil" },
+      { emoji: "🗣️", numero: "97,7%", rotulo: "Consome conteúdo em português" },
+      { emoji: "🕒", numero: "9h–21h", rotulo: "Horário de maior atividade dos seguidores" }
+    ],
+
+    // EDITE AQUI: lista de nichos (igual à do portfólio principal)
+    nichos: [
+      { emoji: "💄", nome: "Beleza" },
+      { emoji: "🌿", nome: "Bem-estar" },
+      { emoji: "🐾", nome: "Pet" },
+      { emoji: "💻", nome: "Apps e Sites" },
+      { emoji: "👶", nome: "Maternidade" },
+      { emoji: "🛁", nome: "Bodycare" },
+      { emoji: "👗", nome: "Moda e Acessórios" },
+      { emoji: "🍫", nome: "Gastronomia" }
+    ],
+
+    // EDITE AQUI: marcas (mesma lista do portfólio principal)
+    marcas: [
+      { nome: "Bella Essence", logo: "logo-bella-essence.png" },
+      { nome: "Beleza Néctar", logo: "logo-beleza-nectar.png" },
+      { nome: "Pet Love", logo: "logo-pet-love.png" },
+      { nome: "CreHub", logo: "logo-crehub-novo.png" },
+      { nome: "Authentic Nutri", logo: "logo-authentic-nutri-novo.png" },
+      { nome: "O Boticário", logo: "logo-o-boticario-novo.png" },
+      { nome: "Iôla Ateliê", logo: "logo-iola-atelie.png" },
+      { nome: "Dove", logo: "logo-dove-novo.png" },
+      { nome: "Rosa Selvagem", logo: "logo-rosa-selvagem-novo.png" },
+      { nome: "Nanovit", logo: "logo-nanovit-novo.png" },
+      { nome: "Nestlé Moça", logo: "logo-nestle-moca.png" },
+      { nome: "Eudora", logo: "logo-eudora.png" },
+      { nome: "VExpenses", logo: "logo-vexpenses.png" },
+      { nome: "méliuz", logo: "logo-meliuz.png" },
+      { nome: "NatusVita", logo: "logo-natusvita.png" }
+    ],
+
+    // EDITE AQUI: o que você entrega (igual à seção Serviços do site principal)
+    servicos: [
+      { titulo: "Vídeo UGC", descricao: "Vídeos verticais autênticos, gravados como uma cliente real usando o produto, prontos para anúncios e redes sociais." },
+      { titulo: "Reels para Redes Sociais", descricao: "Roteiro, gravação e edição de reels pensados para prender atenção nos primeiros segundos e gerar engajamento." },
+      { titulo: "Fotos de Produto", descricao: "Fotos com boa luz e composição para catálogo, site e redes sociais da marca." },
+      { titulo: "Conteúdo para Anúncios", descricao: "Vídeos pensados para performance em campanhas pagas, com ganchos testados nas redes sociais." }
+    ],
+
+    // EDITE AQUI: amostra de vídeos do portfólio (capa + link pro vídeo real no site principal)
+    portfolioAmostra: [
+      { capa: "thumb-midiakit-beleza.jpg", alt: "Rotina de skincare" },
+      { capa: "thumb-midiakit-bodycare.jpg", alt: "Banho relaxante com Dove" },
+      { capa: "thumb-midiakit-pet.jpg", alt: "Unboxing Pet Love" },
+      { capa: "thumb-midiakit-moda.jpg", alt: "Uma bolsa, três ocasiões" }
+    ],
+
+    // EDITE AQUI: depoimentos (pode trocar por outros que já estão no site principal)
+    depoimentos: [
+      { texto: "O conteúdo ficou extremamente elegante e sofisticado, alinhado com a identidade visual da marca, transmitindo uma sensação de exclusividade e luxo.", nome: "Equipe Hellen Parfum", empresa: "Hellen Parfum" },
+      { texto: "Que produção! Ficou lindo o vídeo. Parabéns, seu conteúdo é uma coisa profissional, elite.", nome: "Equipe Bella Essence", empresa: "Bella Essence" },
+      { texto: "Nossa, adorei os vídeos, você captou bem a essência! Parabéns mesmo.", nome: "Berenice Shakti", empresa: "Cartas para Adelaine" }
+    ]
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const whatsappLink = `https://wa.me/${config.contato.whatsappNumero}?text=${encodeURIComponent("Olá, Thais! Vi seu mídia kit e quero conversar sobre uma parceria.")}`;
+
+    const botoesHtml = `
+      <a class="botao botao-whatsapp" href="${whatsappLink}" target="_blank" rel="noopener"><span aria-hidden="true">&#128172;</span> WhatsApp</a>
+      <a class="botao botao-instagram" href="${config.contato.instagramUrl}" target="_blank" rel="noopener"><span aria-hidden="true">&#128247;</span> Instagram</a>
+      <a class="botao botao-email" href="mailto:${config.contato.email}"><span aria-hidden="true">&#9993;</span> E-mail</a>
+    `;
+    document.getElementById("kitBotoes").innerHTML = botoesHtml;
+    document.getElementById("kitBotoesContato").innerHTML = botoesHtml;
+
+    document.getElementById("numerosInstagram").innerHTML = Object.values(config.instagram).map(item => `
+      <div class="numero-item${item.destaque ? " destaque" : ""}">
+        <span class="emoji-numero" aria-hidden="true">${item.emoji}</span>
+        <strong>${item.numero}</strong>
+        <span>${item.rotulo}</span>
+        <small>${item.nota}</small>
+      </div>
+    `).join("");
+
+    document.getElementById("numerosAlcance").innerHTML = config.alcance.map(item => `
+      <div class="numero-item">
+        <span class="emoji-numero" aria-hidden="true">${item.emoji}</span>
+        <strong>${item.numero}</strong>
+        <span>${item.rotulo}</span>
+      </div>
+    `).join("");
+
+    document.getElementById("numerosPublico").innerHTML = config.publico.map(item => `
+      <div class="numero-item">
+        <span class="emoji-numero" aria-hidden="true">${item.emoji}</span>
+        <strong>${item.numero}</strong>
+        <span>${item.rotulo}</span>
+      </div>
+    `).join("");
+
+    document.getElementById("notaDados").textContent = `Dados do Instagram Insights atualizados em ${config.dataAtualizacao}.`;
+
+    document.getElementById("outrasRedes").innerHTML = config.outrasRedes.map(rede => `
+      <a href="${rede.url}" target="_blank" rel="noopener">
+        <span aria-hidden="true">${rede.emoji}</span> ${rede.rotulo} ${rede.usuario}${rede.seguidores ? ` · ${rede.seguidores}` : ""}
+      </a>
+    `).join("");
+
+    document.getElementById("nichosGrade").innerHTML = config.nichos.map(nicho => `
+      <span class="nicho-pill">${nicho.emoji} ${nicho.nome}</span>
+    `).join("");
+
+    document.getElementById("servicosGrade").innerHTML = config.servicos.map(servico => `
+      <div class="cartao-servico">
+        <h3>${servico.titulo}</h3>
+        <p>${servico.descricao}</p>
+      </div>
+    `).join("");
+
+    document.getElementById("portfolioAmostraGrade").innerHTML = config.portfolioAmostra.map(item => `
+      <a class="portfolio-amostra-item" href="index.html#portfolio" target="_blank" rel="noopener">
+        <img src="${item.capa}" alt="${item.alt}" loading="lazy">
+        <span class="portfolio-amostra-play" aria-hidden="true"></span>
+      </a>
+    `).join("");
+
+    const listaDupla = [...config.marcas, ...config.marcas];
+    document.getElementById("marcasMarqueeTrilho").innerHTML = listaDupla.map(marca => `
+      <img class="marca-trabalhada-logo" src="${marca.logo}" alt="${marca.nome}" loading="lazy">
+    `).join("");
+
+    document.getElementById("depoimentosGrade").innerHTML = config.depoimentos.map(dep => `
+      <div class="cartao-depoimento">
+        <p>"${dep.texto}"</p>
+        <strong>${dep.nome}</strong>
+        <span class="empresa-depoimento">${dep.empresa}</span>
+      </div>
+    `).join("");
+
+    document.getElementById("rodape").textContent = `© ${new Date().getFullYear()} Thais Linhares. Todos os direitos reservados.`;
+
+    if (window.Tracking && typeof window.Tracking.pageView === "function"){
+      window.Tracking.pageView("midiakit");
+    }
+  });
+</script>
+
+</body>
+</html>
