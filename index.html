@@ -193,11 +193,11 @@ html.sem-bf .barra-bf{display:none}
 .dock-janela{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .trilho-faixa{display:flex;width:max-content;animation:rolar 55s linear infinite}
 .trilho-faixa ul{display:flex;gap:12px;list-style:none;margin:0;padding:4px 6px 8px}
-.trilho-faixa li{white-space:nowrap;background:var(--papel);border:1px solid var(--linha);padding:8px 16px;border-radius:12px;font-family:var(--titulo);font-weight:600;font-size:.92rem;box-shadow:0 6px 12px -10px rgba(47,33,26,.5)}
+.trilho-faixa li{white-space:nowrap;padding:0 18px;font-family:var(--titulo);font-weight:700;font-size:1.05rem;color:var(--tinta-suave)}
 .trilho-faixa ul{align-items:center}
 .trilho-faixa li{height:72px;display:flex;align-items:center}
-.trilho-faixa li.com-logo{padding:6px 14px;background:#fff;height:72px;display:flex;align-items:center}
-.trilho-faixa li.com-logo img{height:56px;width:auto;max-width:130px;object-fit:contain}
+.trilho-faixa li.com-logo{padding:0 18px;background:transparent;border:0;box-shadow:none;border-radius:0}
+.trilho-faixa li.com-logo img{height:60px;width:auto;max-width:140px;object-fit:contain;mix-blend-mode:multiply}
 .dock:hover .trilho-faixa{animation-play-state:paused}
 @keyframes rolar{to{transform:translateX(-50%)}}
 
@@ -828,7 +828,7 @@ const MARCAS = [
 const LOGOS = {
   "O Boticário": "logos/o-boticario.png", "Dove": "logos/dove.png", "Petlove": "logos/petlove.png",
   "Rosa Selvagem": "logos/rosa-selvagem.png", "Méliuz": "logos/meliuz.png", "Eudora": "logos/eudora.png",
-  "Authentic Nutri": "logos/authentic-nutri.png", "Nanovit": "logos/nanovit.png", "Leite Moça": "logos/leite-moca.png",
+  "Authentic Nutri": "logos/authentic-nutri.png?v=2", "Nanovit": "logos/nanovit.png", "Leite Moça": "logos/leite-moca.png",
   "VExpenses": "logos/vexpenses.png", "Bella Essence": "logos/bella-essence.png", "Iôla Ateliê": "logos/iola-atelie.png",
   "Beleza Néctar": "logos/beleza-nectar.png", "CreHub": "logos/crehub.png", "NatusVita": "logos/natusvita.png"
 };
