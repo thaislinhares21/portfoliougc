@@ -408,15 +408,17 @@ function renderizarVideosMaisVistos(eventos) {
   container.innerHTML = lista
     .map((video) => {
       const largura = Math.max(4, (video.contagem / maiorContagem) * 100);
-      const linkYoutube = `https://www.youtube.com/watch?v=${video.id}`;
-      const miniatura = `https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`;
+      // O site novo usa vídeos do Vimeo (id só com números); os antigos eram do YouTube
+      const ehVimeo = /^\d+$/.test(video.id);
+      const link = ehVimeo ? `https://vimeo.com/${video.id}` : `https://www.youtube.com/watch?v=${video.id}`;
+      const miniatura = ehVimeo ? "" : `https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`;
       return `
         <div class="item-video">
-          <a href="${linkYoutube}" target="_blank" rel="noopener">
-            <img src="${miniatura}" alt="${escapeHtml(video.titulo)}" loading="lazy" />
+          <a href="${link}" target="_blank" rel="noopener">
+            <img ${miniatura ? `src="${miniatura}"` : ""} ${ehVimeo ? `data-vimeo="${video.id}"` : ""} alt="${escapeHtml(video.titulo)}" loading="lazy" />
           </a>
           <div class="item-video-info">
-            <a class="titulo-video" href="${linkYoutube}" target="_blank" rel="noopener">${escapeHtml(video.titulo)}</a>
+            <a class="titulo-video" href="${link}" target="_blank" rel="noopener">${escapeHtml(video.titulo)}</a>
             <div class="barra-proporcional">
               <div class="preenchimento" style="width: ${largura}%;"></div>
             </div>
@@ -426,6 +428,14 @@ function renderizarVideosMaisVistos(eventos) {
       `;
     })
     .join("");
+
+  // Miniaturas do Vimeo: busca a capa de cada vídeo pelo oEmbed do Vimeo
+  container.querySelectorAll("img[data-vimeo]").forEach((img) => {
+    fetch(`https://vimeo.com/api/oembed.json?url=https%3A%2F%2Fvimeo.com%2F${img.dataset.vimeo}&width=320`)
+      .then((r) => r.json())
+      .then((dados) => { if (dados.thumbnail_url) img.src = dados.thumbnail_url; })
+      .catch(() => {});
+  });
 }
 
 // --- Bloco 2: Botões mais clicados -------------------------------------------
