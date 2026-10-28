@@ -246,6 +246,10 @@ html.sem-bf .barra-bf{display:none}
    ========================================================= */
 .bf-grade{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(30px,5vw,60px);align-items:start}
 .chamada-bf{margin-top:12px}
+.bf-exemplo{display:flex;gap:16px;align-items:center;margin-top:28px;background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:12px;max-width:440px;box-shadow:var(--sombra-leve)}
+.bf-exemplo .mini-video{flex:0 0 120px}
+.bf-exemplo strong{display:block;font-family:var(--titulo);font-weight:700;font-size:1.05rem;line-height:1.2;margin:4px 0}
+.bf-exemplo p{margin:0;font-size:.9rem;color:var(--tinta-suave)}
 .funil{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .etapa{background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .etapa-num{font-family:var(--titulo);font-weight:800;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terracota-txt)}
@@ -595,6 +599,7 @@ html.sem-bf .barra-bf{display:none}
         <h2 class="titulo-secao" id="titulo-bf">Sua Black Friday, <em>do scroll ao carrinho.</em></h2>
         <p class="intro">Na Black Friday todo mundo disputa a mesma atenção. Eu crio um vídeo pra cada momento da compra: um que faz parar, um que faz desejar e um que faz clicar em comprar.</p>
         <a class="botao botao-primario chamada-bf" href="#servicos">Ver serviços →</a>
+        <div class="bf-exemplo" id="bf-exemplo"></div>
       </div>
       <!-- as etapas e os vídeos de cada uma vêm do array FUNIL no script -->
       <div class="funil revelar" id="funil"></div>
@@ -835,6 +840,9 @@ const DESTAQUES = [
 ];
 
 // Funil da Black Friday: cada etapa mostra vídeos da lista TRABALHOS (coloque o link do Vimeo).
+// Vídeo de exemplo que aparece na seção Black Friday, embaixo do botão
+const BF_EXEMPLO = { titulo: "Uma roupa de cama nova muda tudo", texto: "Um exemplo que eu gravei de como o seu produto pode aparecer na Black Friday.", link: "https://vimeo.com/1240482839", capa: "https://i.vimeocdn.com/video/2218292115-dd5ea82d45648285d3af18e9fbe6b5c9d935d1bd238f760d459de92ef9ca9f11-d_640?region=us" };
+
 const FUNIL = [
   { etapa: "Atenção",  texto: "Ganchos que fazem parar o scroll e conhecer a marca.",            videos: ["https://vimeo.com/1221149289", "https://vimeo.com/1239988665"] },
   { etapa: "Desejo",   texto: "O produto em uso de verdade, do jeito que dá vontade de ter.",    videos: ["https://vimeo.com/1214985704", "https://vimeo.com/1201522561"] },
@@ -859,6 +867,7 @@ const TRABALHOS = [
   { nicho: "bem-estar",    titulo: "Pra uma rotina mais ativa",            marca: "Sekey",         formato: "Reels 9:16",   link: "https://vimeo.com/1240018336", capa: "https://i.vimeocdn.com/video/2217722996-adaf21b78134ad31dfdeb4bf80e39419b03a4c4b98bf509f0939cedb3be0ca72-d_640?region=us" },
   { nicho: "casa e decor", titulo: "A rotina mais leve com a lava e seca", marca: "Gazin",         formato: "Reels 9:16",   link: "https://vimeo.com/1239979226", capa: "https://i.vimeocdn.com/video/2217672493-cd8ef8f199f0d6e95c8f1922035d45b7b75b6187d273f8350879b2703539b7cc-d_640?region=us" },
   { nicho: "casa e decor", titulo: "O antes e depois do meu cantinho",     marca: "MetaloArt",     formato: "Reels 9:16",   link: "https://vimeo.com/1239988665", capa: "https://i.vimeocdn.com/video/2217685393-48ce6c87192e9da389dfb78897aeb3ec4822cb1104ab0c68294902f692d017c7-d_640?region=us" },
+  { nicho: "casa e decor", titulo: "Uma roupa de cama nova muda tudo",     marca: "Exemplo autoral", formato: "Reels 9:16", link: "https://vimeo.com/1240482839", capa: "https://i.vimeocdn.com/video/2218292115-dd5ea82d45648285d3af18e9fbe6b5c9d935d1bd238f760d459de92ef9ca9f11-d_640?region=us" },
   { nicho: "comida",       titulo: "Uma pausa com cookie de caneca",       marca: "MYEES",         formato: "Reels 9:16",   link: "https://vimeo.com/1239967474", capa: "https://i.vimeocdn.com/video/2217657054-f77062e564173010a6b2670cc8b0f657d9e9ad952784cde88a306de12130a739-d_640?region=us" },
   { nicho: "tech",         titulo: "Despesas da empresa sem dor de cabeça", marca: "VExpenses",     formato: "Reels 9:16",   link: "https://vimeo.com/1240018330", capa: "https://i.vimeocdn.com/video/2217723138-16f90f4092e06fb7ae9ef6d7a0575c2ba8aaefa9cb2dae818d5c7a9ce0f4b4f4-d_640?region=us" },
   { nicho: "bem-estar",    titulo: "Cuidado com o cabelo de dentro pra fora", marca: "Authentic Nutri", formato: "Reels 9:16", link: "https://vimeo.com/1240018335", capa: "https://i.vimeocdn.com/video/2217722957-ffcbd686291d6fa81b34cdb6f571f8e3be3c4d476eaad70880cc2d0a5238ca5f-d_640?region=us" },
@@ -1019,6 +1028,14 @@ cards.forEach((c, n) => c.addEventListener("focus", () => mostrarInfo(n)));
 mostrarInfo(0);
 
 /* ---------- funil da Black Friday ---------- */
+/* ---------- vídeo de exemplo da Black Friday ---------- */
+$("#bf-exemplo").innerHTML = `
+  <a class="mini-video" href="${esc(BF_EXEMPLO.link)}" aria-label="Assistir: ${esc(BF_EXEMPLO.titulo)}">
+    <div class="midia r916"><img src="${esc(BF_EXEMPLO.capa)}" alt="" loading="lazy"></div>
+    <span class="play" aria-hidden="true"></span>
+  </a>
+  <div><span class="etapa-num">exemplo pra Black Friday</span><strong>${esc(BF_EXEMPLO.titulo)}</strong><p>${esc(BF_EXEMPLO.texto)}</p></div>`;
+
 $("#funil").innerHTML = FUNIL.map((e, i) => `
   <div class="etapa">
     <span class="etapa-num">etapa ${i + 1}</span>
