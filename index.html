@@ -194,6 +194,10 @@ html.sem-bf .barra-bf{display:none}
 .trilho-faixa{display:flex;width:max-content;animation:rolar 55s linear infinite}
 .trilho-faixa ul{display:flex;gap:12px;list-style:none;margin:0;padding:4px 6px 8px}
 .trilho-faixa li{white-space:nowrap;background:var(--papel);border:1px solid var(--linha);padding:8px 16px;border-radius:12px;font-family:var(--titulo);font-weight:600;font-size:.92rem;box-shadow:0 6px 12px -10px rgba(47,33,26,.5)}
+.trilho-faixa ul{align-items:center}
+.trilho-faixa li{height:72px;display:flex;align-items:center}
+.trilho-faixa li.com-logo{padding:6px 14px;background:#fff;height:72px;display:flex;align-items:center}
+.trilho-faixa li.com-logo img{height:56px;width:auto;max-width:130px;object-fit:contain}
 .dock:hover .trilho-faixa{animation-play-state:paused}
 @keyframes rolar{to{transform:translateX(-50%)}}
 
@@ -819,6 +823,16 @@ const MARCAS = [
   "Authentic Nutri", "Nanovit", "Leite Moça", "VExpenses", "Hellen Parfum", "Bella Essence", "Secret", "Iôla Ateliê", "Gazin", "Bella Rosa", "Estefânia Semijoias", "Cartas para Adelaine", "Beleza Néctar", "MYEES", "Toda Up", "Purina One", "MetaloArt", "Soliv", "Sekey"
 ];
 
+// Logos que aparecem no dock da capa (arquivos na pasta logos). Marca sem logo aparece com o nome.
+// Para adicionar: salve o arquivo na pasta logos e coloque aqui "Nome da marca": "logos/arquivo.png".
+const LOGOS = {
+  "O Boticário": "logos/o-boticario.png", "Dove": "logos/dove.png", "Petlove": "logos/petlove.png",
+  "Rosa Selvagem": "logos/rosa-selvagem.png", "Méliuz": "logos/meliuz.png", "Eudora": "logos/eudora.png",
+  "Authentic Nutri": "logos/authentic-nutri.png", "Nanovit": "logos/nanovit.png", "Leite Moça": "logos/leite-moca.png",
+  "VExpenses": "logos/vexpenses.png", "Bella Essence": "logos/bella-essence.png", "Iôla Ateliê": "logos/iola-atelie.png",
+  "Beleza Néctar": "logos/beleza-nectar.png"
+};
+
 // Métricas: as três primeiras também aparecem nos cartõezinhos em volta da foto da capa.
 const METRICAS = [
   { valor: 30,  prefixo: "",  sufixo: "",     rotulo: "vídeos entregues" },
@@ -978,7 +992,11 @@ $("#selos").innerHTML = METRICAS.slice(0, 3).map((m, i) =>
   `<li><span class="icone-selo" aria-hidden="true">${ICONES_SELO[i]}</span><span>${htmlNumero(m)}<span>${esc(m.rotulo)}</span></span></li>`).join("");
 
 const listaMarcas = MARCAS.map((m) => `<li>${esc(m)}</li>`).join("");
-$("#faixa-marcas").innerHTML = `<ul>${listaMarcas}</ul><ul aria-hidden="true">${listaMarcas}</ul>`;
+// no dock da capa: logo quando existir no LOGOS, senão o nome
+const itensDock = [...MARCAS].sort((a, b) => (LOGOS[b] ? 1 : 0) - (LOGOS[a] ? 1 : 0)).map((m) => LOGOS[m]
+  ? `<li class="com-logo"><img src="${esc(LOGOS[m])}" alt="${esc(m)}" loading="lazy" width="120" height="56"></li>`
+  : `<li>${esc(m)}</li>`).join("");
+$("#faixa-marcas").innerHTML = `<ul>${itensDock}</ul><ul aria-hidden="true">${itensDock.replace(/alt="[^"]*"/g, 'alt=""')}</ul>`;
 $("#tags-marcas").innerHTML = listaMarcas;
 
 $("#lista-nichos").innerHTML = NICHOS.map((n) => `<li><a href="#trabalhos" data-filtro="${esc(n)}">${esc(maiuscula(n))}</a></li>`).join("");
