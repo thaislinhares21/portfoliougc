@@ -881,7 +881,7 @@ const METRICAS = [
   { valor: 30,  prefixo: "",  sufixo: "",     rotulo: "vídeos entregues" },
   { valor: 29,  prefixo: "",  sufixo: "",     rotulo: "marcas atendidas" },
   { valor: 500, prefixo: "+", sufixo: " mil", rotulo: "views somadas" },
-  { valor: 7,   prefixo: "",  sufixo: "",     rotulo: "nichos atendidos" }
+  { valor: 8,   prefixo: "",  sufixo: "",     rotulo: "nichos atendidos" }
 ];
 
 // Vídeos do carrossel de destaques.
@@ -907,16 +907,16 @@ const FUNIL = [
 ];
 
 // Nichos dos botões de filtro (e da linha "Explore" do menu)
-const NICHOS = ["beleza", "moda", "comida", "bem-estar", "pet", "tech", "casa e decor"];
+const NICHOS = ["beleza", "moda", "comida", "bem-estar", "pet", "tech", "casa e decor", "maternidade"];
 
-// Trabalhos da galeria. nicho precisa ser um dos NICHOS acima.
+// Trabalhos da galeria. nicho precisa ser um dos NICHOS acima (tambem: outros nichos onde o vídeo também aparece).
 // Para adicionar um vídeo do Vimeo: copie uma linha, troque o link e a capa.
 const TRABALHOS = [
   { nicho: "pet",          titulo: "O anúncio que meu pet aprovou",        marca: "Petlove",       formato: "Anúncio 9:16", link: "https://vimeo.com/1221149289", capa: "https://i.vimeocdn.com/video/2193776096-e39897ef2cc9fc7964ba41c7449b8a797d1d035c7965b8505c1d95d1940a0e1d-d_640?region=us" },
   { nicho: "pet",          titulo: "Ração pensada pro gato castrado",      marca: "Purina One",    formato: "Reels 9:16",   link: "https://vimeo.com/1239986948", capa: "https://i.vimeocdn.com/video/2217682579-e77ca4add7ddef9c351d292c5ac6a6b53ea5df8ace6fdce9fd165a5d0a60904f-d_640?region=us" },
   { nicho: "pet",          titulo: "Educador de cães que ensina o lugar certo", marca: "Pipi Maneiro", formato: "Reels 9:16", link: "https://vimeo.com/1240821676", capa: "https://i.vimeocdn.com/video/2218727918-5bcb9ff42e2055fa3d81915f5dd9efb8f208aea9424ade3d90bd75a86d02393c-d_640?region=us" },
   { nicho: "beleza",       titulo: "O presente perfeito pro Natal",        marca: "Bella Essence", formato: "Reels 9:16",   link: "https://vimeo.com/1240816978", capa: "https://i.vimeocdn.com/video/2218728644-1576cea58fd30010debc917d7dfbe46c8c5bbe904f485e81588d68d8e9a3e95a-d_640?region=us" },
-  { nicho: "comida",       titulo: "Lanche sem glúten que criança ama",   marca: "Natural Life",  formato: "Reels 9:16",   link: "https://vimeo.com/1240837426", capa: "https://i.vimeocdn.com/video/2218728976-bb91d7804d396fd795462f817240b9213b16e420d7250886c6b8fe836adc3adb-d_640?region=us" },
+  { nicho: "comida",       titulo: "Lanche sem glúten que criança ama",   marca: "Natural Life",  tambem: ["maternidade"], formato: "Reels 9:16",   link: "https://vimeo.com/1240837426", capa: "https://i.vimeocdn.com/video/2218728976-bb91d7804d396fd795462f817240b9213b16e420d7250886c6b8fe836adc3adb-d_640?region=us" },
   { nicho: "comida",       titulo: "O brigadeiro que some da panela",     marca: "Leite Moça",    formato: "Reels 9:16",   link: "https://vimeo.com/1214985704", capa: "https://i.vimeocdn.com/video/2186053427-f102fcb75626c57c7ee08e83f729a7e24d1bf1ec71c86e57101a9120755daf65-d_640?region=us" },
   { nicho: "beleza",       titulo: "Um perfume pra chamar de seu",         marca: "Hellen Parfum", formato: "Review 9:16",  link: "https://vimeo.com/1201522561", capa: "https://i.vimeocdn.com/video/2168883773-57ab82c38775471669bb5a9d08e8ab63abb573a723d4286fe37c26b2b3d8490f-d_640?region=us" },
   { nicho: "beleza",       titulo: "A proteção que você merece",           marca: "Secret",        formato: "Reels 9:16",   link: "https://vimeo.com/1178222159", capa: "https://i.vimeocdn.com/video/2139763093-0f83ed3567af901579faee551c880a040b445126e5c6a7be68486ed1bf54a281-d_640?region=us" },
@@ -1012,7 +1012,8 @@ const TONS = {
   "bem-estar": "linear-gradient(150deg,#dfe3c6,#9aa673 55%,#5d6940)",
   "pet": "linear-gradient(150deg,#ecc7b4,#c26a4c 55%,#8a3d27)",
   "tech": "linear-gradient(150deg,#d9d3cc,#8f8178 55%,#4e4038)",
-  "casa e decor": "linear-gradient(150deg,#ece3d3,#b9a283 55%,#7a6448)"
+  "casa e decor": "linear-gradient(150deg,#ece3d3,#b9a283 55%,#7a6448)",
+  "maternidade": "linear-gradient(150deg,#f2d9cf,#d9a693 55%,#a86f5c)"
 };
 const ICONES_SELO = [
   '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>',
@@ -1150,14 +1151,14 @@ galeria.innerHTML = TRABALHOS.map((t) => {
       <h3>${esc(t.titulo)}</h3>
       <p>${esc(t.marca)} · ${esc(t.formato)}</p>
     </div>`;
-  return `<li class="trabalho" data-nicho="${esc(t.nicho)}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
+  return `<li class="trabalho" data-nicho="${esc([t.nicho, ...(t.tambem || [])].join("|"))}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
 }).join("") + `<li class="vazio" hidden>Em breve, trabalhos deste nicho por aqui.</li>`;
 
 function filtrar(nicho) {
   filtros.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.nicho === nicho)));
   let algum = false;
   galeria.querySelectorAll(".trabalho").forEach((card) => {
-    const mostra = nicho === "todos" || card.dataset.nicho === nicho;
+    const mostra = nicho === "todos" || card.dataset.nicho.split("|").includes(nicho);
     if (mostra) algum = true;
     if (reduzirMovimento) { card.hidden = !mostra; return; }
     if (mostra) {
