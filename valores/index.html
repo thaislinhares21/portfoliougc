@@ -1140,12 +1140,25 @@ $("#funil").innerHTML = FUNIL.map((e, i) => `
 
 /* ---------- trabalhos por nicho ---------- */
 const filtros = $("#filtros");
-// a primeira aba é um resumo: o primeiro vídeo de cada nicho, na ordem do array TRABALHOS
+// a primeira aba é um resumo: um vídeo de cada nicho (o primeiro no array TRABALHOS),
+// completado com o segundo de cada nicho até fechar a última fileira da tela
 filtros.innerHTML = ["resumo", ...NICHOS].map((n, i) =>
   `<button class="filtro" type="button" data-nicho="${esc(n)}" aria-pressed="${i === 0}">${esc(maiuscula(n))}</button>`).join("");
-const NO_RESUMO = new Set(NICHOS.map((n) => TRABALHOS.findIndex((t) => t.nicho === n)).filter((i) => i >= 0));
+const ORDEM_RESUMO = [];
+for (let rodada = 0; ORDEM_RESUMO.length < TRABALHOS.length; rodada++) {
+  NICHOS.forEach((n) => { const i = TRABALHOS.map((t, k) => k).filter((k) => TRABALHOS[k].nicho === n)[rodada]; if (i !== undefined) ORDEM_RESUMO.push(i); });
+}
+let nichoAtual = "resumo";
+function marcarResumo() {
+  const colunas = getComputedStyle(galeria).gridTemplateColumns.split(" ").length || 1;
+  const base = NICHOS.filter((n) => TRABALHOS.some((t) => t.nicho === n)).length;
+  let qtd = Math.ceil(base / colunas) * colunas;
+  if (qtd > TRABALHOS.length) qtd = Math.floor(TRABALHOS.length / colunas) * colunas || TRABALHOS.length;
+  const escolhidos = new Set(ORDEM_RESUMO.slice(0, qtd));
+  galeria.querySelectorAll(".trabalho").forEach((card, i) => card.toggleAttribute("data-resumo", escolhidos.has(i)));
+}
 const galeria = $("#galeria");
-galeria.innerHTML = TRABALHOS.map((t, i) => {
+galeria.innerHTML = TRABALHOS.map((t) => {
   const miolo = `
     <div class="post-insta">
       <div class="midia r45" style="background:${TONS[t.nicho] || TONS.beleza}">
@@ -1156,10 +1169,11 @@ galeria.innerHTML = TRABALHOS.map((t, i) => {
       <h3>${esc(t.titulo)}</h3>
       <p>${esc(t.marca)} · ${esc(t.formato)}</p>
     </div>`;
-  return `<li class="trabalho"${NO_RESUMO.has(i) ? " data-resumo" : ""} data-nicho="${esc([t.nicho, ...(t.tambem || [])].join("|"))}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
+  return `<li class="trabalho" data-nicho="${esc([t.nicho, ...(t.tambem || [])].join("|"))}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
 }).join("") + `<li class="vazio" hidden>Em breve, trabalhos deste nicho por aqui.</li><li class="dica-resumo">Esse é um resumo. Escolha um nicho acima para ver todos os vídeos.</li>`;
 
 function filtrar(nicho) {
+  nichoAtual = nicho;
   filtros.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.nicho === nicho)));
   let algum = false;
   galeria.querySelectorAll(".trabalho").forEach((card) => {
@@ -1178,7 +1192,17 @@ function filtrar(nicho) {
   galeria.querySelector(".vazio").hidden = algum;
   galeria.querySelector(".dica-resumo").hidden = nicho !== "resumo";
 }
+marcarResumo();
 galeria.querySelectorAll(".trabalho:not([data-resumo])").forEach((card) => { card.hidden = true; });
+let esperaResumo;
+addEventListener("resize", () => {
+  clearTimeout(esperaResumo);
+  esperaResumo = setTimeout(() => {
+    if (nichoAtual !== "resumo") return;
+    marcarResumo();
+    galeria.querySelectorAll(".trabalho").forEach((card) => { card.hidden = !card.hasAttribute("data-resumo"); card.classList.remove("saindo"); });
+  }, 200);
+});
 filtros.addEventListener("click", (e) => { const b = e.target.closest(".filtro"); if (b) { filtrar(b.dataset.nicho); rastrear("buttonClick", `filtro_${b.dataset.nicho}`); } });
 $("#lista-nichos").addEventListener("click", (e) => { const a = e.target.closest("a[data-filtro]"); if (a) filtrar(a.dataset.filtro); });
 
