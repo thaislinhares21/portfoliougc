@@ -569,8 +569,6 @@ html.sem-bf .barra-bf{display:none}
         <p>Sou creator de UGC aqui de Porto Velho. Gravo vídeos de <strong>review</strong> e de <strong>problema x solução</strong> do jeito que eu falaria com uma amiga: sincero, leve e direto ao ponto.</p>
         <p>Fora das câmeras, sou <strong>mãe de dois filhos</strong>, divido a casa com meus pets e não abro mão do <strong>treino e da corrida</strong>. Também tenho a minha própria <strong>marca de colágeno natural e artesanal</strong>, então sei na pele o que é querer que um produto seja visto e vendido.</p>
         <p>Meu foco são marcas de bem-estar, fitness e tech que querem que as pessoas parem o dedo na tela, entendam o produto e comprem. Cuido de cada vídeo como se fosse pra minha própria marca, porque eu sei como é ter uma.</p>
-        <p class="grupo-titulo">Marcas com quem já criei</p>
-        <ul class="tags" id="tags-marcas"></ul>
         <ul class="promessas">
           <li><span class="check" aria-hidden="true">✓</span>Roteiro aprovado por você antes de eu gravar</li>
           <li><span class="check" aria-hidden="true">✓</span>Uma rodada de ajuste inclusa em cada entrega</li>
@@ -859,7 +857,7 @@ const BLACK_FRIDAY = { data: "2026-11-27T00:00:00", fim: "2026-12-01T00:00:00" }
 // Frases que aparecem digitando na busca da capa
 const BUSCAS = ["vídeos que vendem na Black Friday", "review sincero do seu produto", "problema x solução que converte", "UGC Creator em Porto Velho"];
 
-// Marcas (dock da capa e etiquetas do Sobre mim)
+// Marcas (dock da capa)
 const MARCAS = [
   "O Boticário", "Dove", "Beyoung", "Petlove", "Rosa Selvagem", "Sace Lady", "Méliuz", "Eudora",
   "Authentic Nutri", "Nanovit", "Leite Moça", "VExpenses", "Hellen Parfum", "Bella Essence", "Secret", "Iôla Ateliê", "Gazin", "Bella Rosa", "Estefânia Semijoias", "Cartas para Adelaine", "Beleza Néctar", "MYEES", "Toda Up", "Purina One", "MetaloArt", "Soliv", "Sekey", "CreHub", "NatusVita"
@@ -1059,13 +1057,11 @@ function htmlNumero(m) {
 $("#selos").innerHTML = METRICAS.slice(0, 3).map((m, i) =>
   `<li><span class="icone-selo" aria-hidden="true">${ICONES_SELO[i]}</span><span>${htmlNumero(m)}<span>${esc(m.rotulo)}</span></span></li>`).join("");
 
-const listaMarcas = MARCAS.map((m) => `<li>${esc(m)}</li>`).join("");
 // no dock da capa: logo quando existir no LOGOS, senão o nome
 const itensDock = [...MARCAS].sort((a, b) => (LOGOS[b] ? 1 : 0) - (LOGOS[a] ? 1 : 0)).map((m) => LOGOS[m]
   ? `<li class="com-logo"><img src="${esc(LOGOS[m])}" alt="${esc(m)}" loading="lazy" width="120" height="56"></li>`
   : `<li>${esc(m)}</li>`).join("");
 $("#faixa-marcas").innerHTML = `<ul>${itensDock}</ul><ul aria-hidden="true">${itensDock.replace(/alt="[^"]*"/g, 'alt=""')}</ul>`;
-$("#tags-marcas").innerHTML = listaMarcas;
 
 $("#lista-nichos").innerHTML = NICHOS.map((n) => `<li><a href="#trabalhos" data-filtro="${esc(n)}">${esc(maiuscula(n))}</a></li>`).join("");
 
