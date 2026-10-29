@@ -285,6 +285,7 @@ html.sem-bf .barra-bf{display:none}
 .trabalho h3{font-size:1rem;font-weight:700;margin:12px 14px 2px;line-height:1.25}
 .trabalho p{margin:0 14px 14px;font-size:.86rem;color:var(--tinta-suave)}
 .ph-legenda{position:absolute;inset:auto 10px 10px;text-align:center;background:rgba(255,250,244,.85);border-radius:8px;padding:4px 8px;font-size:.82rem;font-weight:700}
+.dica-resumo{grid-column:1/-1;text-align:center;font-family:var(--mao);font-size:1.5rem;color:var(--tinta-suave)}
 .vazio{grid-column:1/-1;text-align:center;font-family:var(--mao);font-size:1.6rem;color:var(--tinta-suave)}
 
 /* =========================================================
@@ -1139,10 +1140,12 @@ $("#funil").innerHTML = FUNIL.map((e, i) => `
 
 /* ---------- trabalhos por nicho ---------- */
 const filtros = $("#filtros");
-filtros.innerHTML = ["todos", ...NICHOS].map((n, i) =>
+// a primeira aba é um resumo: o primeiro vídeo de cada nicho, na ordem do array TRABALHOS
+filtros.innerHTML = ["resumo", ...NICHOS].map((n, i) =>
   `<button class="filtro" type="button" data-nicho="${esc(n)}" aria-pressed="${i === 0}">${esc(maiuscula(n))}</button>`).join("");
+const NO_RESUMO = new Set(NICHOS.map((n) => TRABALHOS.findIndex((t) => t.nicho === n)).filter((i) => i >= 0));
 const galeria = $("#galeria");
-galeria.innerHTML = TRABALHOS.map((t) => {
+galeria.innerHTML = TRABALHOS.map((t, i) => {
   const miolo = `
     <div class="post-insta">
       <div class="midia r45" style="background:${TONS[t.nicho] || TONS.beleza}">
@@ -1153,14 +1156,14 @@ galeria.innerHTML = TRABALHOS.map((t) => {
       <h3>${esc(t.titulo)}</h3>
       <p>${esc(t.marca)} · ${esc(t.formato)}</p>
     </div>`;
-  return `<li class="trabalho" data-nicho="${esc([t.nicho, ...(t.tambem || [])].join("|"))}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
-}).join("") + `<li class="vazio" hidden>Em breve, trabalhos deste nicho por aqui.</li>`;
+  return `<li class="trabalho"${NO_RESUMO.has(i) ? " data-resumo" : ""} data-nicho="${esc([t.nicho, ...(t.tambem || [])].join("|"))}">${t.link ? `<a href="${esc(t.link)}" aria-label="Assistir: ${esc(t.titulo)}, ${esc(t.marca)}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
+}).join("") + `<li class="vazio" hidden>Em breve, trabalhos deste nicho por aqui.</li><li class="dica-resumo">Esse é um resumo. Escolha um nicho acima para ver todos os vídeos.</li>`;
 
 function filtrar(nicho) {
   filtros.querySelectorAll(".filtro").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.nicho === nicho)));
   let algum = false;
   galeria.querySelectorAll(".trabalho").forEach((card) => {
-    const mostra = nicho === "todos" || card.dataset.nicho.split("|").includes(nicho);
+    const mostra = nicho === "resumo" ? card.hasAttribute("data-resumo") : card.dataset.nicho.split("|").includes(nicho);
     if (mostra) algum = true;
     if (reduzirMovimento) { card.hidden = !mostra; return; }
     if (mostra) {
@@ -1173,7 +1176,9 @@ function filtrar(nicho) {
     }
   });
   galeria.querySelector(".vazio").hidden = algum;
+  galeria.querySelector(".dica-resumo").hidden = nicho !== "resumo";
 }
+galeria.querySelectorAll(".trabalho:not([data-resumo])").forEach((card) => { card.hidden = true; });
 filtros.addEventListener("click", (e) => { const b = e.target.closest(".filtro"); if (b) { filtrar(b.dataset.nicho); rastrear("buttonClick", `filtro_${b.dataset.nicho}`); } });
 $("#lista-nichos").addEventListener("click", (e) => { const a = e.target.closest("a[data-filtro]"); if (a) filtrar(a.dataset.filtro); });
 
