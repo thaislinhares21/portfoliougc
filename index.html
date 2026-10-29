@@ -301,6 +301,25 @@ html.sem-bf .barra-bf{display:none}
 @media (max-width:600px){.servicos-grade{grid-template-columns:1fr}}
 
 /* =========================================================
+   VALORES (só na página /valores)
+   ========================================================= */
+.precos{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;list-style:none;padding:0;margin:0 0 clamp(36px,5vw,56px)}
+.precos-2{grid-template-columns:repeat(2,minmax(0,360px))}
+.preco-card{position:relative;background:var(--papel);border:1px solid var(--linha);border-radius:16px;padding:26px 22px}
+.preco-card h3{font-size:1.05rem;font-weight:700;margin-bottom:12px}
+.preco-card strong{display:block;font-family:var(--titulo);font-weight:800;font-size:2rem;line-height:1;color:var(--terracota-txt)}
+.preco-card p{margin:10px 0 0;font-size:.92rem;color:var(--tinta-suave)}
+.preco-card.destaque{background:var(--tinta);color:#fff;border-color:var(--tinta);box-shadow:var(--sombra)}
+.preco-card.destaque strong{color:var(--coral-claro)}
+.preco-card.destaque p{color:rgba(255,255,255,.8)}
+.preco-selo{position:absolute;top:-11px;left:22px;background:var(--terracota);color:#fff;font-family:var(--titulo);font-weight:600;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:7px}
+.valores-extras{list-style:none;padding:0;margin:0 0 36px;max-width:620px;display:grid;gap:8px}
+.valores-extras li{display:flex;justify-content:space-between;gap:16px;background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:14px 18px}
+.valores-extras strong{font-family:var(--titulo);color:var(--terracota-txt);white-space:nowrap}
+@media (max-width:960px){.precos{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.precos,.precos-2{grid-template-columns:1fr}.valores-extras li{flex-direction:column;gap:2px}}
+
+/* =========================================================
    6. NÚMEROS E DEPOIMENTOS
    ========================================================= */
 .metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;list-style:none;padding:0;margin:0 0 clamp(44px,6vw,70px)}
@@ -644,6 +663,28 @@ html.sem-bf .barra-bf{display:none}
   </div>
 </section>
 
+<!-- ===================== VALORES (só aparece em thaislinhares.com.br/valores) ===================== -->
+<section class="janela" id="valores" aria-labelledby="titulo-valores" hidden>
+  <div class="barra" aria-hidden="true">
+    <span class="semaforo"><i></i><i></i><i></i></span>
+    <span class="endereco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>investimento em conteúdo ugc</span></span>
+    <span></span>
+  </div>
+  <div class="conteudo">
+    <div class="topo-secao">
+      <h2 class="titulo-secao" id="titulo-valores">Valores e <em>pacotes</em></h2>
+      <p class="intro">Todos os vídeos incluem roteiro aprovado antes de gravar, uma rodada de ajuste e entrega em até 72 horas úteis.</p>
+    </div>
+    <p class="sub-titulo">Vídeos</p>
+    <ul class="precos" id="valores-videos"></ul>
+    <p class="sub-titulo">Pacotes recorrentes</p>
+    <ul class="precos precos-2" id="valores-recorrentes"></ul>
+    <p class="sub-titulo">Extras</p>
+    <ul class="valores-extras" id="valores-extras"></ul>
+    <a class="botao botao-primario" href="https://wa.me/5569992833724?text=Oi%20Thais!%20Vi%20seus%20valores%20e%20quero%20conversar%20sobre%20um%20pacote." target="_blank" rel="noopener">Quero fechar um pacote</a>
+  </div>
+</section>
+
 <!-- ===================== 6. NÚMEROS E DEPOIMENTOS ===================== -->
 <section class="janela" id="numeros" aria-labelledby="titulo-numeros">
   <div class="barra" aria-hidden="true">
@@ -891,6 +932,25 @@ const TRABALHOS = [
 ];
 
 // Serviços
+// Tabela de valores: só aparece na página thaislinhares.com.br/valores (o site normal não mostra preço).
+// destaque: true marca o cartão como "mais pedido".
+const VALORES = {
+  video: { titulo: "1 vídeo UGC", preco: "R$ 270" },
+  combos: [
+    { titulo: "Combo 3 vídeos",  preco: "R$ 729",   detalhe: "R$ 243 por vídeo" },
+    { titulo: "Combo 5 vídeos",  preco: "R$ 1.147", detalhe: "R$ 229 por vídeo", destaque: true },
+    { titulo: "Combo 10 vídeos", preco: "R$ 2.160", detalhe: "R$ 216 por vídeo" }
+  ],
+  recorrentes: [
+    { titulo: "3 vídeos por mês", preco: "R$ 710",   detalhe: "por mês · fechamento mínimo de 3 meses" },
+    { titulo: "5 vídeos por mês", preco: "R$ 1.100", detalhe: "por mês · fechamento mínimo de 3 meses", destaque: true }
+  ],
+  extras: [
+    { titulo: "Collab (parceria simples)",    preco: "R$ 80" },
+    { titulo: "Renovação de uso em anúncios", preco: "R$ 120 por vídeo" }
+  ]
+};
+
 const SERVICOS = [
   { titulo: "Vídeo UGC",                descricao: "Vídeo vertical de review ou problema x solução, gravado com roteiro aprovado e pronto para postar." },
   { titulo: "Corte para anúncio",       descricao: "Versões curtas com ganchos diferentes para você testar no tráfego pago e achar o que vende mais." },
@@ -1110,6 +1170,24 @@ function filtrar(nicho) {
 }
 filtros.addEventListener("click", (e) => { const b = e.target.closest(".filtro"); if (b) { filtrar(b.dataset.nicho); rastrear("buttonClick", `filtro_${b.dataset.nicho}`); } });
 $("#lista-nichos").addEventListener("click", (e) => { const a = e.target.closest("a[data-filtro]"); if (a) filtrar(a.dataset.filtro); });
+
+/* ---------- valores: só aparecem na página thaislinhares.com.br/valores ---------- */
+if (location.pathname.includes("/valores") || new URLSearchParams(location.search).has("valores")) {
+  const cartao = (v) => `
+    <li class="preco-card${v.destaque ? " destaque" : ""}">
+      ${v.destaque ? '<span class="preco-selo">mais pedido</span>' : ""}
+      <h3>${esc(v.titulo)}</h3>
+      <strong>${esc(v.preco)}</strong>
+      ${v.detalhe ? `<p>${esc(v.detalhe)}</p>` : ""}
+    </li>`;
+  $("#valores-videos").innerHTML = [VALORES.video, ...VALORES.combos].map(cartao).join("");
+  $("#valores-recorrentes").innerHTML = VALORES.recorrentes.map(cartao).join("");
+  $("#valores-extras").innerHTML = VALORES.extras.map((v) => `<li><span>${esc(v.titulo)}</span><strong>${esc(v.preco)}</strong></li>`).join("");
+  $("#valores").hidden = false;
+  const li = document.createElement("li");
+  li.innerHTML = '<a href="#valores" class="link-bf">Valores</a>';
+  $('#menu a[href="#servicos"]').parentElement.after(li);
+}
 
 /* ---------- serviços, números, campanhas e depoimentos ---------- */
 $("#servicos-grade").innerHTML = SERVICOS.map((s, i) => `
