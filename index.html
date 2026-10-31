@@ -36,7 +36,7 @@
   --bf:42px; --topo:64px; --explore:38px;
 }
 html.sem-bf{--bf:0px}
-@media (max-width:900px){:root{--topo:60px;--explore:0px}}
+@media (max-width:900px){:root{--topo:60px;--explore:36px}}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:calc(var(--bf) + var(--topo) + var(--explore) + 12px);-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -113,7 +113,7 @@ html.sem-bf .barra-bf{display:none}
   .menu ul{flex-direction:column;gap:0;padding:6px 16px 18px}
   .menu a{display:block;padding:13px 4px;font-size:1.1rem;border-bottom:1px solid rgba(255,255,255,.1)}
 }
-@media (max-width:900px){.topo-explore,.trabalhe{display:none}}
+@media (max-width:900px){.trabalhe{display:none}.topo-explore{gap:14px;font-size:.82rem}.topo-explore ul{gap:16px}}
 
 /* =========================================================
    JANELAS (cada seção é uma janela de computador)
@@ -184,8 +184,14 @@ html.sem-bf .barra-bf{display:none}
 @media (max-width:900px){
   .capa-grade{grid-template-columns:1fr}
   .foto-hero{width:min(100%,360px)}
-  .selos{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
-  .selos li{position:static;animation:none}
+  .selos li{padding:7px 12px 7px 7px;gap:8px;border-radius:12px}
+  .selos .icone-selo{width:28px;height:28px;border-radius:8px}
+  .selos .icone-selo svg{width:15px;height:15px}
+  .selos strong{font-size:1rem}
+  .selos li > span:last-child > span{font-size:.7rem}
+  .selos li:nth-child(1){top:16%;left:-10px}
+  .selos li:nth-child(2){top:48%;right:-10px}
+  .selos li:nth-child(3){bottom:16%;left:-10px}
 }
 /* dock com as marcas */
 .dock{margin:40px auto 0;width:min(100%,1100px);padding:12px 0;border-radius:20px;background:rgba(255,255,255,.55);border:1px solid var(--linha);box-shadow:var(--sombra-leve);overflow:hidden}
