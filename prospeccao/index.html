@@ -458,6 +458,14 @@ document.querySelectorAll('input[name="escopo"]').forEach(function(r){
 document.getElementById("form").addEventListener("input",update);
 document.getElementById("form").addEventListener("change",update);
 update();
+
+var TRACK="https://yyxwcbioceutosumfdbc.supabase.co/functions/v1/track";
+function track(e){
+  if(/[?&]nt=1/.test(location.search))return;
+  try{fetch(TRACK,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({e:e,s:radio("saida")||"painel"}),keepalive:true}).catch(function(){})}catch(x){}
+}
+track("view");
+[$("copy"),$("copyTop")].forEach(function(b){b.addEventListener("click",function(){track("copy")})});
 })();
 </script>
 </body>
