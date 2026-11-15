@@ -150,6 +150,8 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
 .board{width:96px;max-width:96px;flex:none;margin:0;border:2px solid var(--cocoa);box-shadow:4px 4px 0 var(--terra);transform:rotate(3deg)}
 .board .pc{font-size:22px}
 @media (max-width:520px){.board{width:72px;max-width:72px}.board .pc{font-size:16px}}
+.free{margin-top:18px;padding:14px 16px;border:1px dashed #d9c4a6;border-radius:10px;font-size:14px;line-height:1.5;color:var(--cocoa2)}
+.free b{color:var(--cocoa)}
 </style>
 </head>
 <body>
@@ -270,6 +272,7 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
       <li><b>3.</b> Se escolheu o painel, ele aparece ao lado da conversa. Abra e comece pela aba Hoje.</li>
       <li><b>4.</b> Chame uma marca por dia e atualize o status na ficha. Constância fecha vídeo.</li>
     </ol>
+    <div class="free"><b>Usa o plano gratuito do Claude?</b> O painel funciona, mas ligue "Execução de código e criação de arquivos" em Configurações > Recursos, senão ele não aparece. O plano gratuito não guarda o que você marca no painel, então anote seus status em outro lugar. Se o Claude parar no meio por causa do limite de uso, é só esperar liberar e pedir "continue".</div>
   </div>
 </aside>
 
