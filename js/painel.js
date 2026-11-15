@@ -8,6 +8,8 @@
 let CACHE_EVENTOS = [];
 let CACHE_LEADS = [];
 let PERIODO_ATUAL = "tudo";
+let CACHE_PAGE_EVENTS = [];
+let CACHE_DMS = [];
 
 // ----------------------------------------------------------------------------
 // Busca paginada: o Supabase limita cada resposta a 1000 linhas, então
@@ -76,6 +78,20 @@ async function carregarDados() {
     mostrarErroCarregamento();
   }
 
+  // Dados da aba Prospecção (tabelas page_events e dm_log). Se falhar, só essa aba fica vazia.
+  try {
+    const [paginaEventos, dms] = await Promise.all([
+      buscarTudo("page_events"),
+      buscarTudo("dm_log"),
+    ]);
+    CACHE_PAGE_EVENTS = paginaEventos;
+    CACHE_DMS = dms;
+  } catch (erro) {
+    console.error(erro);
+    CACHE_PAGE_EVENTS = [];
+    CACHE_DMS = [];
+  }
+
   redesenharTudo();
 }
 
@@ -96,6 +112,7 @@ function configurarAbas() {
   const titulos = {
     principal: "Menu Principal",
     portfolio: "Portfólio",
+    prospeccao: "Prospecção",
   };
 
   botoes.forEach((botao) => {
@@ -107,6 +124,7 @@ function configurarAbas() {
 
       document.getElementById("tab-principal").classList.add("oculto");
       document.getElementById("tab-portfolio").classList.add("oculto");
+      document.getElementById("tab-prospeccao").classList.add("oculto");
       document.getElementById(`tab-${aba}`).classList.remove("oculto");
 
       document.getElementById("titulo-pagina").textContent = titulos[aba];
@@ -179,6 +197,7 @@ function redesenharTudo() {
 
   renderizarMenuPrincipal(eventos, leads);
   renderizarPortfolio(eventos, leads);
+  renderizarProspeccao();
 }
 
 // ============================================================================
@@ -600,4 +619,137 @@ function escapeHtml(texto) {
   const div = document.createElement("div");
   div.textContent = String(texto == null ? "" : texto);
   return div.innerHTML;
+}
+
+
+// ============================================================================
+// Aba "Prospecção": DMs do robô (dm_log) e acessos à página (page_events)
+// ============================================================================
+function renderizarProspeccao() {
+  const eventos = filtrarPorPeriodo(CACHE_PAGE_EVENTS);
+  const dms = filtrarPorPeriodo(CACHE_DMS);
+
+  const acessos = eventos.filter((e) => e.event === "view");
+  const copias = eventos.filter((e) => e.event === "copy");
+  const enviadas = dms.filter((d) => d.status === "sent");
+  const falhas = dms.filter((d) => d.status === "failed");
+
+  document.getElementById("pros-dms").textContent = formatarNumero(enviadas.length);
+  document.getElementById("pros-falhas").textContent = formatarNumero(falhas.length);
+  document.getElementById("pros-acessos").textContent = formatarNumero(acessos.length);
+  document.getElementById("pros-copias").textContent = formatarNumero(copias.length);
+
+  renderizarProspeccaoFunil(acessos.length, copias.length);
+  desenharBarras14Dias("pros-grafico", acessos);
+  renderizarProspeccaoDms(dms);
+}
+
+function renderizarProspeccaoFunil(acessos, copias) {
+  const container = document.getElementById("pros-funil");
+
+  if (acessos === 0) {
+    container.innerHTML = '<p class="lista-vazia">Ainda não há acessos registrados à página.</p>';
+    return;
+  }
+
+  const etapas = [
+    { rotulo: "Acessos à página", valor: acessos },
+    { rotulo: "Cliques em Copiar prompt", valor: copias },
+  ];
+
+  container.innerHTML = etapas
+    .map((etapa) => {
+      const percentual = Math.min(100, Math.round((etapa.valor / acessos) * 100));
+      const largura = Math.max(2, percentual);
+      return (
+        '<div class="funil-etapa">' +
+        '<div class="funil-cabecalho"><span>' + escapeHtml(etapa.rotulo) + "</span>" +
+        "<span>" + formatarNumero(etapa.valor) + ' <span class="funil-pct">(' + percentual + "%)</span></span></div>" +
+        '<div class="funil-barra-fundo"><div class="funil-barra-preenchimento" style="width: ' + largura + '%;"></div></div>' +
+        "</div>"
+      );
+    })
+    .join("");
+}
+
+// Barras dos últimos 14 dias para qualquer lista de itens com created_at
+function desenharBarras14Dias(idContainer, itens) {
+  const container = document.getElementById(idContainer);
+  const dias = [];
+
+  for (let i = 13; i >= 0; i--) {
+    const data = new Date();
+    data.setHours(0, 0, 0, 0);
+    data.setDate(data.getDate() - i);
+    dias.push({ data, contagem: 0 });
+  }
+
+  itens.forEach((item) => {
+    const dataItem = new Date(item.created_at);
+    dataItem.setHours(0, 0, 0, 0);
+    const dia = dias.find((d) => d.data.getTime() === dataItem.getTime());
+    if (dia) dia.contagem++;
+  });
+
+  const maior = Math.max(1, ...dias.map((d) => d.contagem));
+
+  container.innerHTML = dias
+    .map((dia) => {
+      const altura = Math.max(2, (dia.contagem / maior) * 100);
+      const rotulo = dia.data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+      return (
+        '<div class="grafico-barra-coluna">' +
+        '<div class="tooltip-barra">' + rotulo + ": " + dia.contagem + "</div>" +
+        '<div class="grafico-barra" style="height: ' + altura + '%;"></div>' +
+        '<div class="rotulo-dia">' + rotulo + "</div>" +
+        "</div>"
+      );
+    })
+    .join("");
+}
+
+function renderizarProspeccaoDms(dms) {
+  const container = document.getElementById("pros-lista-dms");
+
+  if (dms.length === 0) {
+    container.innerHTML = '<p class="lista-vazia">Nenhum comentário atendido pelo robô ainda.</p>';
+    return;
+  }
+
+  const LIMITE = 50;
+  const nomesStatus = { sent: "Enviada", failed: "Falhou", pending: "Pendente" };
+  const recentes = [...dms].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, LIMITE);
+
+  const linhas = recentes
+    .map((dm) => {
+      const horario = new Date(dm.created_at).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const perfil = dm.username ? "@" + dm.username : "Não identificado";
+      const detalhe = dm.error ? String(dm.error).slice(0, 60) : "";
+      return (
+        '<div class="item-acesso">' +
+        "<span>" + escapeHtml(horario) + "</span>" +
+        '<span class="acesso-pagina">' + escapeHtml(perfil) + "</span>" +
+        "<span>" + escapeHtml(nomesStatus[dm.status] || dm.status) + "</span>" +
+        "<span>" + escapeHtml(detalhe) + "</span>" +
+        "</div>"
+      );
+    })
+    .join("");
+
+  const aviso =
+    dms.length > LIMITE
+      ? '<p class="lista-vazia">Mostrando as ' + LIMITE + " mais recentes do período (" + formatarNumero(dms.length) + " no total).</p>"
+      : "";
+
+  container.innerHTML =
+    '<div class="lista-acessos-wrap">' +
+    '<div class="cabecalho-acessos"><span>Horário</span><span>Perfil</span><span>Status</span><span>Detalhe</span></div>' +
+    linhas +
+    "</div>" +
+    aviso;
 }
