@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Painel de Prospecção UGC | Thais Linhares</title>
+<meta name="description" content="Preencha seus dados e receba o prompt pronto para o Claude encontrar marcas que combinam com o seu estilo, inclusive marcas locais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --cream:#f6ecdc; --cream2:#efdfc6; --paper:#fffaf0; --cocoa:#3a2622; --cocoa2:#6b5048;
+  --terra:#c4573c; --terra-d:#a54430; --mustard:#e4a92f; --sage:#8ea58a; --rose:#e6b0b4;
+  --display:"Fraunces",Georgia,serif; --body:"DM Sans",ui-sans-serif,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--cocoa);font:16px/1.55 var(--body);-webkit-text-size-adjust:100%;
+  background:var(--cream) conic-gradient(var(--cream) 25%,var(--cream2) 0 50%,var(--cream) 0 75%,var(--cream2) 0) 0 0/64px 64px}
+.chk{background-image:conic-gradient(var(--a,var(--cocoa)) 25%,var(--b,var(--cream)) 0 50%,var(--a,var(--cocoa)) 0 75%,var(--b,var(--cream)) 0)}
+
+.top{position:sticky;top:0;z-index:10;background:var(--cocoa);color:var(--cream);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));border-bottom:4px solid var(--mustard)}
+.top b{font:600 17px var(--display);display:flex;align-items:center;gap:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top b i{font-style:normal;color:var(--mustard);font-size:22px;line-height:1}
+.top .btn{padding:9px 16px;min-height:0;font-size:14px;flex:none;box-shadow:none;background:var(--mustard);color:var(--cocoa);border-color:var(--mustard)}
+.wrap{max-width:1080px;margin:0 auto;padding:30px max(18px,env(safe-area-inset-right)) 96px max(18px,env(safe-area-inset-left))}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:30px;align-items:center}
+@media (max-width:820px){.hero{grid-template-columns:1fr}}
+.tag{display:inline-flex;align-items:center;gap:10px;font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:16px}
+.tag span{width:46px;height:14px;border:2px solid var(--cocoa);background-size:14px 14px;--a:var(--cocoa);--b:var(--cream)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,9vw,76px);line-height:1;letter-spacing:-.02em;margin:0 0 20px;color:var(--cocoa);font-variation-settings:"opsz" 144}
+h1 em{font-style:italic;font-weight:600;color:var(--terra);position:relative;white-space:nowrap}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.2em;background:var(--mustard);opacity:.55;z-index:-1}
+.lead{font-size:clamp(17px,3.4vw,21px);line-height:1.6;color:var(--cocoa2);max-width:34em;margin:0 0 22px}
+.byline{font-size:15px;color:var(--cocoa2)}
+.byline a{color:var(--terra);font-weight:700;text-decoration:none}
+
+.board{position:relative;aspect-ratio:1;width:100%;max-width:360px;justify-self:center;border:4px solid var(--cocoa);box-shadow:10px 10px 0 var(--terra);background-size:25% 25%;--a:var(--cocoa);--b:var(--rose);transform:rotate(2deg)}
+.board .pc{position:absolute;display:grid;place-items:center;font:400 clamp(44px,12vw,70px)/1 "Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",serif;width:25%;height:25%}
+.board .p1{left:25%;top:0;color:var(--paper)}
+.board .p2{left:50%;top:25%;color:var(--cocoa)}
+.board .p3{left:0;top:50%;color:var(--cocoa)}
+.board .p4{left:75%;top:75%;color:var(--paper)}
+.board .tagc{position:absolute;left:-6px;bottom:-18px;background:var(--mustard);border:3px solid var(--cocoa);padding:8px 14px;font:700 13px var(--body);letter-spacing:.1em;text-transform:uppercase;transform:rotate(-3deg);color:var(--cocoa)}
+@media (max-width:820px){.board{max-width:300px;margin:14px auto 22px}}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:34px}
+@media (max-width:640px){.stats{grid-template-columns:1fr}}
+.stat{display:flex;gap:14px;align-items:flex-start;background:var(--paper);border:2px solid var(--cocoa);padding:16px;box-shadow:4px 4px 0 var(--cocoa)}
+.stat i{font-style:normal;flex:none;width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--cocoa);background:var(--mustard);font-size:26px;line-height:1;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",serif}
+.stat:nth-child(2) i{background:var(--rose)}
+.stat:nth-child(3) i{background:var(--sage)}
+.stat strong{display:block;font:800 18px var(--display);line-height:1.2;margin-bottom:3px}
+.stat span{font-size:15px;color:var(--cocoa2);line-height:1.4}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:26px;margin-top:40px;align-items:start}
+@media (max-width:860px){.cols{grid-template-columns:1fr}}
+.card{background:var(--paper);border:2px solid var(--cocoa);box-shadow:7px 7px 0 var(--cocoa);padding:0 24px 24px;overflow:hidden}
+.card::before{content:"";display:block;height:20px;margin:0 -24px 22px;border-bottom:2px solid var(--cocoa);background-size:20px 20px;--a:var(--rose);--b:var(--paper);background-image:conic-gradient(var(--a) 25%,var(--b) 0 50%,var(--a) 0 75%,var(--b) 0)}
+.step{display:flex;align-items:center;gap:12px;margin:0 0 6px}
+.step b{width:34px;height:34px;background:var(--terra);color:var(--cream);border:2px solid var(--cocoa);display:grid;place-items:center;font:800 17px var(--display);flex:none;transform:rotate(45deg)}
+.step b span{transform:rotate(-45deg);display:block}
+h2{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.01em;margin:0}
+.hint{font-size:15px;color:var(--cocoa2);margin:0 0 18px}
+.sec+.sec{margin-top:30px;padding-top:26px;border-top:2px dashed #d9c4a6}
+
+.field{display:grid;gap:7px;margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+label,.lbl{font:700 12px var(--body);color:var(--cocoa);text-transform:uppercase;letter-spacing:.1em}
+.lbl small,label small{font:500 13px var(--body);text-transform:none;letter-spacing:0;color:var(--cocoa2)}
+input[type=text],select,textarea{font:500 16px var(--body);border:2px solid var(--cocoa);border-radius:0;padding:13px 14px;background:#fff;color:var(--cocoa);width:100%}
+input::placeholder,textarea::placeholder{color:#b7a091}
+textarea{resize:vertical;min-height:76px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,.btn:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.row2 .field{margin-bottom:0}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{position:relative;text-transform:none;letter-spacing:0;font-size:15px;color:var(--cocoa);margin:0}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-block;padding:10px 15px;border:2px solid var(--cocoa);background:#fff;font:600 15px var(--body);transition:background .12s,color .12s,transform .12s}
+.chip:hover span{background:var(--cream2)}
+.chip input:checked+span{background:var(--terra);color:var(--cream);box-shadow:3px 3px 0 var(--cocoa);transform:translate(-1px,-1px)}
+.chip input:focus-visible+span{outline:3px solid var(--mustard);outline-offset:2px}
+
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--cocoa);background:#fff}
+.seg label{position:relative;text-transform:none;letter-spacing:0;font:700 15px var(--body);color:var(--cocoa);text-align:center;cursor:pointer;margin:0;border-left:2px solid var(--cocoa)}
+.seg label:first-child{border-left:0}
+.seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.seg span{display:block;padding:14px 6px}
+.seg input:checked+span{background:var(--cocoa);color:var(--mustard)}
+.seg input:focus-visible+span{outline:3px solid var(--mustard);outline-offset:-3px}
+.localbox{background:var(--rose);border:2px solid var(--cocoa);padding:16px;margin-top:12px;display:grid;gap:14px}
+.localbox[hidden]{display:none}
+
+.sticky{position:sticky;top:78px}
+.promptbox{background:#fff;border:2px solid var(--cocoa);padding:16px;max-height:400px;overflow:auto;white-space:pre-wrap;font:500 14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-wrap:anywhere;color:#2e1c19}
+.promptbox mark{background:var(--mustard);color:var(--cocoa);padding:0 4px;font-weight:700}
+.missing{display:flex;gap:9px;align-items:center;font-size:14px;color:var(--cocoa2);margin:0 0 12px}
+.dot{width:12px;height:12px;background:var(--mustard);border:2px solid var(--cocoa);flex:none;transform:rotate(45deg)}
+.dot.ok{background:var(--sage)}
+.btns{display:grid;gap:12px;margin-top:18px}
+.btn{font:700 16px var(--body);border:2px solid var(--cocoa);padding:15px 22px;cursor:pointer;text-align:center;text-decoration:none;display:flex;justify-content:center;align-items:center;min-height:54px;color:var(--cocoa);background:#fff;box-shadow:4px 4px 0 var(--cocoa);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cocoa)}
+.btn.primary{background:var(--terra);color:var(--cream)}
+.btn.primary:hover{background:var(--terra-d)}
+.btn.soft{background:var(--mustard)}
+.how{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:9px;font-size:15px;color:var(--cocoa2)}
+.how li{display:flex;gap:10px}
+.how b{color:var(--terra);font-family:var(--display);font-weight:800}
+.foot{margin-top:34px;text-align:center;font-size:14px;color:var(--cocoa2)}
+.foot a{color:var(--terra);font-weight:700;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--cocoa);color:var(--cream);border:2px solid var(--mustard);padding:13px 22px;font:700 14px var(--body);opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="top"><b><i>&#9819;&#xFE0E;</i> Painel de prospecção</b><button class="btn primary" id="copyTop" type="button">Copiar prompt</button></div>
+<div class="wrap">
+
+<header>
+  <div class="hero">
+    <div>
+      <div class="tag"><span class="chk"></span>Prospecção UGC</div>
+      <h1>Sua próxima <em>jogada</em> com as marcas</h1>
+      <p class="lead">Você conta seu estilo e seus nichos, e o prompt se monta com os seus dados. Copie, cole no Claude e receba marcas reais, com contato e DM pronta para você chamar.</p>
+      <div class="byline">Criado por Thais Linhares, <a href="https://instagram.com/thaisugcbr" target="_blank" rel="noopener">@thaisugcbr</a></div>
+    </div>
+    <div class="board chk" aria-hidden="true">
+      <div class="pc p1">&#9822;&#xFE0E;</div><div class="pc p2">&#9823;&#xFE0E;</div><div class="pc p3">&#9819;&#xFE0E;</div><div class="pc p4">&#9820;&#xFE0E;</div>
+      <div class="tagc">Xeque nas marcas</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><i>&#9823;&#xFE0E;</i><div><strong>Marcas de verdade</strong><span>O Claude pesquisa na web e mostra a fonte. Nada inventado.</span></div></div>
+    <div class="stat"><i>&#9822;&#xFE0E;</i><div><strong>Do seu jeito</strong><span>Prompt pronto com o seu nome, estilo e nichos.</span></div></div>
+    <div class="stat"><i>&#9819;&#xFE0E;</i><div><strong>Perto de você</strong><span>Opção de buscar negócios locais na sua cidade.</span></div></div>
+  </div>
+</header>
+
+<div class="cols">
+
+<!-- FORM -->
+<main class="card" id="form">
+  <section class="sec">
+    <div class="step"><b><span>1</span></b><h2>Sobre você</h2></div>
+    <p class="hint">Quanto mais real, melhor a busca.</p>
+    <div class="row2">
+      <div class="field"><label for="nome">Seu nome</label><input type="text" id="nome" placeholder="Ex.: Maria" autocomplete="given-name"></div>
+      <div class="field"><label for="insta">Seu Instagram</label><input type="text" id="insta" placeholder="@seuperfil" autocapitalize="none" autocomplete="off"></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Seu estilo de vídeo <small>(marque quantos quiser)</small></span>
+      <div class="chips" id="estilo"></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Seus nichos <small>(marque até 5)</small></span>
+      <div class="chips" id="nichos"></div>
+      <input type="text" id="nichoOutro" placeholder="Outro nicho? Escreva aqui" style="margin-top:6px">
+    </div>
+    <div class="field">
+      <span class="lbl">O que você entrega</span>
+      <div class="chips" id="entrega"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="exp">Seu momento</label>
+        <select id="exp">
+          <option value="">Escolha</option>
+          <option>Estou começando e ainda não tenho portfólio</option>
+          <option>Tenho alguns vídeos e poucas marcas</option>
+          <option>Tenho portfólio com várias marcas</option>
+        </select></div>
+      <div class="field"><label for="modelo">Como você trabalha</label>
+        <select id="modelo">
+          <option value="">Escolha</option>
+          <option>Só trabalhos pagos</option>
+          <option>Pago, e permuta em casos especiais</option>
+          <option>Aceito permuta pra montar portfólio</option>
+        </select></div>
+    </div>
+    <div class="field"><label for="extra">Algo que a marca precisa saber sobre você <small style="text-transform:none;letter-spacing:0;font-weight:500">(opcional)</small></label>
+      <textarea id="extra" placeholder="Ex.: sou mãe de dois, treino todo dia, moro em cidade pequena, tenho um pet"></textarea></div>
+  </section>
+
+  <section class="sec">
+    <div class="step"><b><span>2</span></b><h2>O que você quer buscar</h2></div>
+    <p class="hint">Escolha onde o Claude deve procurar.</p>
+    <div class="field">
+      <span class="lbl">Tipo de marca</span>
+      <div class="seg" id="escopo" role="radiogroup" aria-label="Tipo de marca">
+        <label><input type="radio" name="escopo" value="nacional" checked><span>Nacionais</span></label>
+        <label><input type="radio" name="escopo" value="locais"><span>Locais</span></label>
+        <label><input type="radio" name="escopo" value="ambos"><span>Os dois</span></label>
+      </div>
+      <div class="localbox" id="localbox" hidden>
+        <div class="field" style="margin:0"><label for="cidade">Sua cidade e estado</label><input type="text" id="cidade" placeholder="Ex.: Porto Velho, RO"></div>
+        <div class="field" style="margin:0"><label for="raio">Até onde vale ir</label>
+          <select id="raio"><option value="só na minha cidade">Só na minha cidade</option><option value="na minha cidade e cidades vizinhas">Cidade e vizinhas</option><option value="no meu estado">No meu estado</option></select></div>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lbl">Porte das marcas <small>(marcas menores costumam responder mais)</small></span>
+      <div class="chips" id="porte"></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Quantas marcas?</span>
+      <div class="seg" id="qtd" role="radiogroup" aria-label="Quantidade">
+        <label><input type="radio" name="qtd" value="10" checked><span>10</span></label>
+        <label><input type="radio" name="qtd" value="15"><span>15</span></label>
+        <label><input type="radio" name="qtd" value="20"><span>20</span></label>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- PROMPT -->
+<aside class="sticky">
+  <div class="card">
+    <div class="step"><b><span>3</span></b><h2>Seu prompt</h2></div>
+    <p class="hint">Ele se monta sozinho enquanto você preenche.</p>
+    <p class="missing" id="missing"><span class="dot" id="dot"></span><span id="missTxt"></span></p>
+    <div class="promptbox" id="prompt" aria-live="polite"></div>
+    <div class="btns">
+      <button class="btn primary" id="copy" type="button">Copiar prompt</button>
+      <a class="btn soft" id="openClaude" href="#" target="_blank" rel="noopener">Abrir direto no Claude</a>
+      <a class="btn ghost" id="openGpt" href="#" target="_blank" rel="noopener">Abrir no ChatGPT</a>
+    </div>
+    <ol class="how">
+      <li><b>1.</b> Copie o prompt.</li>
+      <li><b>2.</b> Cole no Claude e envie. Ele usa a busca na web pra achar marcas de verdade.</li>
+      <li><b>3.</b> Chame as marcas no direct, uma por dia. Constância fecha vídeo.</li>
+    </ol>
+  </div>
+</aside>
+
+</div>
+
+<div class="foot">Dúvidas? Me chama no <a href="https://instagram.com/thaisugcbr" target="_blank" rel="noopener">@thaisugcbr</a></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var ESTILOS=["Falado pra câmera","Review sincero","Tutorial passo a passo","Estético e cinematográfico","Divertido e com humor","Rotina e lifestyle","Unboxing","Voz em off com cenas"];
+var NICHOS=["Beleza","Skincare","Perfumaria","Cabelo","Moda","Casa e decoração","Maternidade","Bebê e infantil","Pet","Saúde e bem-estar","Fitness","Suplementos","Comida e bebida","Tecnologia","Apps e serviços","Viagem","Finanças","Educação"];
+var ENTREGAS=["Vídeo falado","Vídeo de demonstração","Vídeo pra anúncio","Collab no meu perfil","Fotos do produto","Roteiro próprio"];
+var PORTES=["Pequenas (independentes)","Médias","Grandes"];
+
+function chips(id,list,name,checked){
+  var box=$(id);
+  list.forEach(function(t){
+    var l=document.createElement("label");l.className="chip";
+    var i=document.createElement("input");i.type="checkbox";i.name=name;i.value=t;
+    if(checked&&checked.indexOf(t)>-1)i.checked=true;
+    var s=document.createElement("span");s.textContent=t;
+    l.appendChild(i);l.appendChild(s);box.appendChild(l);
+  });
+}
+chips("estilo",ESTILOS,"estilo");
+chips("nichos",NICHOS,"nicho");
+chips("entrega",ENTREGAS,"entrega");
+chips("porte",PORTES,"porte",["Pequenas (independentes)","Médias"]);
+
+function vals(name){return Array.prototype.map.call(document.querySelectorAll('input[name="'+name+'"]:checked'),function(i){return i.value})}
+function radio(name){var r=document.querySelector('input[name="'+name+'"]:checked');return r?r.value:""}
+function lista(a){if(a.length<2)return a.join("");return a.slice(0,-1).join(", ")+" e "+a[a.length-1]}
+function lower(a){return a.map(function(x){return x.toLowerCase()})}
+
+// limita 5 nichos
+$("nichos").addEventListener("change",function(e){
+  if(vals("nicho").length>5){e.target.checked=false;toast("Escolha até 5 nichos pra busca ficar focada.")}
+});
+
+var MARK="\u0001";
+function ph(txt){return MARK+txt+MARK}
+
+function build(){
+  var nome=$("nome").value.trim(), insta=$("insta").value.trim();
+  if(insta&&insta.charAt(0)!=="@")insta="@"+insta.replace(/^https?:\/\/(www\.)?instagram\.com\//,"").replace(/\/$/,"");
+  var estilo=vals("estilo"), nichos=vals("nicho"), outro=$("nichoOutro").value.trim();
+  if(outro)nichos=nichos.concat([outro]);
+  var entrega=vals("entrega"), porte=vals("porte");
+  var exp=$("exp").value, modelo=$("modelo").value, extra=$("extra").value.trim();
+  var escopo=radio("escopo"), qtd=parseInt(radio("qtd"),10)||10;
+  var cidade=$("cidade").value.trim(), raio=$("raio").value;
+  var local=escopo==="locais"||escopo==="ambos";
+  var missing=[];
+  if(!nome)missing.push("seu nome");
+  if(!insta)missing.push("seu Instagram");
+  if(!estilo.length)missing.push("estilo");
+  if(!nichos.length)missing.push("nichos");
+  if(local&&!cidade)missing.push("sua cidade");
+
+  var nNac=qtd, nLoc=0;
+  if(escopo==="locais"){nNac=0;nLoc=qtd}
+  else if(escopo==="ambos"){nLoc=Math.max(3,Math.round(qtd*0.4));nNac=qtd-nLoc}
+
+  var L=[];
+  L.push("Você é minha assistente de prospecção de marcas para UGC (conteúdo feito por criadores). Use a busca na web para encontrar marcas REAIS e ativas hoje. Nunca invente marca, perfil, contato, anúncio ou número. Se não conseguir confirmar algo, escreva \"não confirmei\".");
+  L.push("");
+  L.push("SOBRE MIM");
+  L.push("- Nome: "+(nome||ph("[seu nome]")));
+  L.push("- Instagram: "+(insta||ph("[@seuperfil]")));
+  if(local)L.push("- Cidade: "+(cidade||ph("[sua cidade e estado]")));
+  L.push("- Estilo dos meus vídeos: "+(estilo.length?lista(lower(estilo)):ph("[seu estilo]")));
+  L.push("- Nichos: "+(nichos.length?lista(nichos):ph("[seus nichos]")));
+  if(entrega.length)L.push("- O que eu entrego: "+lista(lower(entrega)));
+  if(exp)L.push("- Meu momento: "+exp.charAt(0).toLowerCase()+exp.slice(1));
+  if(modelo)L.push("- Como eu trabalho: "+modelo.charAt(0).toLowerCase()+modelo.slice(1));
+  if(extra)L.push("- Sobre mim: "+extra.replace(/\s*\n\s*/g," "));
+  L.push("");
+  L.push("O QUE QUERO");
+  if(escopo==="nacional")L.push("- "+nNac+" marcas brasileiras que combinam comigo.");
+  if(escopo==="locais")L.push("- "+nLoc+" negócios locais de "+(cidade||ph("[sua cidade]"))+" ("+raio+").");
+  if(escopo==="ambos"){L.push("- "+nNac+" marcas brasileiras que combinam comigo.");L.push("- "+nLoc+" negócios locais de "+(cidade||ph("[sua cidade]"))+" ("+raio+").")}
+  if(nNac>0&&porte.length)L.push("- Porte das marcas nacionais: "+lista(lower(porte))+(porte.indexOf("Grandes")>-1&&porte.length===1?"":". Prefiro marcas que respondem mais fácil do que as muito concorridas")+".");
+  L.push("");
+  L.push("COMO ESCOLHER");
+  L.push("- Só marcas com perfil ativo (postou nas últimas semanas) e que vendem um produto ou serviço dentro dos meus nichos.");
+  L.push("- Dê preferência a quem já mostra que contrata criadores: anúncios ativos na Biblioteca de Anúncios da Meta, posts com collab, página \"seja um criador\" ou cadastro em plataformas de UGC.");
+  L.push("- Considere se o meu estilo de vídeo combina com o jeito que a marca se comunica hoje.");
+  L.push("- Evite marcas fora do meu momento e do meu perfil.");
+  if(local){
+    L.push("");
+    L.push("SOBRE OS NEGÓCIOS LOCAIS");
+    L.push("- Procure lojas, clínicas, restaurantes, estúdios e serviços de "+(cidade||ph("[sua cidade]"))+", ligados aos meus nichos, com Instagram ativo e que ainda não trabalham com criadores ou trabalham pouco.");
+    L.push("- A proposta é diferente da nacional: vídeo de divulgação do local, visita, experiência e divulgação no meu perfil. Mostre o bairro ou endereço.");
+    L.push("- Diga qual é a melhor forma de abordar (DM, WhatsApp comercial ou ir até o local).");
+  }
+  L.push("");
+  L.push("PARA CADA MARCA, ENTREGUE");
+  L.push("1. Nome, categoria, site e Instagram.");
+  L.push("2. Por que combina comigo (1 ou 2 linhas).");
+  L.push("3. Evidência de que contrata criadores ou divulga ativamente, com o link da fonte.");
+  L.push("4. Melhor canal de contato (DM, e-mail, formulário ou plataforma) e o contato, se for público.");
+  L.push("5. Uma ideia de vídeo com gancho de uma frase, no meu estilo.");
+  L.push("6. Nota de 0 a 10 para a chance de fechar, com uma linha explicando.");
+  L.push("");
+  L.push("FORMATO");
+  L.push("- Ordene da maior nota para a menor"+(escopo==="ambos"?", separando marcas nacionais e locais":"")+".");
+  L.push("- Termine com uma tabela-resumo: marca, nicho, canal, nota.");
+  L.push("- Depois da tabela, escreva uma DM curta para cada uma das 3 primeiras, em dois tempos: no primeiro, 3 ou 4 linhas elogiando algo específico da marca e terminando com \"Posso te mandar aqui?\"; no segundo, uma proposta de vídeo em até 7 linhas.");
+  L.push("- Português do Brasil, tom leve e direto, sem travessão e sem frases prontas de IA.");
+  return {text:L.join("\n"),missing:missing,nome:nome};
+}
+
+function renderPrompt(res){
+  var box=$("prompt");box.textContent="";
+  res.text.split(MARK).forEach(function(part,i){
+    if(i%2===1){var m=document.createElement("mark");m.textContent=part;box.appendChild(m)}
+    else box.appendChild(document.createTextNode(part));
+  });
+}
+function plain(t){return t.split(MARK).join("")}
+
+var current="";
+function update(){
+  var res=build();
+  renderPrompt(res);
+  current=plain(res.text);
+  var ok=res.missing.length===0;
+  $("dot").className="dot"+(ok?" ok":"");
+  $("missTxt").textContent=ok?"Tudo certo. Seu prompt está pronto.":"Falta preencher: "+res.missing.join(", ")+".";
+  var q=encodeURIComponent(current);
+  $("openClaude").href="https://claude.ai/new?q="+q;
+  $("openGpt").href="https://chatgpt.com/?q="+q;
+}
+
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("on")},2200)}
+
+function fallbackCopy(txt){
+  var ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("readonly","");ta.style.cssText="position:fixed;top:0;left:0;opacity:0";
+  document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,txt.length);
+  var ok=false;try{ok=document.execCommand("copy")}catch(e){}
+  document.body.removeChild(ta);return ok;
+}
+[$("copy"),$("copyTop")].forEach(function(b){b.addEventListener("click",function(){
+  var done=function(){toast("Prompt copiado! Agora cola no Claude.")};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(current).then(done,function(){fallbackCopy(current)?done():toast("Selecione o texto e copie.")});
+  }else{fallbackCopy(current)?done():toast("Selecione o texto e copie.")}
+})});
+
+document.querySelectorAll('input[name="escopo"]').forEach(function(r){
+  r.addEventListener("change",function(){
+    var v=radio("escopo");$("localbox").hidden=!(v==="locais"||v==="ambos");update();
+  });
+});
+document.getElementById("form").addEventListener("input",update);
+document.getElementById("form").addEventListener("change",update);
+update();
+})();
+</script>
+</body>
+</html>
