@@ -37,6 +37,11 @@
         Portfólio
       </button>
 
+      <button class="nav-item" data-tab="prospeccao">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Prospecção
+      </button>
+
       <div class="sidebar-rodape">
         <div class="usuario-email" id="usuario-email">carregando...</div>
         <button id="botao-sair" class="botao botao-secundario botao-largo">Sair</button>
@@ -137,6 +142,45 @@
         <div class="cartao bloco">
           <h3>Mensagens recebidas</h3>
           <div id="lista-mensagens"></div>
+        </div>
+      </section>
+
+      <!-- Aba: Prospecção -->
+      <section id="tab-prospeccao" class="oculto">
+        <p class="saudacao">Números do <strong>Painel de Prospecção</strong>: DMs enviadas pelo robô e acessos à página.</p>
+
+        <div class="grade-numeros">
+          <div class="cartao cartao-numero destaque">
+            <div class="rotulo">DMs enviadas</div>
+            <div class="valor" id="pros-dms">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">DMs com falha</div>
+            <div class="valor" id="pros-falhas">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Acessos à página</div>
+            <div class="valor" id="pros-acessos">0</div>
+          </div>
+          <div class="cartao cartao-numero">
+            <div class="rotulo">Prompts copiados</div>
+            <div class="valor" id="pros-copias">0</div>
+          </div>
+        </div>
+
+        <div class="cartao bloco">
+          <h3>Da página ao prompt</h3>
+          <div id="pros-funil"></div>
+        </div>
+
+        <div class="cartao grafico-barras">
+          <h3>Acessos à página nos últimos 14 dias</h3>
+          <div class="grafico-linha" id="pros-grafico"></div>
+        </div>
+
+        <div class="cartao bloco">
+          <h3>DMs recentes</h3>
+          <div id="pros-lista-dms"></div>
         </div>
       </section>
     </main>
