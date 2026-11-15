@@ -116,6 +116,35 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.btn:focus-visib
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--cocoa);color:var(--cream);border:2px solid var(--mustard);padding:13px 22px;font:700 14px var(--body);opacity:0;pointer-events:none;transition:.25s;z-index:20;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+
+/* visual calmo */
+body{background:var(--cream)}
+.wrap{max-width:960px;padding-top:40px}
+.hero{display:block}
+.tag span{display:none}
+.tag{margin-bottom:12px}
+h1{font-size:clamp(32px,6vw,48px);margin:0 0 14px}
+h1 em::after{display:none}
+.lead{font-size:18px;margin-bottom:14px}
+.cols{margin-top:30px;gap:22px}
+.card{border:1px solid #d9c4a6;box-shadow:none;border-radius:14px;padding:22px}
+.card::before{display:none}
+.step b{transform:none;border:0;border-radius:50%;width:30px;height:30px;font-size:15px}
+.step b span{transform:none}
+h2{font-size:21px}
+input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
+.chip span{border:1px solid #d9c4a6;border-radius:99px;padding:8px 14px;font-weight:500}
+.chip input:checked+span{box-shadow:none;transform:none;border-color:var(--terra)}
+.seg{border:1px solid #d9c4a6;border-radius:10px;overflow:hidden}
+.seg label{border-left:1px solid #d9c4a6}
+.btn{border:1px solid var(--cocoa);box-shadow:none;border-radius:10px;min-height:50px}
+.btn:active{transform:none}
+.btn.ghost{background:transparent;border-color:#d9c4a6}
+.top{border-bottom:0}
+.localbox{border:1px solid #d9c4a6;border-radius:10px;background:#f3dede}
+.promptbox{border:1px solid #d9c4a6;border-radius:10px}
+.sec+.sec{border-top:1px solid #e4d3b8;margin-top:26px;padding-top:24px}
+.dot{border:0}
 </style>
 </head>
 <body>
@@ -130,15 +159,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.btn:focus-visib
       <p class="lead">Você conta seu estilo e seus nichos, e o prompt se monta com os seus dados. Copie, cole no Claude e receba marcas reais, com contato e DM pronta para você chamar.</p>
       <div class="byline">Criado por Thais Linhares, <a href="https://instagram.com/thaisugcbr" target="_blank" rel="noopener">@thaisugcbr</a></div>
     </div>
-    <div class="board chk" aria-hidden="true">
-      <div class="pc p1">&#9822;&#xFE0E;</div><div class="pc p2">&#9823;&#xFE0E;</div><div class="pc p3">&#9819;&#xFE0E;</div><div class="pc p4">&#9820;&#xFE0E;</div>
-      <div class="tagc">Xeque nas marcas</div>
-    </div>
-  </div>
-  <div class="stats">
-    <div class="stat"><i>&#9823;&#xFE0E;</i><div><strong>Marcas de verdade</strong><span>O Claude pesquisa na web e mostra a fonte. Nada inventado.</span></div></div>
-    <div class="stat"><i>&#9822;&#xFE0E;</i><div><strong>Do seu jeito</strong><span>Prompt pronto com o seu nome, estilo e nichos.</span></div></div>
-    <div class="stat"><i>&#9819;&#xFE0E;</i><div><strong>Perto de você</strong><span>Opção de buscar negócios locais na sua cidade.</span></div></div>
   </div>
 </header>
 
