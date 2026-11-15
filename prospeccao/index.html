@@ -214,6 +214,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,.btn:focus-visib
         <label><input type="radio" name="qtd" value="20"><span>20</span></label>
       </div>
     </div>
+    <div class="field">
+      <span class="lbl">Como você quer receber</span>
+      <div class="seg" id="saida" role="radiogroup" aria-label="Formato da resposta" style="grid-template-columns:1fr 1fr">
+        <label><input type="radio" name="saida" value="painel" checked><span>Painel interativo</span></label>
+        <label><input type="radio" name="saida" value="texto"><span>Lista em texto</span></label>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -286,7 +293,7 @@ function build(){
   if(outro)nichos=nichos.concat([outro]);
   var entrega=vals("entrega"), porte=vals("porte");
   var exp=$("exp").value, modelo=$("modelo").value, extra=$("extra").value.trim();
-  var escopo=radio("escopo"), qtd=parseInt(radio("qtd"),10)||10;
+  var escopo=radio("escopo"), qtd=parseInt(radio("qtd"),10)||10, saida=radio("saida")||"painel";
   var cidade=$("cidade").value.trim(), raio=$("raio").value;
   var local=escopo==="locais"||escopo==="ambos";
   var missing=[];
@@ -341,11 +348,27 @@ function build(){
   L.push("5. Uma ideia de vídeo com gancho de uma frase, no meu estilo.");
   L.push("6. Nota de 0 a 10 para a chance de fechar, com uma linha explicando.");
   L.push("");
-  L.push("FORMATO");
-  L.push("- Ordene da maior nota para a menor"+(escopo==="ambos"?", separando marcas nacionais e locais":"")+".");
-  L.push("- Termine com uma tabela-resumo: marca, nicho, canal, nota.");
-  L.push("- Depois da tabela, escreva uma DM curta para cada uma das 3 primeiras, em dois tempos: no primeiro, 3 ou 4 linhas elogiando algo específico da marca e terminando com \"Posso te mandar aqui?\"; no segundo, uma proposta de vídeo em até 7 linhas.");
-  L.push("- Português do Brasil, tom leve e direto, sem travessão e sem frases prontas de IA.");
+  if(saida==="texto"){
+    L.push("FORMATO");
+    L.push("- Ordene da maior nota para a menor"+(escopo==="ambos"?", separando marcas nacionais e locais":"")+".");
+    L.push("- Termine com uma tabela-resumo: marca, nicho, canal, nota.");
+    L.push("- Depois da tabela, escreva uma DM curta para cada uma das 3 primeiras, em dois tempos: no primeiro, 3 ou 4 linhas elogiando algo específico da marca e terminando com \"Posso te mandar aqui?\"; no segundo, uma proposta de vídeo em até 7 linhas.");
+    L.push("- Português do Brasil, tom leve e direto, sem travessão e sem frases prontas de IA.");
+  }else{
+    L.push("DEPOIS DA PESQUISA, MONTE O MEU PAINEL");
+    L.push("Com as marcas que você confirmou, crie um artefato (uma página só, em HTML, que funcione bem no celular) chamado \"Painel de Prospecção\". Estrutura:");
+    L.push("- Topo: saudação com o meu nome, meta de 10 abordagens por dia com um anel de progresso, e botão \"+ Nova marca\".");
+    L.push("- 4 abas: Hoje, Plano, Marcas e Estúdio.");
+    L.push("- Hoje: fila de hoje (marcas a abordar), follow-ups vencidos, quem respondeu, marcas quentes e uma dica da próxima data comercial.");
+    L.push("- Plano: as 10 primeiras marcas para abordar (maior nota), uma tabela com todas as marcas e a nota de 0 a 10 com os critérios (combina comigo, contrata criadores, ativa, contato, recorrente)"+(local?", e uma área separada de oportunidades locais":"")+".");
+    L.push("- Marcas: cartões com busca, filtro e ordenação. Status: A abordar, Quente, Fria, DM 1 enviada, Respondeu, Proposta enviada, Fechou, Não rolou.");
+    L.push("- Ficha da marca (abre ao clicar): abas Ficha (nicho, produto foco, canal, status, próximo follow-up, notas), Pesquisa (as evidências e fontes), Abordagem (DM em dois tempos e 3 ganchos alternativos, com botão copiar), Roteiro (ideia de vídeo) e Follow-up (dia 2, dia 5 e respostas prontas para permuta e preço).");
+    L.push("- Estúdio: criar abordagem, inscrição em campanha, roteiro e resposta para marca.");
+    L.push("- Guarde o que eu marcar (status, datas, notas) no armazenamento do artefato, se estiver disponível.");
+    L.push("- Visual limpo, cores quentes, cartões com borda, botões grandes e textos fáceis de ler no celular.");
+    L.push("");
+    L.push("As DMs seguem dois tempos: no primeiro, 3 ou 4 linhas elogiando algo específico da marca e terminando com \"Posso te mandar aqui?\"; no segundo, uma proposta de vídeo em até 7 linhas. Português do Brasil, tom leve e direto, sem travessão e sem frases prontas de IA. Se não conseguir montar o painel, entregue a lista em texto.");
+  }
   return {text:L.join("\n"),missing:missing,nome:nome};
 }
 
