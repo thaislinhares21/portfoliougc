@@ -145,6 +145,11 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
 .promptbox{border:1px solid #d9c4a6;border-radius:10px}
 .sec+.sec{border-top:1px solid #e4d3b8;margin-top:26px;padding-top:24px}
 .dot{border:0}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.hero>div:first-child{flex:1;min-width:0}
+.board{width:96px;max-width:96px;flex:none;margin:0;border:2px solid var(--cocoa);box-shadow:4px 4px 0 var(--terra);transform:rotate(3deg)}
+.board .pc{font-size:22px}
+@media (max-width:520px){.board{width:72px;max-width:72px}.board .pc{font-size:16px}}
 </style>
 </head>
 <body>
@@ -158,6 +163,9 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
       <h1>Sua próxima <em>jogada</em> com as marcas</h1>
       <p class="lead">Você conta seu estilo e seus nichos, e o prompt se monta com os seus dados. Copie, cole no Claude e receba marcas reais, com contato e DM pronta para você chamar.</p>
       <div class="byline">Criado por Thais Linhares, <a href="https://instagram.com/thaisugcbr" target="_blank" rel="noopener">@thaisugcbr</a></div>
+    </div>
+    <div class="board chk" aria-hidden="true">
+      <div class="pc p1">&#9822;&#xFE0E;</div><div class="pc p2">&#9823;&#xFE0E;</div><div class="pc p3">&#9819;&#xFE0E;</div><div class="pc p4">&#9820;&#xFE0E;</div>
     </div>
   </div>
 </header>
