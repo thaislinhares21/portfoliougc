@@ -634,6 +634,8 @@ function renderizarProspeccao() {
   const enviadas = dms.filter((d) => d.status === "sent");
   const falhas = dms.filter((d) => d.status === "failed");
 
+  renderizarAlertaRobo();
+
   document.getElementById("pros-dms").textContent = formatarNumero(enviadas.length);
   document.getElementById("pros-falhas").textContent = formatarNumero(falhas.length);
   document.getElementById("pros-acessos").textContent = formatarNumero(acessos.length);
@@ -752,4 +754,51 @@ function renderizarProspeccaoDms(dms) {
     linhas +
     "</div>" +
     aviso;
+}
+
+
+// Aviso quando o robô parece ter parado (as DMs mais recentes falharam). Ignora o filtro de período.
+function renderizarAlertaRobo() {
+  const aba = document.getElementById("tab-prospeccao");
+  const botao = document.querySelector('.nav-item[data-tab="prospeccao"]');
+
+  const recentes = [...CACHE_DMS].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  let seguidas = 0;
+  for (const dm of recentes) {
+    if (dm.status === "failed") seguidas++;
+    else if (dm.status === "sent") break;
+  }
+  const parou = recentes.length > 0 && (seguidas >= 2 || (recentes.length === 1 && seguidas === 1));
+
+  let alerta = document.getElementById("pros-alerta");
+  let ponto = document.getElementById("pros-ponto");
+
+  if (!parou) {
+    if (alerta) alerta.remove();
+    if (ponto) ponto.remove();
+    return;
+  }
+
+  const erro = recentes.find((d) => d.status === "failed" && d.error);
+  const detalhe = erro ? " Último erro: " + String(erro.error).slice(0, 120) : "";
+
+  if (!alerta) {
+    alerta = document.createElement("div");
+    alerta.id = "pros-alerta";
+    alerta.style.cssText =
+      "background:#fbe9e5;border:1px solid #e0a99c;color:#7a2a1a;padding:12px 16px;border-radius:10px;margin-bottom:14px;font-size:14px;line-height:1.5;";
+    aba.insertBefore(alerta, aba.firstChild);
+  }
+  alerta.textContent =
+    "Atenção: as últimas " + seguidas + " DMs do robô falharam, então ele pode ter parado." +
+    " Gere um token novo no passo 2 do app da Meta e atualize o segredo IG_ACCESS_TOKEN no Supabase." +
+    detalhe;
+
+  if (!ponto && botao) {
+    ponto = document.createElement("span");
+    ponto.id = "pros-ponto";
+    ponto.textContent = " ●";
+    ponto.style.color = "#c0392b";
+    botao.appendChild(ponto);
+  }
 }
