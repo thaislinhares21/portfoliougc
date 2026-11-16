@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Painel de Prospecção UGC | Thais Linhares</title>
 <meta name="description" content="Preencha seus dados e receba o prompt pronto para o Claude encontrar marcas que combinam com o seu estilo, inclusive marcas locais.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Painel de Prospecção UGC | Thais Linhares">
+<meta property="og:description" content="Preencha seus dados e receba o prompt pronto para o Claude encontrar marcas que combinam com o seu estilo, inclusive marcas locais.">
+<meta property="og:url" content="https://thaislinhares.com.br/prospeccao/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=DM+Sans:wght@400;500;600;700&display=swap">
@@ -152,6 +157,21 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
 @media (max-width:520px){.board{width:72px;max-width:72px}.board .pc{font-size:16px}}
 .free{margin-top:18px;padding:14px 16px;border:1px dashed #d9c4a6;border-radius:10px;font-size:14px;line-height:1.5;color:var(--cocoa2)}
 .free b{color:var(--cocoa)}
+
+@media (max-width:420px){.top b{font-size:15px;gap:6px}.top b i{font-size:18px}.top .btn{padding:8px 12px;font-size:13px}}
+.peek{margin:0 0 22px;padding:16px 18px;background:var(--paper);border:1px solid #e5d6bd;border-radius:14px}
+.peek-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.peek-h b{font:600 16px var(--display);color:var(--cocoa)}
+.peek-h span{font-size:12px;color:var(--cocoa2)}
+.peek-tabs{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.peek-tabs span{padding:4px 12px;border-radius:99px;font-size:13px;background:#f3e8d4;color:var(--cocoa2)}
+.peek-tabs .on{background:var(--cocoa);color:var(--cream)}
+.peek-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed #e5d6bd}
+.peek-row:first-of-type{margin-top:6px}
+.peek-row b{display:block;font-size:14px;color:var(--cocoa)}
+.peek-row small{font-size:12px;color:var(--cocoa2)}
+.peek-row em{font-style:normal;font-size:12px;padding:3px 10px;border-radius:99px;white-space:nowrap;color:#fff}
+.peek .s1{background:var(--terra)}.peek .s2{background:var(--sage)}.peek .s3{background:var(--mustard);color:var(--cocoa)}
 </style>
 </head>
 <body>
@@ -171,6 +191,15 @@ input[type=text],select,textarea{border:1px solid #d9c4a6;border-radius:10px}
     </div>
   </div>
 </header>
+
+<div class="peek" role="img" aria-label="Exemplo ilustrativo do painel que você recebe">
+  <div class="peek-h"><b>O que você recebe</b><span>exemplo ilustrativo</span></div>
+  <div class="peek-tabs"><span class="on">Hoje</span><span>Plano</span><span>Marcas</span><span>Estúdio</span></div>
+  <div class="peek-row"><div><b>Marca Exemplo A</b><small>Skincare · nota 8/10 · DM pronta</small></div><em class="s1">A abordar</em></div>
+  <div class="peek-row"><div><b>Marca Exemplo B</b><small>Perfumaria · nota 7/10 · follow-up dia 2</small></div><em class="s3">DM enviada</em></div>
+  <div class="peek-row"><div><b>Marca Exemplo C</b><small>Bem-estar · nota 9/10 · roteiro pronto</small></div><em class="s2">Respondeu</em></div>
+</div>
+
 
 <div class="cols">
 
